@@ -19,6 +19,9 @@ typedef struct sprite {
     sfVector2f pos;
     float speed_x, speed_y;
     sfBool deceleration;
+    int running_anim;
+    int anim_frame;
+    int direction;
 } sprite;
 
 void keyboard_events(game *g, sprite *p)
@@ -28,28 +31,30 @@ void keyboard_events(game *g, sprite *p)
             sfRenderWindow_close(g->window);
         if (g->event.type == sfEvtKeyPressed) {
             if (g->event.key.code == sfKeyRight) {
-                if (p->scale.x < 0) {
-                    p->scale.x *= -1;
-                    p->pos.x -= p->rect.width * 2;
-                }
                 p->deceleration = sfFalse;
-                if (p->speed_x < 0)
+                if (p->direction < 0)
                     p->speed_x = 0;
                 p->speed_x += 0.2f;
                 if (p->speed_x >= 6)
                     p->speed_x = 6;
+                if (p->direction < 0) {
+                    p->direction = 1;
+                    p->scale.x *= -1;
+                    p->pos.x -= p->rect.width * 2;
+                }
             }
             if (g->event.key.code == sfKeyLeft) {
-                if (p->scale.x > 0) {
+                p->deceleration = sfFalse;
+                if (p->direction > 0)
+                    p->speed_x = 0;
+                p->speed_x += 0.2f;
+                if (p->speed_x >= 6)
+                    p->speed_x = 6;
+                if (p->direction > 0) {
+                    p->direction = -1;
                     p->scale.x *= -1;
                     p->pos.x += p->rect.width * 2;
                 }
-                p->deceleration = sfFalse;
-                if (p->speed_x > 0)
-                    p->speed_x = 0;
-                p->speed_x -= 0.2f;
-                if (p->speed_x <= -6)
-                    p->speed_x = -6;
             }
         }
         if (g->event.type == sfEvtKeyReleased) {
@@ -64,20 +69,47 @@ sprite create_player()
 {
     sprite player;
     player.spr = sfSprite_create();
-    player.rect.left = 42;
-    player.rect.top = 16;
-    player.rect.height = 56;
-    player.rect.width = 32;
+    player.rect.left = 0;
+    player.rect.top = 0;
+    player.rect.height = 48;
+    player.rect.width = 48;
     player.scale.x = 2;
     player.scale.y = 2;
-    sfSprite_setTextureRect(player.spr, player.rect);
-    player.text = sfTexture_createFromFile("sonic.png", NULL);
+    player.text = sfTexture_createFromFile("sonic_sheet.png", NULL);
     sfSprite_setTexture(player.spr, player.text, sfFalse);
     player.speed_x = 0;
     player.speed_y = 0;
     player.pos.x = 0;
     player.pos.y = 0;
+    player.running_anim = 0;
+    player.direction = 1;
     return player;
+}
+
+void anim_player(sprite *p)
+{
+    p->anim_frame++;
+    if (p->speed_x != 0) {
+        if (p->anim_frame % 10 == 0)
+            p->running_anim++;
+        if ((p->running_anim > 5 && p->speed_x < 6) || (p->running_anim > 3 && p->speed_x >= 6))
+            p->running_anim = 0;
+    }
+    if (p->speed_x == 0) {
+        p->running_anim = 0;
+        p->rect.left = 0;
+        p->rect.top = 0;
+        p->rect.height = 48;
+        p->rect.width = 48;
+    }
+    if ((p->speed_x < 6 || p->speed_x > -6) && p->speed_x != 0) {
+        p->rect.top = 48;
+        p->rect.left = 48 * p->running_anim;
+    }
+    if (p->speed_x >= 6 || p->speed_x <= -6) {
+        p->rect.top = 48 * 2;
+        p->rect.left = 48 * p->running_anim;
+    }
 }
 
 void update_player(sprite *p, game *g)
@@ -90,18 +122,19 @@ void update_player(sprite *p, game *g)
         p->speed_y = 0;
         p->pos.y = 500;
     }
-    p->pos.x += p->speed_x;
+    p->pos.x += p->speed_x * p->direction;
     p->pos.y += p->speed_y;
     if (p->deceleration == sfTrue) {
         if (p->speed_x > 0)
             p->speed_x -= 0.2f;
-        if (p->speed_x < 0)
-            p->speed_x += 0.2f;
-        if (p->speed_x >= -0.1f && p->speed_x <= 0.1f) {
+        if (p->speed_x <= 0.2f) {
             p->speed_x = 0;
             p->deceleration = sfFalse;
         }
     }
+    anim_player(p);
+    printf("running_anim = %i\n", p->running_anim);
+    sfSprite_setTextureRect(p->spr, p->rect);
     printf("speed_x = %f\nspeed_y = %f\n", p->speed_x, p->speed_y);
     sfSprite_setPosition(p->spr, p->pos);
     sfRenderWindow_drawSprite(g->window, p->spr, NULL);
@@ -114,7 +147,7 @@ void update(game *g, sprite *p)
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
             sfRenderWindow_display(g->window);
-            sfRenderWindow_clear(g->window, sfWhite);
+            sfRenderWindow_clear(g->window, sfBlack);
             keyboard_events(g, p);
             update_player(p, g);
         }
