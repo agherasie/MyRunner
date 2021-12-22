@@ -48,7 +48,7 @@ void update_player(player *p, game *g)
     gravity(p);
     movement(p);
     animate(p);
-    print_status(p);
+    //print_status(p);
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
     sfSprite_setPosition(p->obj->spr, p->obj->pos);

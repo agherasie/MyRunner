@@ -31,6 +31,7 @@ typedef struct game {
     sfClock *clock;
     sfTime time;
     sfEvent event;
+    char **map;
 } game;
 
 typedef struct animation {

@@ -53,11 +53,35 @@ player create_player()
     return p;
 }
 
+char **create_map(char *filepath)
+{
+    char **map = malloc(sizeof(char *) * (W_H / 100 + 1));
+    for (int i = 0; i < 6; i++) {
+        map[i] = malloc(sizeof(char) * (W_W / 100 + 1));
+    }
+    int file = open(filepath, O_RDONLY);
+    char *buffer = malloc(sizeof(char) * 1000);
+    read(file, buffer, 1000);
+    close(file);
+    map[W_H / 100] = NULL;
+    for (int i = 0; i < W_H / 100; i++) {
+        for (int j = 0; j < W_W / 100; j++) {
+            while (*buffer < '0' || *buffer > '9')
+                buffer++;
+            map[i][j] = *buffer;
+            buffer++;
+        }
+        map[i][W_W / 100] = '\0';
+    }
+    return map;
+}
+
 game create_game()
 {
     game g;
     sfVideoMode mode = {W_W, W_H, 32};
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     g.clock = sfClock_create();
+    g.map = create_map("map1.txt");
     return g;
 }
