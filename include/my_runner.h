@@ -63,6 +63,8 @@ typedef struct player {
     sfBool is_grounded;
     int anim_state;
     animation anim[5];
+    float collision_y;
+    sfVector2i map_pos;
 } player;
 
 void create_animation(animation *anim, int length, float speed);

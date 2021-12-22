@@ -46,9 +46,9 @@ void gravity(player *p)
     if (p->is_grounded == sfFalse) {
         p->speed_y += 0.4f;
     }
-    if (p->obj->pos.y > 500) {
+    if (p->obj->pos.y > p->collision_y) {
         p->speed_y = 0;
-        p->obj->pos.y = 500;
+        p->obj->pos.y = p->collision_y;
         p->is_grounded = sfTrue;
         p->is_jumping = sfFalse;
     }

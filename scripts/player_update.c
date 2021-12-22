@@ -41,14 +41,28 @@ void print_status(player *p)
         printf("is_grounded\n");
     if (p->is_turning == sfTrue)
         printf("is_turning\n");
+    printf("map_pos: %i:%i\n", p->map_pos.x, p->map_pos.y);
+}
+
+void raycast(player *p, game *g)
+{
+    p->map_pos.x = p->obj->pos.x / 100;
+    p->map_pos.y = p->obj->pos.y / 100;
+    for (int i = 0; g->map[p->map_pos.y + i + 1] != NULL; i++) {
+        if (g->map[p->map_pos.y + i + 1][p->map_pos.x] != 0) {
+            p->collision_y = (p->map_pos.y + i) * 100 + 4;
+            break;
+        }
+    }
 }
 
 void update_player(player *p, game *g)
 {
+    raycast(p, g);
     gravity(p);
     movement(p);
     animate(p);
-    //print_status(p);
+    print_status(p);
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
     sfSprite_setPosition(p->obj->spr, p->obj->pos);

@@ -40,7 +40,7 @@ void update(game *g, player *p)
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
             sfRenderWindow_display(g->window);
-            sfRenderWindow_clear(g->window, sfBlack);
+            sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g);
             update_player(p, g);
