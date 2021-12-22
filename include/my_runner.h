@@ -71,5 +71,9 @@ game create_game();
 player create_player();
 object *create_object(int pixel_size, int scale, char *filepath);
 void player_keyboard_events(game *g, player *p);
+void gravity(player *p);
+void movement(player *p);
+void deceleration(player *p);
+void acceleration(player *p);
 
 #endif /* MY_RUNNER_H_ */

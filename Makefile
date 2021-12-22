@@ -6,10 +6,11 @@
 ##
 
 SRC	=	scripts/main.c \
-		scripts/player_movement.c \
 		scripts/game.c \
 		scripts/create.c \
 		scripts/player_control.c \
+		scripts/player_update.c \
+		scripts/player_movement.c \
 
 OBJ	=	$(SRC:.c=.o)
 
