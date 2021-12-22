@@ -24,6 +24,12 @@ object *create_object(int pixel_size, int scale, char *filepath)
     return obj;
 }
 
+void create_animation(animation *anim, int length, float speed)
+{
+    anim->length = length;
+    anim->speed = speed;
+}
+
 player create_player()
 {
     player p;
@@ -38,6 +44,12 @@ player create_player()
     p.acceleration = sfFalse;
     p.deceleration = sfFalse;
     p.is_turning = sfFalse;
+    p.anim_state = IDLE;
+    create_animation(&p.anim[0], 1, 0);
+    create_animation(&p.anim[1], 8, FPS);
+    create_animation(&p.anim[2], 4, FPS);
+    create_animation(&p.anim[3], 4, FPS);
+    create_animation(&p.anim[4], 3, FPS);
     return p;
 }
 

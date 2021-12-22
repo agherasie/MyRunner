@@ -11,6 +11,11 @@
     #define W_H 600
     #define FPS 60
     #define TOPSPEED 8
+    #define IDLE 0
+    #define WALKING 1
+    #define RUNNING 2
+    #define JUMPING 3
+    #define TURNING 4
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -27,6 +32,12 @@ typedef struct game {
     sfTime time;
     sfEvent event;
 } game;
+
+typedef struct animation {
+    int row;
+    int length;
+    float speed;
+} animation;
 
 typedef struct object {
     sfSprite *spr;
@@ -48,8 +59,11 @@ typedef struct player {
     float meters_run;
     sfBool is_jumping;
     sfBool is_grounded;
+    int anim_state;
+    animation anim[5];
 } player;
 
+void create_animation(animation *anim, int length, float speed);
 void update(game *g, player *p);
 void update_player(player *p, game *g);
 void player_keyboard_events(game *g, player *p);
