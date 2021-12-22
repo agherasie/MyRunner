@@ -43,6 +43,10 @@ void movement(player *p)
 
 void gravity(player *p)
 {
+    if (p->obj->pos.y == p->collision_y)
+        p->is_grounded = sfTrue;
+    else
+        p->is_grounded = sfFalse;
     if (p->is_grounded == sfFalse) {
         p->speed_y += 0.4f;
     }

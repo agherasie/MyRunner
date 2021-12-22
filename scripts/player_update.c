@@ -41,13 +41,18 @@ void print_status(player *p)
         printf("is_grounded\n");
     if (p->is_turning == sfTrue)
         printf("is_turning\n");
+    printf("pos: %f:%f\n", p->obj->pos.x, p->obj->pos.y);
     printf("map_pos: %i:%i\n", p->map_pos.x, p->map_pos.y);
 }
 
 void raycast(player *p, game *g)
 {
-    p->map_pos.x = p->obj->pos.x / 100;
-    p->map_pos.y = p->obj->pos.y / 100;
+    p->map_pos.x = (int)(p->obj->pos.x / 100);
+    p->map_pos.y = (int)(p->obj->pos.y / 100);
+    if (p->obj->pos.x > 45 + (48 / 2) + p->map_pos.x * 100 && p->direction == 1)
+        p->map_pos.x++;
+    if (p->obj->pos.x < 45 + (48 / 2) + p->map_pos.x * 100 && p->direction == -1)
+        p->map_pos.x--;
     for (int i = 0; g->map[p->map_pos.y + i + 1] != NULL; i++) {
         if (g->map[p->map_pos.y + i + 1][p->map_pos.x] != 0) {
             p->collision_y = (p->map_pos.y + i) * 100 + 4;
