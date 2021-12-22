@@ -7,62 +7,6 @@
 
 #include "my_runner.h"
 
-void player_keyboard_events(game *g, player *p)
-{
-    if (g->event.type == sfEvtKeyPressed) {
-        if (g->event.key.code == sfKeyRight) {
-            if (p->speed_x == 0) {
-                p->is_turning = sfFalse;
-                p->deceleration = sfFalse;
-                if (p->direction < 0)
-                    p->speed_x = 0;
-                p->acceleration = sfTrue;
-                if (p->direction < 0) {
-                    p->direction = 1;
-                    p->obj->scale.x *= -1;
-                    p->obj->pos.x -= p->obj->rect.width * 2;
-                }
-            } else if (p->direction < 0 && p->speed_x > TOPSPEED - 0.5f) {
-                p->is_turning = sfTrue;
-            }
-        } else if (g->event.key.code == sfKeyLeft) {
-            if (p->speed_x == 0) {
-                p->is_turning = sfFalse;
-                p->deceleration = sfFalse;
-                if (p->direction > 0)
-                    p->speed_x = 0;
-                p->acceleration = sfTrue;
-                if (p->direction > 0) {
-                    p->direction = -1;
-                    p->obj->scale.x *= -1;
-                    p->obj->pos.x += p->obj->rect.width * 2;
-                }
-            } else if (p->direction > 0 && p->speed_x > TOPSPEED - 0.5f) {
-                p->is_turning = sfTrue;
-            }
-        } else if (g->event.key.code == sfKeyS) {
-            if (p->is_grounded == sfTrue) {
-                p->is_grounded = sfFalse;
-                p->is_jumping = sfTrue;
-                p->running_anim = 0;
-                p->speed_y = -10;
-            }
-        }
-    }
-    if (g->event.type == sfEvtKeyReleased) {
-        if (g->event.key.code == sfKeyRight && p->direction == 1) {
-            p->deceleration = sfTrue;
-            p->running_anim = 0;
-            p->acceleration = sfFalse;
-        }
-        if (g->event.key.code == sfKeyLeft && p->direction == -1) {
-            p->deceleration = sfTrue;
-            p->running_anim = 0;
-            p->acceleration = sfFalse;
-        }
-    }
-}
-
 void anim_player(player *p)
 {
     p->anim_frame++;

@@ -56,5 +56,6 @@ void player_keyboard_events(game *g, player *p);
 game create_game();
 player create_player();
 object *create_object(int pixel_size, int scale, char *filepath);
+void player_keyboard_events(game *g, player *p);
 
 #endif /* MY_RUNNER_H_ */
