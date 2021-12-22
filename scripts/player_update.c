@@ -43,6 +43,7 @@ void print_status(player *p)
         printf("is_turning\n");
     printf("pos: %f:%f\n", p->obj->pos.x, p->obj->pos.y);
     printf("map_pos: %i:%i\n", p->map_pos.x, p->map_pos.y);
+    printf("collision: y=%f x=%f\n", p->collision_y / 100, p->collision_x / 100);
 }
 
 void raycast(player *p, game *g)
@@ -59,6 +60,16 @@ void raycast(player *p, game *g)
             break;
         }
     }
+    if (p->direction > 0)
+        for (int j = 0; g->map[p->map_pos.y][p->map_pos.x + j + 1] == 0; j++) {
+            p->collision_x = (p->map_pos.x + j + 1) * 100 + 4;
+            break;
+        }
+    else
+        for (int j = 0; g->map[p->map_pos.y][p->map_pos.x - j - 1] == 0; j++) {
+            p->collision_x = (p->map_pos.x - j - 1) * 100 - 4;
+            break;
+        }
 }
 
 void update_player(player *p, game *g)
@@ -67,7 +78,7 @@ void update_player(player *p, game *g)
     gravity(p);
     movement(p);
     animate(p);
-    print_status(p);
+    //print_status(p);
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
     sfSprite_setPosition(p->obj->spr, p->obj->pos);

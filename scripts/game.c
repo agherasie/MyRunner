@@ -19,11 +19,12 @@ void keyboard_events(game *g, player *p)
 void update_background(game *g)
 {
     sfVector2f tilepos = {0, 0};
-    for (int i = 0; g->map[i] != NULL; i++) {
-        for (int j = 0; g->map[i][j] != '\0'; j++) {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 8; j++) {
             if (g->map[i][j] >= 0 && g->map[i][j] <= 9) {
                 tilepos.x = j * 100;
                 tilepos.y = i * 100;
+                g->tile->rect.top = 0;
                 g->tile->rect.left = 50 * g->map[i][j];
                 sfSprite_setPosition(g->tile->spr, tilepos);
                 sfSprite_setTextureRect(g->tile->spr, g->tile->rect);

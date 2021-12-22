@@ -64,6 +64,7 @@ typedef struct player {
     int anim_state;
     animation anim[5];
     float collision_y;
+    float collision_x;
     sfVector2i map_pos;
 } player;
 

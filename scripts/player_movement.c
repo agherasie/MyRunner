@@ -37,6 +37,14 @@ void movement(player *p)
         p->is_turning = sfFalse;
         p->meters_run = 0;
     }
+    if (p->obj->pos.x > p->collision_x && p->direction == 1) {
+        p->speed_x = 0;
+        p->obj->pos.x = p->collision_x;
+    }
+    if (p->obj->pos.x < p->collision_x && p->direction == -1) {
+        p->speed_x = 0;
+        p->obj->pos.x = p->collision_x;
+    }
     acceleration(p);
     deceleration(p);
 }
