@@ -18,6 +18,8 @@ object *create_object(int pixel_size, int scale, char *filepath)
     obj->scale.x = scale;
     obj->scale.y = scale;
     obj->text = sfTexture_createFromFile(filepath, NULL);
+    sfSprite_setScale(obj->spr, obj->scale);
+    sfSprite_setTextureRect(obj->spr, obj->rect);
     sfSprite_setTexture(obj->spr, obj->text, sfFalse);
     obj->pos.x = 0;
     obj->pos.y = 0;
@@ -68,7 +70,7 @@ char **create_map(char *filepath)
         for (int j = 0; j < W_W / 100; j++) {
             while (*buffer < '0' || *buffer > '9')
                 buffer++;
-            map[i][j] = *buffer;
+            map[i][j] = *buffer - 48;
             buffer++;
         }
         map[i][W_W / 100] = '\0';
@@ -83,5 +85,6 @@ game create_game()
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     g.clock = sfClock_create();
     g.map = create_map("map1.txt");
+    g.tile = create_object(50, 2, "art/tileset.png");
     return g;
 }

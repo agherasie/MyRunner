@@ -16,6 +16,23 @@ void keyboard_events(game *g, player *p)
     }
 }
 
+void update_background(game *g)
+{
+    sfVector2f tilepos = {0, 0};
+    for (int i = 0; g->map[i] != NULL; i++) {
+        for (int j = 0; g->map[i][j] != '\0'; j++) {
+            if (g->map[i][j] >= 0 && g->map[i][j] <= 9) {
+                tilepos.x = j * 100;
+                tilepos.y = i * 100;
+                g->tile->rect.left = 50 * g->map[i][j];
+                sfSprite_setPosition(g->tile->spr, tilepos);
+                sfSprite_setTextureRect(g->tile->spr, g->tile->rect);
+                sfRenderWindow_drawSprite(g->window, g->tile->spr, NULL);
+            }
+        }
+    }
+}
+
 void update(game *g, player *p)
 {
     while (sfRenderWindow_isOpen(g->window)) {
@@ -25,6 +42,7 @@ void update(game *g, player *p)
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfBlack);
             keyboard_events(g, p);
+            update_background(g);
             update_player(p, g);
         }
     }

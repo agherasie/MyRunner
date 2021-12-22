@@ -26,20 +26,6 @@
     #include <unistd.h>
     #include "my.h"
 
-typedef struct game {
-    sfRenderWindow *window;
-    sfClock *clock;
-    sfTime time;
-    sfEvent event;
-    char **map;
-} game;
-
-typedef struct animation {
-    int row;
-    int length;
-    float speed;
-} animation;
-
 typedef struct object {
     sfSprite *spr;
     sfTexture *text;
@@ -47,6 +33,21 @@ typedef struct object {
     sfVector2f scale;
     sfVector2f pos;
 } object;
+
+typedef struct game {
+    sfRenderWindow *window;
+    sfClock *clock;
+    sfTime time;
+    sfEvent event;
+    char **map;
+    object *tile;
+} game;
+
+typedef struct animation {
+    int row;
+    int length;
+    float speed;
+} animation;
 
 typedef struct player {
     object *obj;
