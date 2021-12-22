@@ -5,7 +5,10 @@
 ## Makefile
 ##
 
-SRC	=	main.c \
+SRC	=	scripts/main.c \
+		scripts/player_movement.c \
+		scripts/game.c \
+		scripts/create.c \
 
 OBJ	=	$(SRC:.c=.o)
 
