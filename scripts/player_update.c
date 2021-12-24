@@ -36,13 +36,13 @@ void update_player(player *p, game *g)
         if (p->obj->scale.x < 0)
             p->obj->pos.x -= 48 * 2;
         p->map_pos.x = (int)(p->obj->pos.x / 100);
-        p->map_pos.y = (int)(p->obj->pos.y / 100);
+        p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
         invisible_walls(p, g);
         movement(p, g);
         raycast(p, g);
         gravity(p);
         animate(p);
-        //print_status(p);
+        print_status(p);
     }
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);

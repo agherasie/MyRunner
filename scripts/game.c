@@ -44,6 +44,7 @@ void keyboard_events(game *g, player *p)
 
 void update_background(game *g)
 {
+    g->map = create_map("map1.txt");
     sfVector2f tilepos = {0, 0};
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 8; j++) {
