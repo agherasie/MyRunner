@@ -47,6 +47,7 @@ player create_player()
     p.deceleration = sfFalse;
     p.is_turning = sfFalse;
     p.can_move = sfTrue;
+    p.is_edging = sfFalse;
     p.anim_state = IDLE;
     p.anim_frame = 0;
     p.collision_y = 0;
@@ -58,6 +59,9 @@ player create_player()
     create_animation(&p.anim[2], 4, FPS);
     create_animation(&p.anim[3], 4, FPS);
     create_animation(&p.anim[4], 3, FPS);
+    create_animation(&p.anim[5], 4, FPS);
+    create_animation(&p.anim[6], 8, FPS * 2);
+    create_animation(&p.anim[7], 8, 1);
     return p;
 }
 

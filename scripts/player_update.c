@@ -9,8 +9,13 @@
 
 void animate(player *p)
 {
+    p->obj->text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
     if (p->speed_x == 0)
         p->anim_state = IDLE;
+    if (p->is_edging == sfTrue && p->direction == 1)
+        p->anim_state = FEDGING;
+    if (p->is_edging == sfTrue && p->direction == -1)
+        p->anim_state = BEDGING;
     if (p->speed_x > 0 && p->speed_x < 8)
         p->anim_state = WALKING;
     if (p->speed_x >= 8)
@@ -19,6 +24,8 @@ void animate(player *p)
         p->anim_state = TURNING;
     if (p->is_jumping == sfTrue)
         p->anim_state = JUMPING;
+    if (p->can_move == sfFalse && p->anim_state == WALKING)
+        p->anim_state = PUSHING;
     p->anim_frame++;
     p->obj->rect.height = 48;
     p->obj->rect.width = 48;
@@ -48,9 +55,12 @@ void print_status(player *p)
 
 void raycast(player *p, game *g)
 {
-    if (p->obj->pos.x > 45 + p->map_pos.x * 100 && p->direction == 1)
+    p->is_edging = sfFalse;
+    if (p->obj->pos.x > (48 - 5) + p->map_pos.x * 100 && p->obj->pos.x < (48 + 10) + p->map_pos.x * 100)
+        p->is_edging = sfTrue;
+    if (p->obj->pos.x > (48 + 10) + p->map_pos.x * 100 && p->direction == 1)
         p->map_pos.x++;
-    if (p->obj->pos.x < 45 + p->map_pos.x * 100 && p->direction == -1)
+    if (p->obj->pos.x < (48) + p->map_pos.x * 100 && p->direction == -1)
         p->map_pos.x--;
     for (int i = 0; g->map[p->map_pos.y + i + 1] != NULL; i++) {
         if (g->map[p->map_pos.y + i + 1][p->map_pos.x] != 0) {

@@ -16,6 +16,9 @@
     #define RUNNING 2
     #define JUMPING 3
     #define TURNING 4
+    #define PUSHING 5
+    #define FEDGING 6
+    #define BEDGING 7
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -62,8 +65,9 @@ typedef struct player {
     sfBool is_jumping;
     sfBool is_grounded;
     sfBool can_move;
+    sfBool is_edging;
     int anim_state;
-    animation anim[5];
+    animation anim[8];
     float collision_y;
     float collision_x;
     sfVector2i map_pos;
