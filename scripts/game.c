@@ -7,6 +7,19 @@
 
 #include "my_runner.h"
 
+void destroy_all(game *g, player *p)
+{
+    sfSprite_destroy(g->tile->spr);
+    sfTexture_destroy(g->tile->text);
+    sfClock_destroy(g->clock);
+    sfSprite_destroy(p->obj->spr);
+    sfTexture_destroy(p->obj->text);
+    for (int i = 0; g->map[i] != NULL; i++)
+        free(g->map[i]);
+    free(g->map);
+    sfRenderWindow_destroy(g->window);
+}
+
 void pause_game(game *g)
 {
     if (g->event.key.code == sfKeyP) {
@@ -60,5 +73,6 @@ void update(game *g, player *p)
             update_player(p, g);
         }
     }
+    destroy_all(g, p);
     return;
 }
