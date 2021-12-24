@@ -49,7 +49,7 @@ typedef struct game {
 typedef struct animation {
     int row;
     int length;
-    float speed;
+    int speed;
 } animation;
 
 typedef struct player {

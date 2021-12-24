@@ -54,14 +54,14 @@ player create_player()
     p.collision_x = 0;
     p.map_pos.x = 0;
     p.map_pos.y = 0;
-    create_animation(&p.anim[0], 1, 0);
-    create_animation(&p.anim[1], 8, FPS);
-    create_animation(&p.anim[2], 4, FPS);
-    create_animation(&p.anim[3], 4, FPS);
-    create_animation(&p.anim[4], 3, FPS);
-    create_animation(&p.anim[5], 4, FPS);
-    create_animation(&p.anim[6], 8, FPS * 2);
-    create_animation(&p.anim[7], 8, 1);
+    create_animation(&p.anim[IDLE], 1, 1);
+    create_animation(&p.anim[WALKING], 8, 8);
+    create_animation(&p.anim[RUNNING], 4, 5);
+    create_animation(&p.anim[JUMPING], 4, 10);
+    create_animation(&p.anim[TURNING], 3, 10);
+    create_animation(&p.anim[PUSHING], 4, 12);
+    create_animation(&p.anim[FEDGING], 8, 5);
+    create_animation(&p.anim[BEDGING], 8, 5);
     return p;
 }
 

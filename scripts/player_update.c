@@ -29,7 +29,7 @@ void animate(player *p)
     p->anim_frame++;
     p->obj->rect.height = 48;
     p->obj->rect.width = 48;
-    if (p->anim_frame % 10 == 0 && p->anim[p->anim_state].length != 1)
+    if (p->anim_frame % p->anim[p->anim_state].speed == 0 && p->anim[p->anim_state].length != 1)
         p->running_anim++;
     if (p->running_anim > p->anim[p->anim_state].length - 1)
         p->running_anim = 0;
@@ -56,12 +56,15 @@ void print_status(player *p)
 void raycast(player *p, game *g)
 {
     p->is_edging = sfFalse;
-    if (p->obj->pos.x > (48 - 5) + p->map_pos.x * 100 && p->obj->pos.x < (48 + 10) + p->map_pos.x * 100)
-        p->is_edging = sfTrue;
-    if (p->obj->pos.x > (48 + 10) + p->map_pos.x * 100 && p->direction == 1)
+    int rnd_pos = p->map_pos.x * 100;
+    if (g->map[p->map_pos.y + 1][p->map_pos.x + p->direction] == 0) {
+        if (p->obj->pos.x > (48 - 10) + rnd_pos && p->obj->pos.x < (48) + rnd_pos)
+            p->is_edging = sfTrue;
+        if (p->obj->pos.x > rnd_pos - 10 && p->obj->pos.x < rnd_pos)
+            p->is_edging = sfTrue;
+    }
+    if (p->obj->pos.x >= rnd_pos + 50)
         p->map_pos.x++;
-    if (p->obj->pos.x < (48) + p->map_pos.x * 100 && p->direction == -1)
-        p->map_pos.x--;
     for (int i = 0; g->map[p->map_pos.y + i + 1] != NULL; i++) {
         if (g->map[p->map_pos.y + i + 1][p->map_pos.x] != 0) {
             p->collision_y = (p->map_pos.y + i) * 100 + 4;
@@ -72,15 +75,19 @@ void raycast(player *p, game *g)
 
 void update_player(player *p, game *g)
 {
+    if (p->obj->scale.x < 0)
+        p->obj->pos.x -= 48 * 2;
     p->map_pos.x = (int)(p->obj->pos.x / 100);
     p->map_pos.y = (int)(p->obj->pos.y / 100);
     movement(p, g);
     raycast(p, g);
     gravity(p);
     animate(p);
-    print_status(p);
+    //print_status(p);
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
+    if (p->obj->scale.x < 0)
+        p->obj->pos.x += 48 * 2;
     sfSprite_setPosition(p->obj->spr, p->obj->pos);
     sfRenderWindow_drawSprite(g->window, p->obj->spr, NULL);
 }

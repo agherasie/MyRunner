@@ -44,9 +44,12 @@ void movement(player *p, game *g)
         p->obj->pos.x = (p->map_pos.x * 100) + 30;
         p->can_move = sfFalse;
     }
-    if (g->map[p->map_pos.y][p->map_pos.x - 1] != 0 && (int)(p->obj->pos.x) % 100 <= 70 && p->direction == -1) {
+    int rnd_pos = p->map_pos.x;
+    if (p->obj->pos.x >= rnd_pos + 50)
+        rnd_pos++;
+    if (g->map[p->map_pos.y][rnd_pos - 1] != 0 && p->obj->pos.x <= rnd_pos * 100 - 26 && p->direction == -1) {
         p->speed_x = 0;
-        p->obj->pos.x = (p->map_pos.x * 100) + 70;
+        p->obj->pos.x = rnd_pos * 100 - 26;
         p->can_move = sfFalse;
     }
     acceleration(p);
