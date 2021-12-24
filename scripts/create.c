@@ -46,6 +46,7 @@ player create_player()
     p.acceleration = sfFalse;
     p.deceleration = sfFalse;
     p.is_turning = sfFalse;
+    p.can_move = sfTrue;
     p.anim_state = IDLE;
     p.anim_frame = 0;
     p.collision_y = 0;

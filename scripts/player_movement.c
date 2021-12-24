@@ -29,21 +29,24 @@ void deceleration(player *p)
     }
 }
 
-void movement(player *p)
+void movement(player *p, game *g)
 {
-    p->obj->pos.x += p->speed_x * p->direction;
+    if (p->can_move == sfTrue)
+        p->obj->pos.x += p->speed_x * p->direction;
     p->obj->pos.y += p->speed_y;
     if (p->speed_x == 0) {
         p->is_turning = sfFalse;
         p->meters_run = 0;
     }
-    if (p->obj->pos.x > p->collision_x && p->direction == 1) {
+    p->can_move = sfTrue;
+    if (g->map[p->map_pos.y][p->map_pos.x + 1] != 0 && (int)(p->obj->pos.x) % 100 > 30 && p->direction == 1) {
         p->speed_x = 0;
-        p->obj->pos.x = p->collision_x;
+        p->collision_x = (int)(p->obj->pos.x) % 100;
+        p->can_move = sfFalse;
     }
-    if (p->obj->pos.x < p->collision_x && p->direction == -1) {
+    if (g->map[p->map_pos.y][p->map_pos.x - 1] != 0 && p->direction == -1) {
         p->speed_x = 0;
-        p->obj->pos.x = p->collision_x;
+        p->can_move = sfFalse;
     }
     acceleration(p);
     deceleration(p);

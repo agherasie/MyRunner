@@ -50,9 +50,9 @@ void raycast(player *p, game *g)
 {
     p->map_pos.x = (int)(p->obj->pos.x / 100);
     p->map_pos.y = (int)(p->obj->pos.y / 100);
-    if (p->obj->pos.x > 45 + (48 / 2) + p->map_pos.x * 100 && p->direction == 1)
+    if (p->obj->pos.x > 45 + p->map_pos.x * 100 && p->direction == 1)
         p->map_pos.x++;
-    if (p->obj->pos.x < 45 + (48 / 2) + p->map_pos.x * 100 && p->direction == -1)
+    if (p->obj->pos.x < 45 + p->map_pos.x * 100 && p->direction == -1)
         p->map_pos.x--;
     for (int i = 0; g->map[p->map_pos.y + i + 1] != NULL; i++) {
         if (g->map[p->map_pos.y + i + 1][p->map_pos.x] != 0) {
@@ -60,25 +60,15 @@ void raycast(player *p, game *g)
             break;
         }
     }
-    if (p->direction > 0)
-        for (int j = 0; g->map[p->map_pos.y][p->map_pos.x + j + 1] == 0; j++) {
-            p->collision_x = (p->map_pos.x + j + 1) * 100 + 4;
-            break;
-        }
-    else
-        for (int j = 0; g->map[p->map_pos.y][p->map_pos.x - j - 1] == 0; j++) {
-            p->collision_x = (p->map_pos.x - j - 1) * 100 - 4;
-            break;
-        }
 }
 
 void update_player(player *p, game *g)
 {
     raycast(p, g);
     gravity(p);
-    movement(p);
+    movement(p, g);
     animate(p);
-    //print_status(p);
+    print_status(p);
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
     sfSprite_setPosition(p->obj->spr, p->obj->pos);

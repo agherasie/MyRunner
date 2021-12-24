@@ -61,6 +61,7 @@ typedef struct player {
     float meters_run;
     sfBool is_jumping;
     sfBool is_grounded;
+    sfBool can_move;
     int anim_state;
     animation anim[5];
     float collision_y;
@@ -77,7 +78,7 @@ player create_player();
 object *create_object(int pixel_size, int scale, char *filepath);
 void player_keyboard_events(game *g, player *p);
 void gravity(player *p);
-void movement(player *p);
+void movement(player *p, game *g);
 void deceleration(player *p);
 void acceleration(player *p);
 
