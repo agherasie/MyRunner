@@ -1,0 +1,53 @@
+/*
+** EPITECH PROJECT, 2021
+** MyRunner
+** File description:
+** create_player.c
+*/
+
+#include "my_runner.h"
+
+player create_animations(player p)
+{
+    p.anim_frame = 0;
+    p.running_anim = 0;
+    p.anim_state = IDLE;
+    create_animation(&p.anim[IDLE], 1, 1);
+    create_animation(&p.anim[WALKING], 8, 8);
+    create_animation(&p.anim[RUNNING], 4, 5);
+    create_animation(&p.anim[JUMPING], 4, 10);
+    create_animation(&p.anim[TURNING], 3, 10);
+    create_animation(&p.anim[PUSHING], 4, 20);
+    create_animation(&p.anim[FEDGING], 8, 5);
+    create_animation(&p.anim[BEDGING], 8, 5);
+    return p;
+}
+
+player create_bools(player p)
+{
+    p.is_grounded = sfFalse;
+    p.is_jumping = sfFalse;
+    p.acceleration = sfFalse;
+    p.deceleration = sfFalse;
+    p.is_turning = sfFalse;
+    p.can_move = sfTrue;
+    p.is_edging = sfFalse;
+    return p;
+}
+
+player create_player()
+{
+    player p;
+    p.obj = create_object(48, 2, "art/sonic_sheet.png");
+    p.speed_x = 0;
+    p.speed_y = 0;
+    p.direction = 1;
+    p.meters_run = 0;
+    p.collision_y = 0;
+    p.collision_x = 0;
+    p.map_pos.x = 0;
+    p.map_pos.y = 0;
+    p = create_bools(p);
+    p = create_animations(p);
+    return p;
+}

@@ -33,7 +33,8 @@ void animate(player *p)
     p->anim_frame++;
     p->obj->rect.height = 48;
     p->obj->rect.width = 48;
-    if (p->anim_frame % p->anim[p->anim_state].speed == 0 && p->anim[p->anim_state].length != 1)
+    if (p->anim_frame % p->anim[p->anim_state].speed == 0
+    && p->anim[p->anim_state].length != 1)
         p->running_anim++;
     if (p->running_anim > p->anim[p->anim_state].length - 1)
         p->running_anim = 0;

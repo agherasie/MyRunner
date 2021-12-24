@@ -59,4 +59,3 @@ void gravity(player *p)
         p->is_jumping = sfFalse;
     }
 }
-

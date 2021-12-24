@@ -32,45 +32,17 @@ void create_animation(animation *anim, int length, float speed)
     anim->speed = speed;
 }
 
-player create_player()
+void skip_buffer(char **buffer)
 {
-    player p;
-    p.obj = create_object(48, 2, "art/sonic_sheet.png");
-    p.speed_x = 0;
-    p.speed_y = 0;
-    p.running_anim = 0;
-    p.direction = 1;
-    p.meters_run = 0;
-    p.is_grounded = sfFalse;
-    p.is_jumping = sfFalse;
-    p.acceleration = sfFalse;
-    p.deceleration = sfFalse;
-    p.is_turning = sfFalse;
-    p.can_move = sfTrue;
-    p.is_edging = sfFalse;
-    p.anim_state = IDLE;
-    p.anim_frame = 0;
-    p.collision_y = 0;
-    p.collision_x = 0;
-    p.map_pos.x = 0;
-    p.map_pos.y = 0;
-    create_animation(&p.anim[IDLE], 1, 1);
-    create_animation(&p.anim[WALKING], 8, 8);
-    create_animation(&p.anim[RUNNING], 4, 5);
-    create_animation(&p.anim[JUMPING], 4, 10);
-    create_animation(&p.anim[TURNING], 3, 10);
-    create_animation(&p.anim[PUSHING], 4, 20);
-    create_animation(&p.anim[FEDGING], 8, 5);
-    create_animation(&p.anim[BEDGING], 8, 5);
-    return p;
+    while (**buffer < '0' || **buffer > '9')
+        *buffer += 1;
 }
 
 char **create_map(char *filepath)
 {
     char **map = malloc(sizeof(char *) * (W_H / 100 + 1));
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++)
         map[i] = malloc(sizeof(char) * (W_W / 100 + 1));
-    }
     int file = open(filepath, O_RDONLY);
     char *buffer = malloc(sizeof(char) * 1000);
     read(file, buffer, 1000);
@@ -78,8 +50,7 @@ char **create_map(char *filepath)
     map[W_H / 100] = NULL;
     for (int i = 0; i < W_H / 100; i++) {
         for (int j = 0; j < W_W / 100; j++) {
-            while (*buffer < '0' || *buffer > '9')
-                buffer++;
+            skip_buffer(&buffer);
             map[i][j] = *buffer - 48;
             buffer++;
         }
