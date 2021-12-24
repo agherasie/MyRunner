@@ -16,18 +16,18 @@ int is_solid(int square)
 
 void edging(game *g, player *p)
 {
-    p->is_edging = sfFalse;
+    p->is_edging = 0;
     if (is_solid(g->map[p->map_pos.y + 1][p->map_pos.x + 1]) == 1)
         if (p->obj->pos.x > p->map_pos.x * 100 + 35
         && p->obj->pos.x < p->map_pos.x * 100 + 50)
-            p->is_edging = sfTrue;
+            p->is_edging = 1;
     if (p->obj->pos.x > p->map_pos.x * 100 + 50)
         p->map_pos.x++;
     if (p->map_pos.x - 1 >= 0)
         if (is_solid(g->map[p->map_pos.y + 1][p->map_pos.x - 1]) == 1)
             if (p->obj->pos.x > p->map_pos.x * 100 - 50
             && p->obj->pos.x < p->map_pos.x * 100 - 35)
-                p->is_edging = sfTrue;
+                p->is_edging = -1;
 }
 
 void raycast(player *p, game *g)

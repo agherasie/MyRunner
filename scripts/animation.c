@@ -11,9 +11,9 @@ void choose_anim_state(player *p)
 {
     if (p->speed_x == 0)
         p->anim_state = IDLE;
-    if (p->is_edging == sfTrue && p->direction == 1)
+    if (p->direction * p->is_edging == 1)
         p->anim_state = FEDGING;
-    if (p->is_edging == sfTrue && p->direction == -1)
+    if (p->direction * p->is_edging == -1)
         p->anim_state = BEDGING;
     if (p->is_looking == sfTrue)
         p->anim_state = LOOKING;

@@ -33,7 +33,6 @@ player create_bools(player p)
     p.deceleration = sfFalse;
     p.is_turning = sfFalse;
     p.can_move = sfTrue;
-    p.is_edging = sfFalse;
     p.is_crouching = sfFalse;
     p.is_looking = sfFalse;
     return p;
@@ -51,6 +50,7 @@ player create_player()
     p.collision_x = 0;
     p.map_pos.x = 0;
     p.map_pos.y = 0;
+    p.is_edging = 0;
     p = create_bools(p);
     p = create_animations(p);
     return p;

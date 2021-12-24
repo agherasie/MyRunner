@@ -71,7 +71,7 @@ typedef struct player {
     sfBool is_jumping;
     sfBool is_grounded;
     sfBool can_move;
-    sfBool is_edging;
+    int is_edging;
     int anim_state;
     animation anim[10];
     int running_anim;
