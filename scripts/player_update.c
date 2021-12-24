@@ -48,8 +48,6 @@ void print_status(player *p)
 
 void raycast(player *p, game *g)
 {
-    p->map_pos.x = (int)(p->obj->pos.x / 100);
-    p->map_pos.y = (int)(p->obj->pos.y / 100);
     if (p->obj->pos.x > 45 + p->map_pos.x * 100 && p->direction == 1)
         p->map_pos.x++;
     if (p->obj->pos.x < 45 + p->map_pos.x * 100 && p->direction == -1)
@@ -64,9 +62,11 @@ void raycast(player *p, game *g)
 
 void update_player(player *p, game *g)
 {
+    p->map_pos.x = (int)(p->obj->pos.x / 100);
+    p->map_pos.y = (int)(p->obj->pos.y / 100);
+    movement(p, g);
     raycast(p, g);
     gravity(p);
-    movement(p, g);
     animate(p);
     print_status(p);
     sfSprite_setScale(p->obj->spr, p->obj->scale);
