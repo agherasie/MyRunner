@@ -22,12 +22,21 @@ void print_status(player *p)
     printf("map_pos: %i:%i\n", p->map_pos.x, p->map_pos.y);
 }
 
+void invisible_walls(player *p, game *g)
+{
+    if (p->obj->pos.x <= 0)
+        p->obj->pos.x = 0;
+    if (p->obj->pos.y <= 0)
+        p->obj->pos.y = 0;
+}
+
 void update_player(player *p, game *g)
 {
     if (p->obj->scale.x < 0)
         p->obj->pos.x -= 48 * 2;
     p->map_pos.x = (int)(p->obj->pos.x / 100);
     p->map_pos.y = (int)(p->obj->pos.y / 100);
+    invisible_walls(p, g);
     movement(p, g);
     raycast(p, g);
     gravity(p);
