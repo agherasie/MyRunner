@@ -37,6 +37,10 @@ void update_player(player *p, game *g)
             p->obj->pos.x -= 48 * 2;
         p->map_pos.x = (int)(p->obj->pos.x / 100);
         p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
+        if (p->is_grounded == sfFalse || p->speed_x > 0) {
+            p->is_crouching = sfFalse;
+            p->is_looking = sfFalse;
+        }
         invisible_walls(p, g);
         movement(p, g);
         raycast(p, g);

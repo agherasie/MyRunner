@@ -19,6 +19,8 @@
     #define PUSHING 5
     #define FEDGING 6
     #define BEDGING 7
+    #define LOOKING 8
+    #define CROUCHING 9
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -48,37 +50,39 @@ typedef struct game {
 } game;
 
 typedef struct animation {
-    int row;
+    sfBool loop;
     int length;
     int speed;
 } animation;
 
 typedef struct player {
     object *obj;
+    sfVector2i map_pos;
     float speed_x, speed_y;
+    int direction;
+    float meters_run;
+    float collision_y;
+    float collision_x;
     sfBool deceleration;
     sfBool acceleration;
     sfBool is_turning;
-    int running_anim;
-    int anim_frame;
-    int direction;
-    float meters_run;
+    sfBool is_looking;
+    sfBool is_crouching;
     sfBool is_jumping;
     sfBool is_grounded;
     sfBool can_move;
     sfBool is_edging;
     int anim_state;
-    animation anim[8];
-    float collision_y;
-    float collision_x;
-    sfVector2i map_pos;
+    animation anim[10];
+    int running_anim;
+    int anim_frame;
 } player;
 
 game create_game();
 char **create_map(char *filepath);
 player create_player();
 object *create_object(int pixel_size, int scale, char *filepath);
-void create_animation(animation *anim, int length, float speed);
+void create_animation(animation *anim, int length, float speed, sfBool loop);
 void update(game *g, player *p);
 void update_player(player *p, game *g);
 void player_keyboard_events(game *g, player *p);

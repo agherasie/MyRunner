@@ -30,7 +30,6 @@ void directional_key(player *p, int direction, sfBool released)
         }
     } else {
         p->deceleration = sfTrue;
-        p->running_anim = 0;
         p->acceleration = sfFalse;
     }
 }
@@ -40,7 +39,6 @@ void do_jump(player *p)
     if (p->is_grounded == sfTrue) {
         p->is_grounded = sfFalse;
         p->is_jumping = sfTrue;
-        p->running_anim = 0;
         p->speed_y = -10;
     }
 }
@@ -54,11 +52,19 @@ void player_keyboard_events(game *g, player *p)
             directional_key(p, -1, sfFalse);
         if (g->event.key.code == sfKeyS)
             do_jump(p);
+        if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed_x == 0)
+            p->is_looking = sfTrue;
+        if (g->event.key.code == sfKeyDown && p->is_grounded && p->speed_x == 0)
+            p->is_crouching = sfTrue;
     }
     if (g->event.type == sfEvtKeyReleased) {
         if (g->event.key.code == sfKeyRight && p->direction == 1)
             directional_key(p, 1, sfTrue);
         if (g->event.key.code == sfKeyLeft && p->direction == -1)
             directional_key(p, -1, sfTrue);
+        if (g->event.key.code == sfKeyUp)
+            p->is_looking = sfFalse;
+        if (g->event.key.code == sfKeyDown)
+            p->is_crouching = sfFalse;
     }
 }

@@ -26,10 +26,11 @@ object *create_object(int pixel_size, int scale, char *filepath)
     return obj;
 }
 
-void create_animation(animation *anim, int length, float speed)
+void create_animation(animation *anim, int length, float speed, sfBool loop)
 {
     anim->length = length;
     anim->speed = speed;
+    anim->loop = loop;
 }
 
 void skip_buffer(char **buffer)

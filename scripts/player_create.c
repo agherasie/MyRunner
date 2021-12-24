@@ -12,14 +12,16 @@ player create_animations(player p)
     p.anim_frame = 0;
     p.running_anim = 0;
     p.anim_state = IDLE;
-    create_animation(&p.anim[IDLE], 1, 1);
-    create_animation(&p.anim[WALKING], 8, 8);
-    create_animation(&p.anim[RUNNING], 4, 5);
-    create_animation(&p.anim[JUMPING], 4, 10);
-    create_animation(&p.anim[TURNING], 3, 10);
-    create_animation(&p.anim[PUSHING], 4, 20);
-    create_animation(&p.anim[FEDGING], 8, 5);
-    create_animation(&p.anim[BEDGING], 8, 5);
+    create_animation(&p.anim[IDLE], 1, 1, sfTrue);
+    create_animation(&p.anim[WALKING], 8, 8, sfTrue);
+    create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
+    create_animation(&p.anim[JUMPING], 4, 10, sfTrue);
+    create_animation(&p.anim[TURNING], 3, 10, sfTrue);
+    create_animation(&p.anim[PUSHING], 4, 20, sfTrue);
+    create_animation(&p.anim[FEDGING], 8, 5, sfTrue);
+    create_animation(&p.anim[BEDGING], 8, 5, sfTrue);
+    create_animation(&p.anim[LOOKING], 2, 10, sfFalse);
+    create_animation(&p.anim[CROUCHING], 2, 10, sfFalse);
     return p;
 }
 
@@ -32,6 +34,8 @@ player create_bools(player p)
     p.is_turning = sfFalse;
     p.can_move = sfTrue;
     p.is_edging = sfFalse;
+    p.is_crouching = sfFalse;
+    p.is_looking = sfFalse;
     return p;
 }
 

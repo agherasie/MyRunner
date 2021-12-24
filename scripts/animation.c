@@ -15,6 +15,10 @@ void choose_anim_state(player *p)
         p->anim_state = FEDGING;
     if (p->is_edging == sfTrue && p->direction == -1)
         p->anim_state = BEDGING;
+    if (p->is_looking == sfTrue)
+        p->anim_state = LOOKING;
+    if (p->is_crouching == sfTrue)
+        p->anim_state = CROUCHING;
     if (p->speed_x > 0 && p->speed_x < 8)
         p->anim_state = WALKING;
     if (p->speed_x >= 8)
@@ -29,13 +33,19 @@ void choose_anim_state(player *p)
 
 void animate(player *p)
 {
+    int prev_state = p->anim_state;
     choose_anim_state(p);
+    if (prev_state != p->anim_state)
+        p->running_anim = 0;
     p->anim_frame++;
     p->obj->rect.height = 48;
     p->obj->rect.width = 48;
     if (p->anim_frame % p->anim[p->anim_state].speed == 0
     && p->anim[p->anim_state].length != 1)
         p->running_anim++;
+    if (p->anim[p->anim_state].loop == sfFalse
+    && p->running_anim == p->anim[p->anim_state].length)
+        p->running_anim = p->anim[p->anim_state].length - 1;
     if (p->running_anim > p->anim[p->anim_state].length - 1)
         p->running_anim = 0;
     p->obj->rect.top = 48 * p->anim_state;
