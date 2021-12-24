@@ -73,17 +73,20 @@ typedef struct player {
     sfVector2i map_pos;
 } player;
 
+game create_game();
+player create_player();
+object *create_object(int pixel_size, int scale, char *filepath);
 void create_animation(animation *anim, int length, float speed);
 void update(game *g, player *p);
 void update_player(player *p, game *g);
 void player_keyboard_events(game *g, player *p);
-game create_game();
-player create_player();
-object *create_object(int pixel_size, int scale, char *filepath);
 void player_keyboard_events(game *g, player *p);
 void gravity(player *p);
 void movement(player *p, game *g);
 void deceleration(player *p);
 void acceleration(player *p);
+void animate(player *p);
+void wall_collision(player *p, game *g);
+void raycast(player *p, game *g);
 
 #endif /* MY_RUNNER_H_ */

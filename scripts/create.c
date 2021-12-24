@@ -59,7 +59,7 @@ player create_player()
     create_animation(&p.anim[RUNNING], 4, 5);
     create_animation(&p.anim[JUMPING], 4, 10);
     create_animation(&p.anim[TURNING], 3, 10);
-    create_animation(&p.anim[PUSHING], 4, 12);
+    create_animation(&p.anim[PUSHING], 4, 20);
     create_animation(&p.anim[FEDGING], 8, 5);
     create_animation(&p.anim[BEDGING], 8, 5);
     return p;

@@ -38,20 +38,7 @@ void movement(player *p, game *g)
         p->is_turning = sfFalse;
         p->meters_run = 0;
     }
-    p->can_move = sfTrue;
-    if (g->map[p->map_pos.y][p->map_pos.x + 1] != 0 && (int)(p->obj->pos.x) % 100 >= 30 && p->direction == 1) {
-        p->speed_x = 0;
-        p->obj->pos.x = (p->map_pos.x * 100) + 30;
-        p->can_move = sfFalse;
-    }
-    int rnd_pos = p->map_pos.x;
-    if (p->obj->pos.x >= rnd_pos + 50)
-        rnd_pos++;
-    if (g->map[p->map_pos.y][rnd_pos - 1] != 0 && p->obj->pos.x <= rnd_pos * 100 - 26 && p->direction == -1) {
-        p->speed_x = 0;
-        p->obj->pos.x = rnd_pos * 100 - 26;
-        p->can_move = sfFalse;
-    }
+    wall_collision(p, g);
     acceleration(p);
     deceleration(p);
 }
