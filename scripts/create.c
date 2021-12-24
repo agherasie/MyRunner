@@ -96,5 +96,6 @@ game create_game()
     g.clock = sfClock_create();
     g.map = create_map("map1.txt");
     g.tile = create_object(50, 2, "art/tileset.png");
+    g.paused = sfFalse;
     return g;
 }

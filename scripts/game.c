@@ -7,11 +7,24 @@
 
 #include "my_runner.h"
 
+void pause_game(game *g)
+{
+    if (g->event.key.code == sfKeyP) {
+        if (g->paused == sfTrue)
+            g->paused = sfFalse;
+        else
+            g->paused = sfTrue;
+    }
+}
+
 void keyboard_events(game *g, player *p)
 {
     while (sfRenderWindow_pollEvent(g->window, &g->event)) {
         if (g->event.type == sfEvtClosed)
             sfRenderWindow_close(g->window);
+        if (g->event.type == sfEvtKeyPressed) {
+            pause_game(g);
+        }
         player_keyboard_events(g, p);
     }
 }

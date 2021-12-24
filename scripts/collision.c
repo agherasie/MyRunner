@@ -15,9 +15,10 @@ void edging(game *g, player *p)
             p->is_edging = sfTrue;
     if (p->obj->pos.x > p->map_pos.x * 100 + 50)
         p->map_pos.x++;
-    if (g->map[p->map_pos.y + 1][p->map_pos.x - 1] == 0)
-        if (p->obj->pos.x > p->map_pos.x * 100 - 50 && p->obj->pos.x < p->map_pos.x * 100 - 35)
-            p->is_edging = sfTrue;
+    if (p->map_pos.x - 1 >= 0)
+        if (g->map[p->map_pos.y + 1][p->map_pos.x - 1] == 0)
+            if (p->obj->pos.x > p->map_pos.x * 100 - 50 && p->obj->pos.x < p->map_pos.x * 100 - 35)
+                p->is_edging = sfTrue;
 }
 
 void raycast(player *p, game *g)
@@ -41,9 +42,10 @@ void wall_collision(player *p, game *g)
     }
     if (p->obj->pos.x >= rnd_pos + 50)
         rnd_pos++;
-    if (g->map[p->map_pos.y][rnd_pos - 1] != 0 && p->obj->pos.x <= rnd_pos * 100 - 26 && p->direction == -1) {
-        p->speed_x = 0;
-        p->obj->pos.x = rnd_pos * 100 - 26;
-        p->can_move = sfFalse;
-    }
+    if (rnd_pos - 1 >= 0)
+        if (g->map[p->map_pos.y][rnd_pos - 1] != 0 && p->obj->pos.x <= rnd_pos * 100 - 26 && p->direction == -1) {
+            p->speed_x = 0;
+            p->obj->pos.x = rnd_pos * 100 - 26;
+            p->can_move = sfFalse;
+        }
 }

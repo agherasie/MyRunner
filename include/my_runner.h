@@ -44,6 +44,7 @@ typedef struct game {
     sfEvent event;
     char **map;
     object *tile;
+    sfBool paused;
 } game;
 
 typedef struct animation {
