@@ -44,12 +44,11 @@ void keyboard_events(game *g, player *p)
 
 void update_background(game *g)
 {
-    g->map = create_map("map1.txt");
     sfVector2f tilepos = {0, 0};
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < g->height; i++) {
+        for (int j = 0; j < g->width; j++) {
             if (g->map[i][j] >= 0 && g->map[i][j] <= 9) {
-                tilepos.x = j * 100;
+                tilepos.x = j * 100 - g->camera_pan_x;
                 tilepos.y = i * 100;
                 g->tile->rect.top = 0;
                 g->tile->rect.left = 50 * g->map[i][j];
@@ -67,6 +66,7 @@ void update(game *g, player *p)
         g->time = sfClock_getElapsedTime(g->clock);
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
+            g->camera_pan_x += 0.5f;
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);

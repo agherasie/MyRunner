@@ -39,23 +39,42 @@ void skip_buffer(char **buffer)
         *buffer += 1;
 }
 
-char **create_map(char *filepath)
+int count_lines(char *buffer)
 {
-    char **map = malloc(sizeof(char *) * (W_H / 100 + 1));
-    for (int i = 0; i < 6; i++)
-        map[i] = malloc(sizeof(char) * (W_W / 100 + 1));
+    int count = 1;
+    for (int i = 0; buffer[i] != '\0'; i++)
+        if (buffer[i] == '\n')
+            count++;
+    return count;
+}
+
+int count_columns(char *buffer)
+{
+    int count = 0;
+    for (int i = 0; buffer[i] != '\n'; i++)
+        count++;
+    return count;
+}
+
+char **create_map(char *filepath, game *g)
+{
     int file = open(filepath, O_RDONLY);
     char *buffer = malloc(sizeof(char) * 1000);
     read(file, buffer, 1000);
     close(file);
-    map[W_H / 100] = NULL;
-    for (int i = 0; i < W_H / 100; i++) {
-        for (int j = 0; j < W_W / 100; j++) {
+    g->height = count_lines(buffer);
+    g->width = count_columns(buffer);
+    char **map = malloc(sizeof(char *) * (g->height + 1));
+    for (int i = 0; i < 6; i++)
+        map[i] = malloc(sizeof(char) * (g->width + 1));
+    map[g->height] = NULL;
+    for (int i = 0; i < g->height; i++) {
+        for (int j = 0; j < g->width; j++) {
             skip_buffer(&buffer);
             map[i][j] = *buffer - 48;
             buffer++;
         }
-        map[i][W_W / 100] = '\0';
+        map[i][g->width] = '\0';
     }
     return map;
 }
@@ -66,8 +85,9 @@ game create_game()
     sfVideoMode mode = {W_W, W_H, 32};
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     g.clock = sfClock_create();
-    g.map = create_map("map1.txt");
+    g.map = create_map("map1.txt", &g);
     g.tile = create_object(50, 2, "art/tileset.png");
     g.paused = sfFalse;
+    g.camera_pan_x = 0;
     return g;
 }

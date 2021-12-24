@@ -47,6 +47,9 @@ typedef struct game {
     char **map;
     object *tile;
     sfBool paused;
+    float camera_pan_x;
+    int height;
+    int width;
 } game;
 
 typedef struct animation {
@@ -79,7 +82,7 @@ typedef struct player {
 } player;
 
 game create_game();
-char **create_map(char *filepath);
+char **create_map(char *filepath, game *g);
 player create_player();
 object *create_object(int pixel_size, int scale, char *filepath);
 void create_animation(animation *anim, int length, float speed, sfBool loop);
