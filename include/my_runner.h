@@ -77,6 +77,7 @@ typedef struct game {
     object *goalsign;
     sfText *score_text;
     sfFont *hud_font;
+    int score;
 } game;
 
 typedef struct player {

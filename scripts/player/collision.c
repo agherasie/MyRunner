@@ -78,6 +78,7 @@ void enemy_collision(player *p, enemy *e, game *g)
             p->speed_y = -8;
             e->is_dead = sfTrue;
             e->frame = 0;
+            g->score += 100;
         }
     }
 }

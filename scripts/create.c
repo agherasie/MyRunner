@@ -57,7 +57,6 @@ sfText *style_text(sfText *text)
     sfText_setCharacterSize(text, 40);
     sfText_setOutlineColor(text, sfBlack);
     sfText_setOutlineThickness(text, 2);
-    sfText_setFillColor(text, sfYellow);
     return text;
 }
 
@@ -84,5 +83,6 @@ game create_game()
     g.score_text = sfText_create();
     sfText_setFont(g.score_text, g.hud_font);
     g.score_text = style_text(g.score_text);
+    g.score = 0;
     return g;
 }

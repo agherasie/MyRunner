@@ -48,11 +48,24 @@ void keyboard_events(game *g, player *p)
     }
 }
 
-void draw_text(game *g, char *str, int x, int y)
+void draw_text(game *g, char *str, float x, float y)
 {
     sfText_setPosition(g->score_text, (sfVector2f) {20 * x, 20 * y});
     sfText_setString(g->score_text, str);
     sfRenderWindow_drawText(g->window, g->score_text, NULL);
+}
+
+void clock_draw(game *g, int time)
+{
+    draw_text(g, my_itoa(g->score), 7, 1);
+    draw_text(g, " :", 6, 3);
+    draw_text(g, my_itoa(time / 60), 6, 3);
+    time %= 60;
+    if (time < 10) {
+        draw_text(g, "0", 7.5f, 3);
+        draw_text(g, my_itoa(time), 8.5, 3);
+    } else
+        draw_text(g, my_itoa(time), 7.5f, 3);
 }
 
 void update(game *g, player *p)
@@ -73,9 +86,12 @@ void update(game *g, player *p)
             sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
             update_enemies(g, p);
             update_player(p, g);
+            sfText_setFillColor(g->score_text, sfYellow);
             draw_text(g, "score", 1, 1);
             draw_text(g, "time", 1, 3);
             draw_text(g, "ring", 1, 5);
+            sfText_setFillColor(g->score_text, sfWhite);
+            clock_draw(g, g->frame / FPS);
         }
     }
     destroy_all(g, p);
