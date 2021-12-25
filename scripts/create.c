@@ -86,5 +86,6 @@ game create_game()
     sfText_setFont(g.score_text, g.hud_font);
     g.score_text = style_text(g.score_text);
     g.score = 0;
+    g.rings = 0;
     return g;
 }
