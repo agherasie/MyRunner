@@ -20,6 +20,8 @@ void print_status(player *p)
         printf("is_turning\n");
     printf("pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
     printf("map_pos: %i:%i\n", p->map_pos.x, p->map_pos.y);
+    if (p->is_hurt == sfTrue)
+        printf("is_hurt\n");
 }
 
 void invisible_walls(player *p, game *g)
@@ -72,13 +74,23 @@ void update_player(player *p, game *g)
         p->goal_reached = sfTrue;
     if (g->paused == sfFalse) {
         camera_adjustments(p, g, sfTrue);
+        if (p->is_hurt)
+            p->obj->pos.x -= p->cooldown / 10;
+        p->cooldown--;
+        if (p->speed_x >= 0 && p->is_hurt == sfTrue) {
+            p->speed_x = 0;
+            if (p->cooldown <= 0)
+                p->is_hurt = sfFalse;
+        }
         misc(p);
         invisible_walls(p, g);
+        for (int i = 0; i < 1; i++)
+            enemy_collision(p, &g->e[i], g);
         movement(p, g);
         raycast(p, g);
         gravity(p);
         animate(p);
-        print_status(p);
+        //print_status(p);
         camera_adjustments(p, g, sfFalse);
         if (p->speed_y >= 1 && p->speed_y <= 2)
             sfMusic_stop(p->jump_sound);

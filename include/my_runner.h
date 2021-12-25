@@ -22,6 +22,7 @@
     #define LOOKING 8
     #define CROUCHING 9
     #define THUMBSUP 10
+    #define HURTING 11
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -92,12 +93,14 @@ typedef struct player {
     sfBool is_grounded;
     sfBool can_move;
     sfBool goal_reached;
+    sfBool is_hurt;
     int is_edging;
     int anim_state;
-    animation anim[11];
+    animation anim[12];
     int running_anim;
     int anim_frame;
     sfMusic *jump_sound;
+    int cooldown;
 } player;
 
 game create_game();
@@ -120,5 +123,6 @@ char **create_map(char *filepath, game *g);
 void update_enemies(game *g, player *p);
 void animate_object(game *g, object *obj, animation anim, int *frame);
 void update_background(game *g, player *p);
+void enemy_collision(player *p, enemy *e, game *g);
 
 #endif /* MY_RUNNER_H_ */

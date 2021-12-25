@@ -16,5 +16,6 @@ void update_enemies(game *g, player *p)
         g->e[i].obj->pos.x -= g->camera_pan_x + g->camera_pan_speed;
         sfSprite_setPosition(g->e[i].obj->spr, g->e[i].obj->pos);
         sfRenderWindow_drawSprite(g->window, g->e[i].obj->spr, NULL);
+        //printf("enemypos = %.2f:%.2f\n", g->e[i].obj->pos.x, g->e[i].obj->pos.y);
     }
 }
