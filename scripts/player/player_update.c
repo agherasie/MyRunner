@@ -53,7 +53,6 @@ void draw_player(player *p, game *g)
 {
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
-    //printf("camera_pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
     sfSprite_setPosition(p->obj->spr, p->obj->pos);
     sfRenderWindow_drawSprite(g->window, p->obj->spr, NULL);
 }
@@ -66,6 +65,22 @@ void misc(player *p)
     }
     p->map_pos.x = (int)(p->obj->pos.x / 100);
     p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
+}
+
+void sound_update(player *p)
+{
+    if (p->speed_y >= 1 && p->speed_y <= 2) {
+        sfMusic_stop(p->sound[JUMP]);
+        sfMusic_stop(p->sound[BADNIK_DEATH]);
+    }
+    if (p->is_turning == sfTrue)
+        sfMusic_play(p->sound[BRAKE]);
+    else
+        sfMusic_stop(p->sound[BRAKE]);
+    if (p->is_hurt == sfFalse) {
+        sfMusic_stop(p->sound[RING_LOSS]);
+        sfMusic_stop(p->sound[DEATH]);
+    }
 }
 
 void update_player(player *p, game *g)
@@ -92,8 +107,7 @@ void update_player(player *p, game *g)
         animate(p);
         //print_status(p);
         camera_adjustments(p, g, sfFalse);
-        if (p->speed_y >= 1 && p->speed_y <= 2)
-            sfMusic_stop(p->jump_sound);
+        sound_update(p);
         if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)
             p->speed_x = 0;
     }

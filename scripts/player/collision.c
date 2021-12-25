@@ -75,11 +75,16 @@ void enemy_collision(player *p, enemy *e, game *g)
             p->speed_y = -8;
             p->cooldown = 7 * 8;
             g->score -= 150;
+            if (g->rings > 0)
+                sfMusic_play(p->sound[RING_LOSS]);
+            else
+                sfMusic_play(p->sound[DEATH]);
         } else if (p->anim_state == JUMPING) {
             p->speed_y = -8;
             e->is_dead = sfTrue;
             e->frame = 0;
             g->score += 100;
+            sfMusic_play(p->sound[BADNIK_DEATH]);
         }
     }
 }

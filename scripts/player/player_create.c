@@ -59,7 +59,15 @@ player create_player(game *g)
     p.cooldown = 0;
     p = create_bools(p);
     p = create_animations(p);
-    p.jump_sound = sfMusic_createFromFile("art/jump.wav");
-    sfMusic_setVolume(p.jump_sound, 10);
+    p.sound[0] = sfMusic_createFromFile("art/sound/jump.wav");
+    p.sound[1] = sfMusic_createFromFile("art/sound/badnik-death.wav");
+    p.sound[2] = sfMusic_createFromFile("art/sound/brake.wav");
+    p.sound[3] = sfMusic_createFromFile("art/sound/death.wav");
+    p.sound[4] = sfMusic_createFromFile("art/sound/spin.wav");
+    p.sound[5] = sfMusic_createFromFile("art/sound/ring-loss.wav");
+    p.sound[6] = sfMusic_createFromFile("art/sound/ring-collect.wav");
+    for (int i = 0; i < 7; i++)
+        sfMusic_setVolume(p.sound[i], 50);
+    sfMusic_setVolume(p.sound[JUMP], 10);
     return p;
 }

@@ -76,7 +76,7 @@ game create_game()
     g.parallax0 = create_background(2421, 600, "art/hills.png", 0);
     g.parallax1 = create_background(2421, 600, "art/ocean.png", 355);
     g.frame = 0;
-    g.bg_music = sfMusic_createFromFile("art/rooftoprun.wav");
+    g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_play(g.bg_music);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");

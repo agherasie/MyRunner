@@ -18,7 +18,8 @@ void destroy_all(game *g, player *p)
         free(g->map[i]);
     free(g->map);
     sfMusic_destroy(g->bg_music);
-    sfMusic_destroy(p->jump_sound);
+    for (int i = 0; i < 7; i++)
+        sfMusic_destroy(p->sound[i]);
     sfSprite_destroy(g->parallax0->spr);
     sfSprite_destroy(g->parallax1->spr);
     sfTexture_destroy(g->parallax0->text);
