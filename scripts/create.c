@@ -66,7 +66,9 @@ game create_game()
     sfVideoMode mode = {W_W, W_H, 32};
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     g.clock = sfClock_create();
-    g.map = create_map("map1.txt", &g);
+    g.map = create_map("data/map1.txt", &g);
+    g.hiscore = 0;
+    get_score(&g.hiscore);
     g.tile = create_object(50, 2, "art/tileset.png");
     g.paused = sfFalse;
     g.camera_pan_x = 0;

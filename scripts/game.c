@@ -57,7 +57,6 @@ void draw_text(game *g, char *str, float x, float y)
 
 void clock_draw(game *g, int time)
 {
-    draw_text(g, my_itoa(g->score), 7, 1);
     draw_text(g, " :", 6, 3);
     draw_text(g, my_itoa(time / 60), 6, 3);
     time %= 60;
@@ -66,6 +65,25 @@ void clock_draw(game *g, int time)
         draw_text(g, my_itoa(time), 8.5, 3);
     } else
         draw_text(g, my_itoa(time), 7.5f, 3);
+}
+
+void hud_display(game *g)
+{
+    sfText_setFillColor(g->score_text, sfYellow);
+    draw_text(g, "score", 1, 1);
+    draw_text(g, "time", 1, 3);
+    draw_text(g, "ring", 1, 5);
+    if (g->score < g->hiscore)
+        draw_text(g, "hi-score", 1, 7);
+    sfText_setFillColor(g->score_text, sfWhite);
+    draw_text(g, my_itoa(g->score), 7, 1);
+    clock_draw(g, g->frame / FPS);
+    if (g->score < g->hiscore)
+        draw_text(g, my_itoa(g->hiscore), 10, 7);
+    if (g->hiscore < g->score) {
+        g->hiscore = g->score;
+        set_score(&g->hiscore);
+    }
 }
 
 void update(game *g, player *p)
@@ -86,12 +104,7 @@ void update(game *g, player *p)
             sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
             update_enemies(g, p);
             update_player(p, g);
-            sfText_setFillColor(g->score_text, sfYellow);
-            draw_text(g, "score", 1, 1);
-            draw_text(g, "time", 1, 3);
-            draw_text(g, "ring", 1, 5);
-            sfText_setFillColor(g->score_text, sfWhite);
-            clock_draw(g, g->frame / FPS);
+            hud_display(g);
         }
     }
     destroy_all(g, p);

@@ -78,6 +78,7 @@ typedef struct game {
     sfText *score_text;
     sfFont *hud_font;
     int score;
+    int hiscore;
 } game;
 
 typedef struct player {
