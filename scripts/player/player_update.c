@@ -75,7 +75,7 @@ void update_player(player *p, game *g)
     if (g->paused == sfFalse) {
         camera_adjustments(p, g, sfTrue);
         if (p->is_hurt)
-            p->obj->pos.x -= p->cooldown / 10;
+            p->obj->pos.x -= p->cooldown / 10 * p->direction;
         p->cooldown--;
         if (p->speed_x >= 0 && p->is_hurt == sfTrue) {
             p->speed_x = 0;
@@ -84,7 +84,7 @@ void update_player(player *p, game *g)
         }
         misc(p);
         invisible_walls(p, g);
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; g->e[i].enemytype != -1; i++)
             enemy_collision(p, &g->e[i], g);
         movement(p, g);
         raycast(p, g);

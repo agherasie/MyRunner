@@ -51,23 +51,6 @@ object *create_background(int x, int y, char *filepath, int posy)
     return obj;
 }
 
-enemy create_enemy(int type)
-{
-    enemy e;
-    if (type == 0)
-        e.obj = create_object(50, 2, "art/crabmeat.png");
-    e.pos = 6 * 100;
-    e.obj->pos.y = 3 * 100;
-    e.obj->pos.x = e.pos;
-    e.enemytype = type;
-    e.direction = -1;
-    create_animation(&e.anim[0], 4, 30, sfTrue);
-    create_animation(&e.anim[1], 5, 10, sfFalse);
-    create_animation(&e.anim[2], 5, 10, sfFalse);
-    e.is_dead = sfFalse;
-    return e;
-}
-
 game create_game()
 {
     game g;
@@ -86,6 +69,6 @@ game create_game()
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_play(g.bg_music);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
-    g.e[0] = create_enemy(0);
+    g.e = create_enemies((int)(g.width / 3), g.map);
     return g;
 }

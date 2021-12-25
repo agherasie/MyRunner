@@ -63,8 +63,8 @@ void wall_collision(player *p, game *g)
 
 void enemy_collision(player *p, enemy *e, game *g)
 {
-    if ((p->obj->pos.x >= e->obj->pos.x - 20 + g->camera_pan_x
-    && p->obj->pos.x <= e->obj->pos.x + 20 + g->camera_pan_x)
+    if ((p->obj->pos.x >= e->obj->pos.x - 48 + g->camera_pan_x
+    && p->obj->pos.x <= e->obj->pos.x + 48 + g->camera_pan_x)
     && (p->obj->pos.y >= e->obj->pos.y - 20
     && p->obj->pos.y <= e->obj->pos.y + 20)
     && p->is_hurt == sfFalse && e->is_dead == sfFalse) {
@@ -73,7 +73,7 @@ void enemy_collision(player *p, enemy *e, game *g)
             p->speed_x = 0;
             p->cooldown = 7 * 8;
         } else {
-            p->speed_y = -5;
+            p->speed_y = -8;
             e->is_dead = sfTrue;
             e->frame = 0;
         }

@@ -72,7 +72,7 @@ typedef struct game {
     int height;
     int width;
     int frame;
-    enemy e[1];
+    enemy *e;
     sfMusic *bg_music;
     object *goalsign;
 } game;
@@ -124,6 +124,8 @@ char **create_map(char *filepath, game *g);
 void update_enemies(game *g, player *p);
 void animate_object(game *g, object *obj, animation anim, int *frame);
 void update_background(game *g, player *p);
+int is_solid(int square);
 void enemy_collision(player *p, enemy *e, game *g);
+enemy *create_enemies(int enemy_count, char **map);
 
 #endif /* MY_RUNNER_H_ */

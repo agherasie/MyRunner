@@ -32,6 +32,7 @@ void print_file(char *filepath, int buffsize)
 int main(int ac, char **av)
 {
     if (ac == 1) {
+        srand(time(NULL));
         return launch_game();
     } else if (ac == 2) {
         if (my_strcmp(av[1], "-h") == 0)
