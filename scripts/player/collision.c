@@ -74,6 +74,7 @@ void enemy_collision(player *p, enemy *e, game *g)
             p->speed_x = 0;
             p->speed_y = -8;
             p->cooldown = 7 * 8;
+            g->score -= 150;
         } else if (p->anim_state == JUMPING) {
             p->speed_y = -8;
             e->is_dead = sfTrue;

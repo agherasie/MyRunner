@@ -69,17 +69,19 @@ void clock_draw(game *g, int time)
 
 void hud_display(game *g)
 {
+    if (g->score < 0)
+        g->score = 0;
     sfText_setFillColor(g->score_text, sfYellow);
     draw_text(g, "score", 1, 1);
     draw_text(g, "time", 1, 3);
     draw_text(g, "ring", 1, 5);
     if (g->score < g->hiscore)
-        draw_text(g, "hi-score", 1, 7);
+        draw_text(g, "hiscore", 1, 7);
     sfText_setFillColor(g->score_text, sfWhite);
     draw_text(g, my_itoa(g->score), 7, 1);
     clock_draw(g, g->frame / FPS);
     if (g->score < g->hiscore)
-        draw_text(g, my_itoa(g->hiscore), 10, 7);
+        draw_text(g, my_itoa(g->hiscore), 9, 7);
     if (g->hiscore < g->score) {
         g->hiscore = g->score;
         set_score(&g->hiscore);
