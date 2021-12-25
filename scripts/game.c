@@ -17,6 +17,12 @@ void destroy_all(game *g, player *p)
     for (int i = 0; g->map[i] != NULL; i++)
         free(g->map[i]);
     free(g->map);
+    sfMusic_destroy(g->bg_music);
+    sfMusic_destroy(p->jump_sound);
+    sfSprite_destroy(g->parallax0->spr);
+    sfSprite_destroy(g->parallax1->spr);
+    sfTexture_destroy(g->parallax0->text);
+    sfTexture_destroy(g->parallax1->text);
     sfRenderWindow_destroy(g->window);
 }
 
@@ -42,19 +48,20 @@ void keyboard_events(game *g, player *p)
     }
 }
 
-void scroll_parallax(game *g, object *parallax, int speed)
+void scroll_parallax(game *g, player *p, object *parallax, int speed)
 {
-    if (g->frame % speed == 0)
-        parallax->rect.left += g->camera_pan_speed;
+    if (g->paused == sfFalse && p->goal_reached == sfFalse)
+        if (g->frame % speed == 0)
+            parallax->rect.left += g->camera_pan_speed;
     sfSprite_setTextureRect(parallax->spr, parallax->rect);
     sfRenderWindow_drawSprite(g->window, parallax->spr, NULL);
 }
 
-void update_background(game *g)
+void update_background(game *g, player *p)
 {
     g->frame++;
-    scroll_parallax(g, g->parallax0, 3);
-    scroll_parallax(g, g->parallax1, 2);
+    scroll_parallax(g, p, g->parallax0, 3);
+    scroll_parallax(g, p, g->parallax1, 2);
     sfVector2f tilepos = {0, 0};
     for (int i = 0; i < g->height; i++) {
         for (int j = 0; j < g->width; j++) {
@@ -77,12 +84,17 @@ void update(game *g, player *p)
         g->time = sfClock_getElapsedTime(g->clock);
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
-            g->camera_pan_x += g->camera_pan_speed;
+            if (p->goal_reached == sfFalse)
+                g->camera_pan_x += g->camera_pan_speed * 3;
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
-            update_background(g);
+            update_background(g, p);
             update_player(p, g);
+            g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
+            g->goalsign->pos.y = 3 * 100;
+            sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
+            sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
         }
     }
     destroy_all(g, p);

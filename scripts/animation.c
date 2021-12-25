@@ -29,6 +29,8 @@ void choose_anim_state(player *p)
         p->anim_state = JUMPING;
     if (p->can_move == sfFalse && p->anim_state == WALKING)
         p->anim_state = PUSHING;
+    if (p->goal_reached == sfTrue)
+        p->anim_state = THUMBSUP;
 }
 
 void animate(player *p)

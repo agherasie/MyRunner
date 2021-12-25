@@ -21,6 +21,7 @@
     #define BEDGING 7
     #define LOOKING 8
     #define CROUCHING 9
+    #define THUMBSUP 10
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -54,6 +55,8 @@ typedef struct game {
     int height;
     int width;
     int frame;
+    sfMusic *bg_music;
+    object *goalsign;
 } game;
 
 typedef struct animation {
@@ -78,11 +81,13 @@ typedef struct player {
     sfBool is_jumping;
     sfBool is_grounded;
     sfBool can_move;
+    sfBool goal_reached;
     int is_edging;
     int anim_state;
-    animation anim[10];
+    animation anim[11];
     int running_anim;
     int anim_frame;
+    sfMusic *jump_sound;
 } player;
 
 game create_game();

@@ -22,6 +22,7 @@ player create_animations(player p)
     create_animation(&p.anim[BEDGING], 8, 5, sfTrue);
     create_animation(&p.anim[LOOKING], 2, 10, sfFalse);
     create_animation(&p.anim[CROUCHING], 2, 10, sfFalse);
+    create_animation(&p.anim[THUMBSUP], 4, 10, sfFalse);
     return p;
 }
 
@@ -35,6 +36,7 @@ player create_bools(player p)
     p.can_move = sfTrue;
     p.is_crouching = sfFalse;
     p.is_looking = sfFalse;
+    p.goal_reached = sfFalse;
     return p;
 }
 
@@ -53,5 +55,7 @@ player create_player()
     p.is_edging = 0;
     p = create_bools(p);
     p = create_animations(p);
+    p.jump_sound = sfMusic_createFromFile("art/jump.wav");
+    sfMusic_setVolume(p.jump_sound, 10);
     return p;
 }

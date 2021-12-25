@@ -34,11 +34,18 @@ void invisible_walls(player *p, game *g)
 
 void update_player(player *p, game *g)
 {
-    float prev_pos_x = p->obj->pos.x;
+    if (p->map_pos.x == g->width - 1)
+        p->goal_reached = sfTrue;
+    if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)
+        p->speed_x = 0;
+    if (p->speed_y >= 1 && p->speed_y <= 2)
+        sfMusic_stop(p->jump_sound);
     if (g->paused == sfFalse) {
         if (p->obj->scale.x < 0)
             p->obj->pos.x -= 48 * 2;
-        p->obj->pos.x += g->camera_pan_x - g->camera_pan_speed;
+        p->obj->pos.x += g->camera_pan_x;
+        if (p->goal_reached == sfFalse)
+            p->obj->pos.x -= g->camera_pan_speed;
         p->map_pos.x = (int)(p->obj->pos.x / 100);
         p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
         if (p->is_grounded == sfFalse || p->speed_x > 0) {
@@ -50,14 +57,14 @@ void update_player(player *p, game *g)
         raycast(p, g);
         gravity(p);
         animate(p);
-        print_status(p);
+        //print_status(p);
         if (p->obj->scale.x < 0)
             p->obj->pos.x += 48 * 2;
-        p->obj->pos.x -= g->camera_pan_x;;
+        p->obj->pos.x -= g->camera_pan_x;
     }
     sfSprite_setScale(p->obj->spr, p->obj->scale);
     sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
-    printf("camera_pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
+    //printf("camera_pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
     sfSprite_setPosition(p->obj->spr, p->obj->pos);
     sfRenderWindow_drawSprite(g->window, p->obj->spr, NULL);
 }

@@ -40,12 +40,13 @@ void do_jump(player *p)
         p->is_grounded = sfFalse;
         p->is_jumping = sfTrue;
         p->speed_y = -10;
+        sfMusic_play(p->jump_sound);
     }
 }
 
 void player_keyboard_events(game *g, player *p)
 {
-    if (g->event.type == sfEvtKeyPressed) {
+    if (g->event.type == sfEvtKeyPressed && p->goal_reached == sfFalse) {
         if (g->event.key.code == sfKeyRight)
             directional_key(p, 1, sfFalse, g);
         if (g->event.key.code == sfKeyLeft)
