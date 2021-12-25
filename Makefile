@@ -8,12 +8,12 @@
 SRC	=	scripts/main.c \
 		scripts/game.c \
 		scripts/create.c \
-		scripts/player_control.c \
-		scripts/player_update.c \
-		scripts/player_movement.c \
-		scripts/player_create.c \
+		scripts/player/player_control.c \
+		scripts/player/player_update.c \
+		scripts/player/player_movement.c \
+		scripts/player/player_create.c \
+		scripts/player/collision.c \
 		scripts/animation.c \
-		scripts/collision.c \
 		scripts/enemy.c \
 		scripts/map.c \
 		scripts/background.c \
