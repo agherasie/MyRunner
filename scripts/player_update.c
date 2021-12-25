@@ -38,7 +38,7 @@ void update_player(player *p, game *g)
     if (g->paused == sfFalse) {
         if (p->obj->scale.x < 0)
             p->obj->pos.x -= 48 * 2;
-        p->obj->pos.x += g->camera_pan_x - 0.5f;
+        p->obj->pos.x += g->camera_pan_x - g->camera_pan_speed;
         p->map_pos.x = (int)(p->obj->pos.x / 100);
         p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
         if (p->is_grounded == sfFalse || p->speed_x > 0) {

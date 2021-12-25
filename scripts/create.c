@@ -79,6 +79,25 @@ char **create_map(char *filepath, game *g)
     return map;
 }
 
+object *create_background(int x, int y, char *filepath, int posy)
+{
+    object *obj = malloc(sizeof(object));
+    obj->spr = sfSprite_create();
+    obj->rect.left = 0;
+    obj->rect.top = 0;
+    obj->rect.height = y;
+    obj->rect.width = x;
+    obj->text = sfTexture_createFromFile(filepath, NULL);
+    sfSprite_setTextureRect(obj->spr, obj->rect);
+    sfSprite_setTexture(obj->spr, obj->text, sfFalse);
+    obj->pos.x = 0;
+    obj->pos.y = posy;
+    sfSprite_setPosition(obj->spr, obj->pos);
+    sfTexture_setRepeated(obj->text, sfTrue);
+    return obj;
+}
+
+
 game create_game()
 {
     game g;
@@ -89,5 +108,9 @@ game create_game()
     g.tile = create_object(50, 2, "art/tileset.png");
     g.paused = sfFalse;
     g.camera_pan_x = 0;
+    g.camera_pan_speed = 1;
+    g.parallax0 = create_background(2421, 600, "art/hills.png", 0);
+    g.parallax1 = create_background(2421, 600, "art/ocean.png", 355);
+    g.frame = 0;
     return g;
 }

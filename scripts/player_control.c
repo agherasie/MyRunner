@@ -17,7 +17,7 @@ void flip(player *p, int direction)
     }
 }
 
-void directional_key(player *p, int direction, sfBool released)
+void directional_key(player *p, int direction, sfBool released, game *g)
 {
     if (released == sfFalse) {
         if (p->speed_x == 0) {
@@ -47,9 +47,9 @@ void player_keyboard_events(game *g, player *p)
 {
     if (g->event.type == sfEvtKeyPressed) {
         if (g->event.key.code == sfKeyRight)
-            directional_key(p, 1, sfFalse);
+            directional_key(p, 1, sfFalse, g);
         if (g->event.key.code == sfKeyLeft)
-            directional_key(p, -1, sfFalse);
+            directional_key(p, -1, sfFalse, g);
         if (g->event.key.code == sfKeyS)
             do_jump(p);
         if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed_x == 0)
@@ -59,9 +59,9 @@ void player_keyboard_events(game *g, player *p)
     }
     if (g->event.type == sfEvtKeyReleased) {
         if (g->event.key.code == sfKeyRight && p->direction == 1)
-            directional_key(p, 1, sfTrue);
+            directional_key(p, 1, sfTrue, g);
         if (g->event.key.code == sfKeyLeft && p->direction == -1)
-            directional_key(p, -1, sfTrue);
+            directional_key(p, -1, sfTrue, g);
         if (g->event.key.code == sfKeyUp)
             p->is_looking = sfFalse;
         if (g->event.key.code == sfKeyDown)

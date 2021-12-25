@@ -46,10 +46,14 @@ typedef struct game {
     sfEvent event;
     char **map;
     object *tile;
+    object *parallax0;
+    object *parallax1;
     sfBool paused;
     float camera_pan_x;
+    float camera_pan_speed;
     int height;
     int width;
+    int frame;
 } game;
 
 typedef struct animation {
@@ -88,7 +92,6 @@ object *create_object(int pixel_size, int scale, char *filepath);
 void create_animation(animation *anim, int length, float speed, sfBool loop);
 void update(game *g, player *p);
 void update_player(player *p, game *g);
-void player_keyboard_events(game *g, player *p);
 void player_keyboard_events(game *g, player *p);
 void gravity(player *p);
 void movement(player *p, game *g);

@@ -42,8 +42,19 @@ void keyboard_events(game *g, player *p)
     }
 }
 
+void scroll_parallax(game *g, object *parallax, int speed)
+{
+    if (g->frame % speed == 0)
+        parallax->rect.left += g->camera_pan_speed;
+    sfSprite_setTextureRect(parallax->spr, parallax->rect);
+    sfRenderWindow_drawSprite(g->window, parallax->spr, NULL);
+}
+
 void update_background(game *g)
 {
+    g->frame++;
+    scroll_parallax(g, g->parallax0, 3);
+    scroll_parallax(g, g->parallax1, 2);
     sfVector2f tilepos = {0, 0};
     for (int i = 0; i < g->height; i++) {
         for (int j = 0; j < g->width; j++) {
@@ -66,7 +77,7 @@ void update(game *g, player *p)
         g->time = sfClock_getElapsedTime(g->clock);
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
-            g->camera_pan_x += 0.5f;
+            g->camera_pan_x += g->camera_pan_speed;
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
