@@ -48,62 +48,6 @@ void keyboard_events(game *g, player *p)
     }
 }
 
-void scroll_parallax(game *g, player *p, object *parallax, int speed)
-{
-    if (g->paused == sfFalse && p->goal_reached == sfFalse)
-        if (g->frame % speed == 0)
-            parallax->rect.left += g->camera_pan_speed;
-    sfSprite_setTextureRect(parallax->spr, parallax->rect);
-    sfRenderWindow_drawSprite(g->window, parallax->spr, NULL);
-}
-
-void update_background(game *g, player *p)
-{
-    g->frame++;
-    scroll_parallax(g, p, g->parallax0, 3);
-    scroll_parallax(g, p, g->parallax1, 2);
-    sfVector2f tilepos = {0, 0};
-    for (int i = 0; i < g->height; i++) {
-        for (int j = 0; j < g->width; j++) {
-            if (g->map[i][j] >= 0 && g->map[i][j] <= 9) {
-                tilepos.x = j * 100 - g->camera_pan_x;
-                tilepos.y = i * 100;
-                g->tile->rect.top = 0;
-                g->tile->rect.left = 50 * g->map[i][j];
-                sfSprite_setPosition(g->tile->spr, tilepos);
-                sfSprite_setTextureRect(g->tile->spr, g->tile->rect);
-                sfRenderWindow_drawSprite(g->window, g->tile->spr, NULL);
-            }
-        }
-    }
-}
-
-void animate_object(game *g, object *obj, animation anim, int *frame)
-{
-    obj->rect.height = 50;
-    obj->rect.width = 50;
-    if (g->frame % anim.speed == 0 && anim.length != 1)
-        *frame += 1;
-    if (anim.loop == sfFalse && *frame == anim.length)
-        *frame = anim.length - 1;
-    if (*frame > anim.length - 1)
-        *frame = 0;
-    obj->rect.top = 0;
-    obj->rect.left = 50 * *frame;
-}
-
-void update_enemies(game *g, player *p)
-{
-    for (int i = 0; i < 1; i++) {
-        g->e[i].obj->pos.x += g->camera_pan_x;
-        animate_object(g, g->e[i].obj, g->e[i].anim, &g->e[i].frame);
-        sfSprite_setTextureRect(g->e[i].obj->spr, g->e[i].obj->rect);
-        g->e[i].obj->pos.x -= g->camera_pan_x + g->camera_pan_speed;
-        sfSprite_setPosition(g->e[i].obj->spr, g->e[i].obj->pos);
-        sfRenderWindow_drawSprite(g->window, g->e[i].obj->spr, NULL);
-    }
-}
-
 void update(game *g, player *p)
 {
     while (sfRenderWindow_isOpen(g->window)) {

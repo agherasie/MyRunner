@@ -53,3 +53,17 @@ void animate(player *p)
     p->obj->rect.top = 48 * p->anim_state;
     p->obj->rect.left = 48 * p->running_anim;
 }
+
+void animate_object(game *g, object *obj, animation anim, int *frame)
+{
+    obj->rect.height = 50;
+    obj->rect.width = 50;
+    if (g->frame % anim.speed == 0 && anim.length != 1)
+        *frame += 1;
+    if (anim.loop == sfFalse && *frame == anim.length)
+        *frame = anim.length - 1;
+    if (*frame > anim.length - 1)
+        *frame = 0;
+    obj->rect.top = 0;
+    obj->rect.left = 50 * *frame;
+}

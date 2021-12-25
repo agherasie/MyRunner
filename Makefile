@@ -14,6 +14,9 @@ SRC	=	scripts/main.c \
 		scripts/player_create.c \
 		scripts/animation.c \
 		scripts/collision.c \
+		scripts/enemy.c \
+		scripts/map.c \
+		scripts/background.c \
 
 OBJ	=	$(SRC:.c=.o)
 

@@ -115,5 +115,10 @@ void acceleration(player *p);
 void animate(player *p);
 void wall_collision(player *p, game *g);
 void raycast(player *p, game *g);
+void update_tile(game *g, player *p, sfVector2f *tilepos, sfVector2i mappos);
+char **create_map(char *filepath, game *g);
+void update_enemies(game *g, player *p);
+void animate_object(game *g, object *obj, animation anim, int *frame);
+void update_background(game *g, player *p);
 
 #endif /* MY_RUNNER_H_ */

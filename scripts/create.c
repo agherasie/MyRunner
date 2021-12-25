@@ -33,54 +33,6 @@ void create_animation(animation *anim, int length, float speed, sfBool loop)
     anim->loop = loop;
 }
 
-void skip_buffer(char **buffer)
-{
-    while (**buffer < '0' || **buffer > '9')
-        *buffer += 1;
-}
-
-int count_lines(char *buffer)
-{
-    int count = 1;
-    for (int i = 0; buffer[i] != '\0'; i++)
-        if (buffer[i] == '\n')
-            count++;
-    return count;
-}
-
-int count_columns(char *buffer)
-{
-    int count = 0;
-    for (int i = 0; buffer[i] != '\n'; i++)
-        count++;
-    return count;
-}
-
-char **create_map(char *filepath, game *g)
-{
-    int file = open(filepath, O_RDONLY);
-    if (file == - 1)
-        sfRenderWindow_close(g->window);
-    char *buffer = malloc(sizeof(char) * 1000);
-    read(file, buffer, 1000);
-    close(file);
-    g->height = count_lines(buffer);
-    g->width = count_columns(buffer);
-    char **map = malloc(sizeof(char *) * (g->height + 1));
-    for (int i = 0; i < 6; i++)
-        map[i] = malloc(sizeof(char) * (g->width + 1));
-    map[g->height] = NULL;
-    for (int i = 0; i < g->height; i++) {
-        for (int j = 0; j < g->width; j++) {
-            skip_buffer(&buffer);
-            map[i][j] = *buffer - 48;
-            buffer++;
-        }
-        map[i][g->width] = '\0';
-    }
-    return map;
-}
-
 object *create_background(int x, int y, char *filepath, int posy)
 {
     object *obj = malloc(sizeof(object));
