@@ -84,6 +84,5 @@ game create_game()
     g.score_text = sfText_create();
     sfText_setFont(g.score_text, g.hud_font);
     g.score_text = style_text(g.score_text);
-
     return g;
 }

@@ -59,7 +59,9 @@ enemy *create_enemies(int enemy_count, char **map)
         int random_value = range(enemy_count / 3 * 100 - 10, enemy_count / 3 * 100 + 30);
         int free_spot = 0;
         random_value *= i;
-        random_value += 600;
+        random_value = random_value % enemy_count * 3 * 100;
+        if (random_value + 800 <= enemy_count * 3 * 100)
+            random_value += 600;
         int map_pos_x = random_value / 100;
         if (random_value % 100 >= 50)
             map_pos_x++;
