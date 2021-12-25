@@ -63,15 +63,19 @@ void wall_collision(player *p, game *g)
 
 void enemy_collision(player *p, enemy *e, game *g)
 {
-    if ((p->obj->pos.x >= e->obj->pos.x - 10 + g->camera_pan_x
-    && p->obj->pos.x <= e->obj->pos.x + 10 + g->camera_pan_x)
-    && (p->obj->pos.y >= e->obj->pos.y - 10
-    && p->obj->pos.y <= e->obj->pos.y + 10)
-    && p->is_hurt == sfFalse) {
+    if ((p->obj->pos.x >= e->obj->pos.x - 20 + g->camera_pan_x
+    && p->obj->pos.x <= e->obj->pos.x + 20 + g->camera_pan_x)
+    && (p->obj->pos.y >= e->obj->pos.y - 20
+    && p->obj->pos.y <= e->obj->pos.y + 20)
+    && p->is_hurt == sfFalse && e->is_dead == sfFalse) {
         if (p->anim_state != JUMPING) {
             p->is_hurt = sfTrue;
             p->speed_x = 0;
             p->cooldown = 7 * 8;
+        } else {
+            p->speed_y = -5;
+            e->is_dead = sfTrue;
+            e->frame = 0;
         }
     }
 }

@@ -67,6 +67,5 @@ void animate_object(game *g, object *obj, animation anim, int *frame)
         *frame = anim.length - 1;
     if (*frame > anim.length - 1)
         *frame = 0;
-    obj->rect.top = 0;
     obj->rect.left = 50 * *frame;
 }

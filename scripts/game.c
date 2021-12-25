@@ -54,7 +54,7 @@ void update(game *g, player *p)
         g->time = sfClock_getElapsedTime(g->clock);
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
-            if (p->goal_reached == sfFalse)
+            if (p->goal_reached == sfFalse && g->paused == sfFalse)
                 g->camera_pan_x += g->camera_pan_speed;
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfWhite);

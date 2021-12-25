@@ -51,9 +51,10 @@ typedef struct enemy {
     object *obj;
     float pos;
     int enemytype;
-    animation anim;
+    animation anim[3];
     int frame;
     int direction;
+    sfBool is_dead;
 } enemy;
 
 typedef struct game {

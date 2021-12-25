@@ -61,7 +61,10 @@ enemy create_enemy(int type)
     e.obj->pos.x = e.pos;
     e.enemytype = type;
     e.direction = -1;
-    create_animation(&e.anim, 4, 30, sfTrue);
+    create_animation(&e.anim[0], 4, 30, sfTrue);
+    create_animation(&e.anim[1], 5, 10, sfFalse);
+    create_animation(&e.anim[2], 5, 10, sfFalse);
+    e.is_dead = sfFalse;
     return e;
 }
 
