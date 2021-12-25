@@ -40,6 +40,21 @@ typedef struct object {
     sfVector2f pos;
 } object;
 
+typedef struct animation {
+    sfBool loop;
+    int length;
+    int speed;
+} animation;
+
+typedef struct enemy {
+    object *obj;
+    float pos;
+    int enemytype;
+    animation anim;
+    int frame;
+    int direction;
+} enemy;
+
 typedef struct game {
     sfRenderWindow *window;
     sfClock *clock;
@@ -55,15 +70,10 @@ typedef struct game {
     int height;
     int width;
     int frame;
+    enemy e[1];
     sfMusic *bg_music;
     object *goalsign;
 } game;
-
-typedef struct animation {
-    sfBool loop;
-    int length;
-    int speed;
-} animation;
 
 typedef struct player {
     object *obj;

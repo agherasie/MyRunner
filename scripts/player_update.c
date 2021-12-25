@@ -57,7 +57,7 @@ void update_player(player *p, game *g)
         raycast(p, g);
         gravity(p);
         animate(p);
-        //print_status(p);
+        print_status(p);
         if (p->obj->scale.x < 0)
             p->obj->pos.x += 48 * 2;
         p->obj->pos.x -= g->camera_pan_x;

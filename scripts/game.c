@@ -78,6 +78,32 @@ void update_background(game *g, player *p)
     }
 }
 
+void animate_object(game *g, object *obj, animation anim, int *frame)
+{
+    obj->rect.height = 50;
+    obj->rect.width = 50;
+    if (g->frame % anim.speed == 0 && anim.length != 1)
+        *frame += 1;
+    if (anim.loop == sfFalse && *frame == anim.length)
+        *frame = anim.length - 1;
+    if (*frame > anim.length - 1)
+        *frame = 0;
+    obj->rect.top = 0;
+    obj->rect.left = 50 * *frame;
+}
+
+void update_enemies(game *g, player *p)
+{
+    for (int i = 0; i < 1; i++) {
+        g->e[i].obj->pos.x += g->camera_pan_x;
+        animate_object(g, g->e[i].obj, g->e[i].anim, &g->e[i].frame);
+        sfSprite_setTextureRect(g->e[i].obj->spr, g->e[i].obj->rect);
+        g->e[i].obj->pos.x -= g->camera_pan_x + g->camera_pan_speed;
+        sfSprite_setPosition(g->e[i].obj->spr, g->e[i].obj->pos);
+        sfRenderWindow_drawSprite(g->window, g->e[i].obj->spr, NULL);
+    }
+}
+
 void update(game *g, player *p)
 {
     while (sfRenderWindow_isOpen(g->window)) {
@@ -85,16 +111,17 @@ void update(game *g, player *p)
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
             if (p->goal_reached == sfFalse)
-                g->camera_pan_x += g->camera_pan_speed * 3;
+                g->camera_pan_x += g->camera_pan_speed;
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g, p);
-            update_player(p, g);
             g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
             g->goalsign->pos.y = 3 * 100;
             sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
             sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
+            update_enemies(g, p);
+            update_player(p, g);
         }
     }
     destroy_all(g, p);
