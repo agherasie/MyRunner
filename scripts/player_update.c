@@ -32,39 +32,58 @@ void invisible_walls(player *p, game *g)
         p->obj->pos.y = 0;
 }
 
-void update_player(player *p, game *g)
+void camera_adjustments(player *p, game *g, sfBool is_first)
 {
-    if (p->map_pos.x == g->width - 1)
-        p->goal_reached = sfTrue;
-    if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)
-        p->speed_x = 0;
-    if (p->speed_y >= 1 && p->speed_y <= 2)
-        sfMusic_stop(p->jump_sound);
-    if (g->paused == sfFalse) {
+    if (is_first == sfTrue) {
         if (p->obj->scale.x < 0)
             p->obj->pos.x -= 48 * 2;
         p->obj->pos.x += g->camera_pan_x;
         if (p->goal_reached == sfFalse)
             p->obj->pos.x -= g->camera_pan_speed;
-        p->map_pos.x = (int)(p->obj->pos.x / 100);
-        p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
-        if (p->is_grounded == sfFalse || p->speed_x > 0) {
-            p->is_crouching = sfFalse;
-            p->is_looking = sfFalse;
-        }
+    } else {
+        if (p->obj->scale.x < 0)
+            p->obj->pos.x += 48 * 2;
+        p->obj->pos.x -= g->camera_pan_x;
+    }
+}
+
+void draw_player(player *p, game *g)
+{
+    sfSprite_setScale(p->obj->spr, p->obj->scale);
+    sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
+    //printf("camera_pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
+    sfSprite_setPosition(p->obj->spr, p->obj->pos);
+    sfRenderWindow_drawSprite(g->window, p->obj->spr, NULL);
+}
+
+void misc(player *p)
+{
+    if (p->is_grounded == sfFalse || p->speed_x > 0) {
+        p->is_crouching = sfFalse;
+        p->is_looking = sfFalse;
+    }
+    p->map_pos.x = (int)(p->obj->pos.x / 100);
+    p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
+}
+
+void update_player(player *p, game *g)
+{
+    if (p->map_pos.x == g->width - 1)
+        p->goal_reached = sfTrue;
+    if (g->paused == sfFalse) {
+        camera_adjustments(p, g, sfTrue);
+        misc(p);
         invisible_walls(p, g);
         movement(p, g);
         raycast(p, g);
         gravity(p);
         animate(p);
         print_status(p);
-        if (p->obj->scale.x < 0)
-            p->obj->pos.x += 48 * 2;
-        p->obj->pos.x -= g->camera_pan_x;
+        camera_adjustments(p, g, sfFalse);
+        if (p->speed_y >= 1 && p->speed_y <= 2)
+            sfMusic_stop(p->jump_sound);
+        if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)
+            p->speed_x = 0;
     }
-    sfSprite_setScale(p->obj->spr, p->obj->scale);
-    sfSprite_setTextureRect(p->obj->spr, p->obj->rect);
-    //printf("camera_pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
-    sfSprite_setPosition(p->obj->spr, p->obj->pos);
-    sfRenderWindow_drawSprite(g->window, p->obj->spr, NULL);
+    draw_player(p, g);
 }
