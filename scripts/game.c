@@ -48,6 +48,13 @@ void keyboard_events(game *g, player *p)
     }
 }
 
+void draw_text(game *g, char *str, int x, int y)
+{
+    sfText_setPosition(g->score_text, (sfVector2f) {20 * x, 20 * y});
+    sfText_setString(g->score_text, str);
+    sfRenderWindow_drawText(g->window, g->score_text, NULL);
+}
+
 void update(game *g, player *p)
 {
     while (sfRenderWindow_isOpen(g->window)) {
@@ -66,6 +73,9 @@ void update(game *g, player *p)
             sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
             update_enemies(g, p);
             update_player(p, g);
+            draw_text(g, "score", 1, 1);
+            draw_text(g, "time", 1, 3);
+            draw_text(g, "ring", 1, 5);
         }
     }
     destroy_all(g, p);

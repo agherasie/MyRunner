@@ -75,6 +75,8 @@ typedef struct game {
     enemy *e;
     sfMusic *bg_music;
     object *goalsign;
+    sfText *score_text;
+    sfFont *hud_font;
 } game;
 
 typedef struct player {
@@ -106,7 +108,7 @@ typedef struct player {
 
 game create_game();
 char **create_map(char *filepath, game *g);
-player create_player();
+player create_player(game *g);
 object *create_object(int pixel_size, int scale, char *filepath);
 void create_animation(animation *anim, int length, float speed, sfBool loop);
 void update(game *g, player *p);
@@ -127,5 +129,6 @@ void update_background(game *g, player *p);
 int is_solid(int square);
 void enemy_collision(player *p, enemy *e, game *g);
 enemy *create_enemies(int enemy_count, char **map);
+int find_free_spot(char **map, int map_pos_x);
 
 #endif /* MY_RUNNER_H_ */

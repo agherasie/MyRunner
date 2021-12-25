@@ -74,7 +74,7 @@ void update_player(player *p, game *g)
         p->goal_reached = sfTrue;
     if (g->paused == sfFalse) {
         camera_adjustments(p, g, sfTrue);
-        if (p->is_hurt)
+        if (p->is_hurt && is_solid(g->map[p->map_pos.y][p->map_pos.x + p->direction]) == 1)
             p->obj->pos.x -= p->cooldown / 10 * p->direction;
         p->cooldown--;
         if (p->speed_x >= 0 && p->is_hurt == sfTrue) {

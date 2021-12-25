@@ -10,7 +10,7 @@
 int launch_game()
 {
     game g = create_game();
-    player p = create_player();
+    player p = create_player(&g);
     sfRenderWindow_setMouseCursorVisible(g.window, sfTrue);
     sfRenderWindow_setFramerateLimit(g.window, FPS);
     update(&g, &p);

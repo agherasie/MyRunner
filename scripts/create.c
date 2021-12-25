@@ -51,6 +51,16 @@ object *create_background(int x, int y, char *filepath, int posy)
     return obj;
 }
 
+sfText *style_text(sfText *text)
+{
+    sfText_setStyle(text, sfTextItalic);
+    sfText_setCharacterSize(text, 40);
+    sfText_setOutlineColor(text, sfBlack);
+    sfText_setOutlineThickness(text, 2);
+    sfText_setFillColor(text, sfYellow);
+    return text;
+}
+
 game create_game()
 {
     game g;
@@ -70,5 +80,10 @@ game create_game()
     sfMusic_play(g.bg_music);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
     g.e = create_enemies((int)(g.width / 3), g.map);
+    g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");
+    g.score_text = sfText_create();
+    sfText_setFont(g.score_text, g.hud_font);
+    g.score_text = style_text(g.score_text);
+
     return g;
 }

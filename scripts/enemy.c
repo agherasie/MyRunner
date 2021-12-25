@@ -10,7 +10,8 @@
 void update_enemies(game *g, player *p)
 {
     for (int i = 0; g->e[i].enemytype != -1; i++) {
-        g->e[i].obj->pos.x -= g->camera_pan_speed;
+        if (g->paused == sfFalse)
+            g->e[i].obj->pos.x -= g->camera_pan_speed;
         sfSprite_setPosition(g->e[i].obj->spr, g->e[i].obj->pos);
         if (g->e[i].is_dead == sfTrue) {
             g->e[i].obj->rect.top = 50;

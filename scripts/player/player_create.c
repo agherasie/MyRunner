@@ -42,10 +42,11 @@ player create_bools(player p)
     return p;
 }
 
-player create_player()
+player create_player(game *g)
 {
     player p;
     p.obj = create_object(48, 2, "art/sonic_sheet.png");
+    p.obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
     p.speed_x = 0;
     p.speed_y = 0;
     p.direction = 1;
