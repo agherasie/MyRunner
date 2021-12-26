@@ -41,6 +41,8 @@ void do_jump(player *p)
         p->is_jumping = sfTrue;
         p->speed_y = -10;
         sfMusic_play(p->sound[JUMP]);
+    } else if (p->is_jumping == sfTrue) {
+        p->is_dropping = sfTrue;
     }
 }
 

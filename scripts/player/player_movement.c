@@ -46,9 +46,16 @@ void movement(player *p, game *g)
 
 void gravity(player *p)
 {
-    if (p->obj->pos.y == p->collision_y)
+    if (p->obj->pos.y == p->collision_y) {
         p->is_grounded = sfTrue;
-    else
+        if (p->is_dropping == sfTrue) {
+            p->speed_x = 10;
+            p->is_dashing = sfTrue;
+            p->is_dropping = sfFalse;
+            sfMusic_stop(p->sound[SPIN]);
+            sfMusic_play(p->sound[SPIN]);
+        }
+    } else
         p->is_grounded = sfFalse;
     if (p->is_grounded == sfFalse) {
         p->speed_y += 0.4f;

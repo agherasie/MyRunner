@@ -18,6 +18,8 @@ void print_status(player *p)
         printf("is_grounded\n");
     if (p->is_turning == sfTrue)
         printf("is_turning\n");
+    if (p->is_dropping == sfTrue)
+        printf("is_dropping\n");
     printf("pos: %0.2f:%0.2f\n", p->obj->pos.x, p->obj->pos.y);
     printf("map_pos: %i:%i\n", p->map_pos.x, p->map_pos.y);
     if (p->is_hurt == sfTrue)
@@ -85,7 +87,7 @@ void sound_update(player *p)
         sfMusic_stop(p->sound[DEATH]);
     }
     if (p->is_spinning == sfFalse && p->is_charging == sfFalse
-    && p->is_dashing == sfFalse)
+    && p->is_dashing == sfFalse && p->is_dropping == sfFalse)
         sfMusic_stop(p->sound[SPIN]);
 }
 

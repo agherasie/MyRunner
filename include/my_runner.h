@@ -114,6 +114,7 @@ typedef struct player {
     sfBool is_dashing;
     sfBool is_charging;
     sfBool is_speeding;
+    sfBool is_dropping;
     int is_edging;
     int anim_state;
     animation anim[15];
