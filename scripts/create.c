@@ -80,6 +80,8 @@ game create_game()
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_play(g.bg_music);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
+    create_animation(&g.goalanim, 5, 10, sfFalse);
+    g.goalframe = 0;
     g.e = create_enemies((int)(g.width / 3), g.map);
     g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");
     g.score_text = sfText_create();

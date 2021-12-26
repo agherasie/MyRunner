@@ -85,6 +85,8 @@ typedef struct game {
     enemy *e;
     sfMusic *bg_music;
     object *goalsign;
+    animation goalanim;
+    int goalframe;
     sfText *score_text;
     sfFont *hud_font;
     int score;

@@ -106,7 +106,10 @@ void update(game *g, player *p)
             update_background(g, p);
             g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
             g->goalsign->pos.y = 3 * 100;
+            if (p->goal_reached == sfTrue)
+                animate_object(g, g->goalsign, g->goalanim, &g->goalframe);
             sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
+            sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
             sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
             update_enemies(g, p);
             update_player(p, g);
