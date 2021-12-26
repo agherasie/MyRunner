@@ -39,7 +39,7 @@ enemy create_enemy(int type, float spawn_pos, int free_spot)
     create_animation(&e.anim[0], 4, 30, sfTrue);
     create_animation(&e.anim[1], 5, 10, sfFalse);
     create_animation(&e.anim[2], 5, 10, sfFalse);
-    e.is_dead = sfTrue;
+    e.is_dead = sfFalse;
     return e;
 }
 
