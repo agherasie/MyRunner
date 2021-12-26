@@ -30,7 +30,7 @@ void invisible_walls(player *p, game *g)
 {
     if (p->obj->pos.x <= g->camera_pan_x - 24)
         p->obj->pos.x = g->camera_pan_x - 24;
-    g->camera_pan_speed = 2;
+    g->camera_pan_speed = 0;
     if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
         g->camera_pan_speed = 5;
     if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
@@ -117,6 +117,8 @@ void update_player(player *p, game *g)
         invisible_walls(p, g);
         for (int i = 0; g->e[i].enemytype != -1; i++)
             enemy_collision(p, &g->e[i], g);
+        for (int i = 0; g->r[i].is_null != sfTrue; i++)
+            ring_collision(p, &g->r[i], g, i);
         movement(p, g);
         raycast(p, g);
         gravity(p);

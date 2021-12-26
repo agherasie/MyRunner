@@ -83,7 +83,7 @@ game create_game()
     create_animation(&g.goalanim, 5, 10, sfFalse);
     g.goalframe = 0;
     g.e = create_enemies((int)(g.width / 3), g.map);
-    g.r = create_rings((int)(g.width), g.map);
+    g.r = create_rings((g.width - 5) * 2, g.map);
     g.ring = create_object(50, 2, "art/misc.png");
     create_animation(&g.ring_anim, 16, 5, sfTrue);
     g.ring_frame = 0;

@@ -77,7 +77,7 @@ void hud_display(game *g)
     if (g->score < g->hiscore)
         draw_text(g, "hiscore", 1, 7);
     draw_text(g, "time", 1, 3);
-    if (g->frame % 30 >= 15)
+    if (g->frame % 30 >= 15 && g->rings == 0)
         sfText_setFillColor(g->score_text, sfRed);
     draw_text(g, "rings", 1, 5);
     sfText_setFillColor(g->score_text, sfWhite);
@@ -104,7 +104,6 @@ void update(game *g, player *p)
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g, p);
-            update_rings(g, p);
             g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
             g->goalsign->pos.y = 3 * 100;
             if (p->goal_reached == sfTrue)
@@ -112,6 +111,7 @@ void update(game *g, player *p)
             sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
             sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
             sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
+            update_rings(g, p);
             update_enemies(g, p);
             update_player(p, g);
             hud_display(g);

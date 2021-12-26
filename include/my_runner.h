@@ -162,5 +162,6 @@ enemy *create_enemies(int enemy_count, char **map);
 int find_free_spot(char **map, int map_pos_x);
 ring *create_rings(int ring_count, char **map);
 void update_rings(game *g, player *p);
+void ring_collision(player *p, ring *r, game *g, int i);
 
 #endif /* MY_RUNNER_H_ */

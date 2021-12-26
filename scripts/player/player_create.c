@@ -83,5 +83,6 @@ player create_player(game *g)
     for (int i = 0; i < 7; i++)
         sfMusic_setVolume(p.sound[i], 50);
     sfMusic_setVolume(p.sound[JUMP], 10);
+    sfMusic_setVolume(p.sound[DEATH], 100);
     return p;
 }

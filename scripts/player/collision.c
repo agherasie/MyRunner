@@ -61,6 +61,20 @@ void wall_collision(player *p, game *g)
         }
 }
 
+void ring_collision(player *p, ring *r, game *g, int i)
+{
+    if (p->obj->pos.x >= (r->pos.x - 50 + g->camera_pan_x)
+    && p->obj->pos.x <= (r->pos.x) + 50 + g->camera_pan_x
+    && p->obj->pos.y >= (r->pos.y) - 20
+    && p->obj->pos.y <= (r->pos.y) + 20
+    && r->is_collected == sfFalse) {
+        r->is_collected = sfTrue;
+        g->rings++;
+        sfMusic_stop(p->sound[RING_COLLECT]);
+        sfMusic_play(p->sound[RING_COLLECT]);
+    }
+}
+
 void enemy_collision(player *p, enemy *e, game *g)
 {
     if ((p->obj->pos.x >= e->obj->pos.x - 48 + g->camera_pan_x
@@ -76,10 +90,15 @@ void enemy_collision(player *p, enemy *e, game *g)
             p->speed_y = -8;
             p->cooldown = 7 * 8;
             g->score -= 150;
-            if (g->rings > 0)
+            if (g->rings > 0) {
                 sfMusic_play(p->sound[RING_LOSS]);
-            else
+                g->rings = 0;
+            }
+            else {
+                sfMusic_stop(p->sound[DEATH]);
+                sfMusic_stop(g->bg_music);
                 sfMusic_play(p->sound[DEATH]);
+            }
         } else if (p->anim_state == JUMPING
         || p->anim_state == DASHING || p->anim_state == SPINNING) {
             if (p->anim_state == JUMPING)
