@@ -11,7 +11,8 @@ void acceleration(player *p)
 {
     if (p->acceleration == sfTrue)
         p->speed_x += 0.15f;
-    if (p->speed_x >= TOPSPEED)
+    if (p->speed_x >= TOPSPEED
+    && p->is_speeding == sfFalse && p->is_dashing == sfFalse)
         p->speed_x = TOPSPEED;
     if (p->speed_x > 0)
         p->meters_run += p->speed_x / 40;

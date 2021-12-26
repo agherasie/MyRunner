@@ -26,6 +26,7 @@ player create_animations(player p)
     create_animation(&p.anim[HURTING], 8, 7, sfFalse);
     create_animation(&p.anim[SPINNING], 6, 5, sfTrue);
     create_animation(&p.anim[DASHING], 8, 3, sfTrue);
+    create_animation(&p.anim[SPEEDING], 4, 3, sfTrue);
     return p;
 }
 
@@ -43,6 +44,8 @@ player create_bools(player p)
     p.is_hurt = sfFalse;
     p.is_spinning = sfFalse;
     p.is_dashing = sfFalse;
+    p.is_charging = sfFalse;
+    p.is_speeding = sfFalse;
     return p;
 }
 

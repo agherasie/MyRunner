@@ -84,7 +84,8 @@ void sound_update(player *p)
         sfMusic_stop(p->sound[RING_LOSS]);
         sfMusic_stop(p->sound[DEATH]);
     }
-    if (p->is_spinning == sfFalse && p->is_dashing == sfFalse)
+    if (p->is_spinning == sfFalse && p->is_charging == sfFalse
+    && p->is_dashing == sfFalse)
         sfMusic_stop(p->sound[SPIN]);
 }
 
@@ -94,8 +95,12 @@ void update_player(player *p, game *g)
         p->goal_reached = sfTrue;
     if (g->paused == sfFalse) {
         camera_adjustments(p, g, sfTrue);
-        if (p->is_spinning == sfTrue && p->speed_x > 0)
+        if (p->speed_x > 0) {
             p->is_spinning = sfFalse;
+            p->is_charging = sfFalse;
+        }
+        if (p->speed_x <= 8)
+            p->is_speeding = sfFalse;
         if (p->is_dashing == sfTrue && p->speed_x == 0)
             p->is_dashing = sfFalse;
         if (p->is_hurt && is_solid(g->map[p->map_pos.y][p->map_pos.x + p->direction]) == 1)
@@ -114,7 +119,7 @@ void update_player(player *p, game *g)
         raycast(p, g);
         gravity(p);
         animate(p);
-        //print_status(p);
+        print_status(p);
         camera_adjustments(p, g, sfFalse);
         sound_update(p);
         if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)

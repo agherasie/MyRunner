@@ -52,18 +52,29 @@ void player_keyboard_events(game *g, player *p)
         if (g->event.key.code == sfKeyLeft)
             directional_key(p, -1, sfFalse, g);
         if (g->event.key.code == sfKeyS)
-            if (p->anim_state != CROUCHING && p->anim_state != SPINNING)
+            if (p->anim_state != CROUCHING && p->anim_state != LOOKING
+            && p->anim_state != SPINNING && p->is_charging == sfFalse)
                 do_jump(p);
             else {
                 sfMusic_stop(p->sound[SPIN]);
                 sfMusic_play(p->sound[SPIN]);
+                if (p->anim_state == CROUCHING)
+                    p->is_spinning = sfTrue;
+                if (p->anim_state == LOOKING)
+                    p->is_charging = sfTrue;
                 p->is_crouching = sfFalse;
-                p->is_spinning = sfTrue;
+                p->is_looking = sfFalse;
             }
         if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed_x == 0)
             p->is_looking = sfTrue;
-        if (g->event.key.code == sfKeyDown && p->is_grounded && p->speed_x == 0)
-            p->is_crouching = sfTrue;
+        if (g->event.key.code == sfKeyDown && p->is_grounded)
+            if (p->speed_x == 0)
+                p->is_crouching = sfTrue;
+            else {
+                sfMusic_stop(p->sound[SPIN]);
+                sfMusic_play(p->sound[SPIN]);
+                p->is_dashing = sfTrue;
+            }
     }
     if (g->event.type == sfEvtKeyReleased) {
         if (g->event.key.code == sfKeyRight && p->direction == 1)
@@ -74,10 +85,14 @@ void player_keyboard_events(game *g, player *p)
             p->is_looking = sfFalse;
         if (g->event.key.code == sfKeyDown)
             p->is_crouching = sfFalse;
-        if (g->event.key.code == sfKeyS)
+        if (g->event.key.code == sfKeyS) {
             if (p->is_spinning) {
-                p->speed_x = 10;
+                p->speed_x = 8;
                 p->is_dashing = sfTrue;
             }
+            if (p->is_charging)
+                p->speed_x = 12;
+                p->is_speeding = sfTrue;
+        }
     }
 }

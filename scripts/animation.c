@@ -23,6 +23,8 @@ void choose_anim_state(player *p)
         p->anim_state = WALKING;
     if (p->speed_x >= 8)
         p->anim_state = RUNNING;
+    if (p->speed_x >= 9)
+        p->anim_state = SPEEDING;
     if (p->is_turning == sfTrue)
         p->anim_state = TURNING;
     if (p->is_jumping == sfTrue)
@@ -31,6 +33,8 @@ void choose_anim_state(player *p)
         p->anim_state = PUSHING;
     if (p->is_spinning == sfTrue)
         p->anim_state = SPINNING;
+    if (p->is_charging == sfTrue)
+        p->anim_state = SPEEDING;
     if (p->is_dashing == sfTrue)
         p->anim_state = DASHING;
     if (p->is_hurt == sfTrue)

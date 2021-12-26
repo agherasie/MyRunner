@@ -25,6 +25,7 @@
     #define HURTING 11
     #define SPINNING 12
     #define DASHING 13
+    #define SPEEDING 14
     #define JUMP 0
     #define BADNIK_DEATH 1
     #define BRAKE 2
@@ -111,9 +112,11 @@ typedef struct player {
     sfBool is_hurt;
     sfBool is_spinning;
     sfBool is_dashing;
+    sfBool is_charging;
+    sfBool is_speeding;
     int is_edging;
     int anim_state;
-    animation anim[14];
+    animation anim[15];
     int running_anim;
     int anim_frame;
     sfMusic *sound[7];
