@@ -104,6 +104,7 @@ void update(game *g, player *p)
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g, p);
+            update_rings(g, p);
             g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
             g->goalsign->pos.y = 3 * 100;
             if (p->goal_reached == sfTrue)

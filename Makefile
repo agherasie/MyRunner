@@ -17,6 +17,7 @@ SRC	=	scripts/main.c \
 		scripts/enemy.c \
 		scripts/map.c \
 		scripts/background.c \
+		scripts/ring.c \
 
 OBJ	=	$(SRC:.c=.o)
 

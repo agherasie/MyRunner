@@ -67,6 +67,12 @@ typedef struct enemy {
     sfBool is_dead;
 } enemy;
 
+typedef struct ring {
+    sfVector2f pos;
+    sfBool is_collected;
+    sfBool is_null;
+} ring;
+
 typedef struct game {
     sfRenderWindow *window;
     sfClock *clock;
@@ -83,6 +89,10 @@ typedef struct game {
     int width;
     int frame;
     enemy *e;
+    ring *r;
+    object *ring;
+    animation ring_anim;
+    int ring_frame;
     sfMusic *bg_music;
     object *goalsign;
     animation goalanim;
@@ -150,5 +160,7 @@ int is_solid(int square);
 void enemy_collision(player *p, enemy *e, game *g);
 enemy *create_enemies(int enemy_count, char **map);
 int find_free_spot(char **map, int map_pos_x);
+ring *create_rings(int ring_count, char **map);
+void update_rings(game *g, player *p);
 
 #endif /* MY_RUNNER_H_ */

@@ -83,6 +83,10 @@ game create_game()
     create_animation(&g.goalanim, 5, 10, sfFalse);
     g.goalframe = 0;
     g.e = create_enemies((int)(g.width / 3), g.map);
+    g.r = create_rings((int)(g.width), g.map);
+    g.ring = create_object(50, 2, "art/misc.png");
+    create_animation(&g.ring_anim, 16, 5, sfTrue);
+    g.ring_frame = 0;
     g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");
     g.score_text = sfText_create();
     sfText_setFont(g.score_text, g.hud_font);
