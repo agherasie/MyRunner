@@ -82,6 +82,7 @@ void enemy_collision(player *p, enemy *e, game *g)
     && (p->obj->pos.y >= e->obj->pos.y - 20
     && p->obj->pos.y <= e->obj->pos.y + 20)
     && e->is_dead == sfFalse) {
+        p->is_dropping = sfFalse;
         if (p->anim_state != JUMPING
         && p->anim_state != DASHING && p->anim_state != SPINNING
         && p->is_hurt == sfFalse) {

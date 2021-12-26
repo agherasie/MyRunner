@@ -86,9 +86,6 @@ void sound_update(player *p)
         sfMusic_stop(p->sound[RING_LOSS]);
         sfMusic_stop(p->sound[DEATH]);
     }
-    if (p->is_spinning == sfFalse && p->is_charging == sfFalse
-    && p->is_dashing == sfFalse && p->is_dropping == sfFalse)
-        sfMusic_stop(p->sound[SPIN]);
 }
 
 void update_player(player *p, game *g)

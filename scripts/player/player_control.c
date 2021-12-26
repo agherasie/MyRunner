@@ -84,17 +84,16 @@ void player_keyboard_events(game *g, player *p)
         if (g->event.key.code == sfKeyLeft && p->direction == -1)
             directional_key(p, -1, sfTrue, g);
         if (g->event.key.code == sfKeyUp)
-            p->is_looking = sfFalse;
+            if (p->is_charging) {
+                p->speed_x = 12;
+                p->is_speeding = sfTrue;
+            } else
+                p->is_looking = sfFalse;
         if (g->event.key.code == sfKeyDown)
-            p->is_crouching = sfFalse;
-        if (g->event.key.code == sfKeyS) {
             if (p->is_spinning) {
                 p->speed_x = 12;
                 p->is_dashing = sfTrue;
-            }
-            if (p->is_charging)
-                p->speed_x = 12;
-                p->is_speeding = sfTrue;
-        }
+            } else
+                p->is_crouching = sfFalse;
     }
 }
