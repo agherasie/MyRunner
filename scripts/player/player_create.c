@@ -47,6 +47,7 @@ player create_bools(player p)
     p.is_charging = sfFalse;
     p.is_speeding = sfFalse;
     p.is_dropping = sfFalse;
+    p.is_dying = sfFalse;
     return p;
 }
 

@@ -60,6 +60,21 @@ sfText *style_text(sfText *text)
     return text;
 }
 
+void restart(game *g, player *p)
+{
+    sfMusic_play(g->bg_music);
+    g->camera_pan_x = 0;
+    destroy_entities(g);
+    g->e = create_enemies((int)(g->width / 3), g->map);
+    g->frame = 0;
+    g->goalframe = 0;
+    g->r = create_rings((g->width - 5) * 2, g->map);
+    g->ring_frame = 0;
+    g->rings = 0;
+    p->obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
+    *p = create_bools(*p);
+}
+
 game create_game()
 {
     game g;

@@ -127,6 +127,7 @@ typedef struct player {
     sfBool is_charging;
     sfBool is_speeding;
     sfBool is_dropping;
+    sfBool is_dying;
     int is_edging;
     int anim_state;
     animation anim[15];
@@ -163,5 +164,8 @@ int find_free_spot(char **map, int map_pos_x);
 ring *create_rings(int ring_count, char **map);
 void update_rings(game *g, player *p);
 void ring_collision(player *p, ring *r, game *g, int i);
+player create_bools(player p);
+void restart(game *g, player *p);
+void destroy_entities(game *g);
 
 #endif /* MY_RUNNER_H_ */

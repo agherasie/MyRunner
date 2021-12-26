@@ -110,6 +110,8 @@ void update_player(player *p, game *g)
             if (p->cooldown <= 0)
                 p->is_hurt = sfFalse;
         }
+        if (p->is_dying == sfTrue)
+            restart(g, p);
         misc(p);
         invisible_walls(p, g);
         for (int i = 0; g->e[i].enemytype != -1; i++)

@@ -99,6 +99,7 @@ void enemy_collision(player *p, enemy *e, game *g)
                 sfMusic_stop(p->sound[DEATH]);
                 sfMusic_stop(g->bg_music);
                 sfMusic_play(p->sound[DEATH]);
+                p->is_dying = sfTrue;
             }
         } else if (p->anim_state == JUMPING
         || p->anim_state == DASHING || p->anim_state == SPINNING) {

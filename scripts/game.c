@@ -7,8 +7,23 @@
 
 #include "my_runner.h"
 
+void destroy_entities(game *g)
+{
+    free(g->r);
+    for (int i = 0; g->e[i].enemytype != -1; i++) {
+        sfSprite_destroy(g->e[i].obj->spr);
+        sfTexture_destroy(g->e[i].obj->text);
+    }
+    free(g->e);
+}
+
 void destroy_all(game *g, player *p)
 {
+    destroy_entities(g);
+    sfSprite_destroy(g->ring->spr);
+    sfTexture_destroy(g->ring->text);
+    sfText_destroy(g->score_text);
+    sfFont_destroy(g->hud_font);
     sfSprite_destroy(g->tile->spr);
     sfTexture_destroy(g->tile->text);
     sfClock_destroy(g->clock);
