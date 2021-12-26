@@ -28,8 +28,8 @@ void skip_buffer(char **buffer)
 
 int count_lines(char *buffer)
 {
-    int count = 1;
-    for (int i = 0; buffer[i] != '\0'; i++)
+    int count = 0;
+    for (int i = 0; buffer[i] != 'x'; i++)
         if (buffer[i] == '\n')
             count++;
     return count;

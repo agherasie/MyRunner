@@ -22,6 +22,7 @@ int print_zero(int c, int c2);
 int checks(int *nb);
 int my_strcmp(char const *s1, char const *s2);
 int my_getnbr(char const *str);
+char *my_strcpy(char *dest, char const *src);
 char *my_strncpy(char *dest, char const *src, int n);
 int power_of_nbr(long number);
 int number_of_digits(long number);

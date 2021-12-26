@@ -137,7 +137,7 @@ void update_player(player *p, game *g)
             gravity(p);
         }
         animate(p);
-        print_status(p);
+        //print_status(p);
         camera_adjustments(p, g, sfFalse);
         sound_update(p);
         if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)

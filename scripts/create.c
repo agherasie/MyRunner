@@ -74,7 +74,7 @@ void restart(game *g, player *p)
     sfMusic_play(g->bg_music);
     g->camera_pan_x = 0;
     destroy_entities(g);
-    g->e = create_enemies((int)(g->width / 3), g->map);
+    g->e = create_enemies((int)(g->width / 3) - 3, g->map);
     g->frame = 0;
     g->goalframe = 0;
     g->r = create_rings((g->width - 5) * 2, g->map);
@@ -109,7 +109,7 @@ game create_game()
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
     create_animation(&g.goalanim, 5, 10, sfFalse);
     g.goalframe = 0;
-    g.e = create_enemies((int)(g.width / 3), g.map);
+    g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);
     g.ring = create_object(50, 2, "art/misc.png");
     create_animation(&g.ring_anim, 16, 5, sfTrue);

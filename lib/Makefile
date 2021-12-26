@@ -18,6 +18,7 @@ SRC	=	my_strlen.c\
 		random.c\
 		my_itoa.c\
 		score.c\
+		my_strcpy.c\
 
 OBJ	=	$(SRC:.c=.o)
 
