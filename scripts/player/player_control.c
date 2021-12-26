@@ -89,7 +89,7 @@ void player_keyboard_events(game *g, player *p)
             p->is_crouching = sfFalse;
         if (g->event.key.code == sfKeyS) {
             if (p->is_spinning) {
-                p->speed_x = 8;
+                p->speed_x = 12;
                 p->is_dashing = sfTrue;
             }
             if (p->is_charging)

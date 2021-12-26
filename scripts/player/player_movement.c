@@ -20,7 +20,7 @@ void acceleration(player *p)
 
 void deceleration(player *p)
 {
-    if (p->deceleration == sfTrue) {
+    if (p->deceleration == sfTrue || p->is_dashing == sfTrue) {
         if (p->speed_x > 0)
             p->speed_x -= 0.15f;
         if (p->speed_x <= 0.15f) {
