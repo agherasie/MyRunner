@@ -84,7 +84,6 @@ void sound_update(player *p)
         sfMusic_stop(p->sound[BRAKE]);
     if (p->is_hurt == sfFalse) {
         sfMusic_stop(p->sound[RING_LOSS]);
-        sfMusic_stop(p->sound[DEATH]);
     }
 }
 
@@ -110,19 +109,25 @@ void update_player(player *p, game *g)
             if (p->cooldown <= 0)
                 p->is_hurt = sfFalse;
         }
-        if (p->is_dying == sfTrue)
-            restart(g, p);
-        misc(p);
+        if (p->is_dying == sfTrue) {
+            p->speed_y += 0.25f;
+            p->obj->pos.y += p->speed_y;
+            if (p->obj->pos.y > W_H)
+                restart(g, p);
+        }
         invisible_walls(p, g);
-        for (int i = 0; g->e[i].enemytype != -1; i++)
-            enemy_collision(p, &g->e[i], g);
-        for (int i = 0; g->r[i].is_null != sfTrue; i++)
-            ring_collision(p, &g->r[i], g, i);
-        movement(p, g);
-        raycast(p, g);
-        gravity(p);
+        if (p->is_dying == sfFalse) {
+            for (int i = 0; g->e[i].enemytype != -1; i++)
+                enemy_collision(p, &g->e[i], g);
+            for (int i = 0; g->r[i].is_null != sfTrue; i++)
+                ring_collision(p, &g->r[i], g, i);
+            misc(p);
+            movement(p, g);
+            raycast(p, g);
+            gravity(p);
+        }
         animate(p);
-        //print_status(p);
+        print_status(p);
         camera_adjustments(p, g, sfFalse);
         sound_update(p);
         if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)

@@ -27,6 +27,7 @@ player create_animations(player p)
     create_animation(&p.anim[SPINNING], 6, 5, sfTrue);
     create_animation(&p.anim[DASHING], 8, 3, sfTrue);
     create_animation(&p.anim[SPEEDING], 4, 3, sfTrue);
+    create_animation(&p.anim[DYING], 4, 10, sfFalse);
     return p;
 }
 

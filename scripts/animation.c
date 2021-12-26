@@ -41,7 +41,8 @@ void choose_anim_state(player *p)
         p->anim_state = HURTING;
     if (p->goal_reached == sfTrue)
         p->anim_state = THUMBSUP;
-
+    if (p->is_dying == sfTrue)
+        p->anim_state = DYING;
 }
 
 void animate(player *p)

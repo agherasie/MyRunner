@@ -73,6 +73,8 @@ void restart(game *g, player *p)
     g->rings = 0;
     p->obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
     *p = create_bools(*p);
+    p->speed_y = 0;
+    p->speed_x = 0;
 }
 
 game create_game()
