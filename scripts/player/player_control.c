@@ -52,7 +52,14 @@ void player_keyboard_events(game *g, player *p)
         if (g->event.key.code == sfKeyLeft)
             directional_key(p, -1, sfFalse, g);
         if (g->event.key.code == sfKeyS)
-            do_jump(p);
+            if (p->anim_state != CROUCHING && p->anim_state != SPINNING)
+                do_jump(p);
+            else {
+                sfMusic_stop(p->sound[SPIN]);
+                sfMusic_play(p->sound[SPIN]);
+                p->is_crouching = sfFalse;
+                p->is_spinning = sfTrue;
+            }
         if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed_x == 0)
             p->is_looking = sfTrue;
         if (g->event.key.code == sfKeyDown && p->is_grounded && p->speed_x == 0)
@@ -67,5 +74,10 @@ void player_keyboard_events(game *g, player *p)
             p->is_looking = sfFalse;
         if (g->event.key.code == sfKeyDown)
             p->is_crouching = sfFalse;
+        if (g->event.key.code == sfKeyS)
+            if (p->is_spinning) {
+                p->speed_x = 10;
+                p->is_dashing = sfTrue;
+            }
     }
 }

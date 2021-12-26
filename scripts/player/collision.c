@@ -69,6 +69,7 @@ void enemy_collision(player *p, enemy *e, game *g)
     && p->obj->pos.y <= e->obj->pos.y + 20)
     && e->is_dead == sfFalse) {
         if (p->anim_state != JUMPING
+        && p->anim_state != DASHING && p->anim_state != SPINNING
         && p->is_hurt == sfFalse) {
             p->is_hurt = sfTrue;
             p->speed_x = 0;
@@ -79,8 +80,10 @@ void enemy_collision(player *p, enemy *e, game *g)
                 sfMusic_play(p->sound[RING_LOSS]);
             else
                 sfMusic_play(p->sound[DEATH]);
-        } else if (p->anim_state == JUMPING) {
-            p->speed_y = -8;
+        } else if (p->anim_state == JUMPING
+        || p->anim_state == DASHING || p->anim_state == SPINNING) {
+            if (p->anim_state == JUMPING)
+                p->speed_y = -8;
             e->is_dead = sfTrue;
             e->frame = 0;
             g->score += 100;

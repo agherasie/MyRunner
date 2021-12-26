@@ -29,6 +29,10 @@ void choose_anim_state(player *p)
         p->anim_state = JUMPING;
     if (p->can_move == sfFalse && p->anim_state == WALKING)
         p->anim_state = PUSHING;
+    if (p->is_spinning == sfTrue)
+        p->anim_state = SPINNING;
+    if (p->is_dashing == sfTrue)
+        p->anim_state = DASHING;
     if (p->is_hurt == sfTrue)
         p->anim_state = HURTING;
     if (p->goal_reached == sfTrue)

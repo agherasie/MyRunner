@@ -23,6 +23,8 @@
     #define CROUCHING 9
     #define THUMBSUP 10
     #define HURTING 11
+    #define SPINNING 12
+    #define DASHING 13
     #define JUMP 0
     #define BADNIK_DEATH 1
     #define BRAKE 2
@@ -107,9 +109,11 @@ typedef struct player {
     sfBool can_move;
     sfBool goal_reached;
     sfBool is_hurt;
+    sfBool is_spinning;
+    sfBool is_dashing;
     int is_edging;
     int anim_state;
-    animation anim[12];
+    animation anim[14];
     int running_anim;
     int anim_frame;
     sfMusic *sound[7];

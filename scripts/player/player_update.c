@@ -28,8 +28,11 @@ void invisible_walls(player *p, game *g)
 {
     if (p->obj->pos.x <= g->camera_pan_x - 24)
         p->obj->pos.x = g->camera_pan_x - 24;
+    g->camera_pan_speed = 2;
+    if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
+        g->camera_pan_speed = 5;
     if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
-        p->obj->pos.x = g->camera_pan_x + W_W - 88;
+        g->camera_pan_speed = 10;
     if (p->obj->pos.y <= 0)
         p->obj->pos.y = 0;
 }
@@ -81,6 +84,8 @@ void sound_update(player *p)
         sfMusic_stop(p->sound[RING_LOSS]);
         sfMusic_stop(p->sound[DEATH]);
     }
+    if (p->is_spinning == sfFalse && p->is_dashing == sfFalse)
+        sfMusic_stop(p->sound[SPIN]);
 }
 
 void update_player(player *p, game *g)
@@ -89,6 +94,10 @@ void update_player(player *p, game *g)
         p->goal_reached = sfTrue;
     if (g->paused == sfFalse) {
         camera_adjustments(p, g, sfTrue);
+        if (p->is_spinning == sfTrue && p->speed_x > 0)
+            p->is_spinning = sfFalse;
+        if (p->is_dashing == sfTrue && p->speed_x == 0)
+            p->is_dashing = sfFalse;
         if (p->is_hurt && is_solid(g->map[p->map_pos.y][p->map_pos.x + p->direction]) == 1)
             p->obj->pos.x -= p->cooldown / 10 * p->direction;
         p->cooldown--;

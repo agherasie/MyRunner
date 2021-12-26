@@ -15,7 +15,7 @@ player create_animations(player p)
     create_animation(&p.anim[IDLE], 1, 1, sfTrue);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
-    create_animation(&p.anim[JUMPING], 4, 10, sfTrue);
+    create_animation(&p.anim[JUMPING], 5, 10, sfTrue);
     create_animation(&p.anim[TURNING], 3, 10, sfTrue);
     create_animation(&p.anim[PUSHING], 4, 20, sfTrue);
     create_animation(&p.anim[FEDGING], 8, 5, sfTrue);
@@ -24,6 +24,8 @@ player create_animations(player p)
     create_animation(&p.anim[CROUCHING], 2, 10, sfFalse);
     create_animation(&p.anim[THUMBSUP], 4, 10, sfFalse);
     create_animation(&p.anim[HURTING], 8, 7, sfFalse);
+    create_animation(&p.anim[SPINNING], 6, 5, sfTrue);
+    create_animation(&p.anim[DASHING], 8, 3, sfTrue);
     return p;
 }
 
@@ -39,6 +41,20 @@ player create_bools(player p)
     p.is_looking = sfFalse;
     p.goal_reached = sfFalse;
     p.is_hurt = sfFalse;
+    p.is_spinning = sfFalse;
+    p.is_dashing = sfFalse;
+    return p;
+}
+
+player create_sounds(player p)
+{
+    p.sound[0] = sfMusic_createFromFile("art/sound/jump.wav");
+    p.sound[1] = sfMusic_createFromFile("art/sound/badnik-death.wav");
+    p.sound[2] = sfMusic_createFromFile("art/sound/brake.wav");
+    p.sound[3] = sfMusic_createFromFile("art/sound/death.wav");
+    p.sound[4] = sfMusic_createFromFile("art/sound/spin.wav");
+    p.sound[5] = sfMusic_createFromFile("art/sound/ring-loss.wav");
+    p.sound[6] = sfMusic_createFromFile("art/sound/ring-collect.wav");
     return p;
 }
 
@@ -59,13 +75,7 @@ player create_player(game *g)
     p.cooldown = 0;
     p = create_bools(p);
     p = create_animations(p);
-    p.sound[0] = sfMusic_createFromFile("art/sound/jump.wav");
-    p.sound[1] = sfMusic_createFromFile("art/sound/badnik-death.wav");
-    p.sound[2] = sfMusic_createFromFile("art/sound/brake.wav");
-    p.sound[3] = sfMusic_createFromFile("art/sound/death.wav");
-    p.sound[4] = sfMusic_createFromFile("art/sound/spin.wav");
-    p.sound[5] = sfMusic_createFromFile("art/sound/ring-loss.wav");
-    p.sound[6] = sfMusic_createFromFile("art/sound/ring-collect.wav");
+    p = create_sounds(p);
     for (int i = 0; i < 7; i++)
         sfMusic_setVolume(p.sound[i], 50);
     sfMusic_setVolume(p.sound[JUMP], 10);
