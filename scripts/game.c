@@ -88,6 +88,7 @@ void hud_display(game *g)
     if (g->score < 0)
         g->score = 0;
     sfText_setFillColor(g->score_text, sfYellow);
+    sfRenderWindow_drawSprite(g->window, g->player_icon->spr, NULL);
     draw_text(g, "score", 1, 1);
     if (g->score < g->hiscore)
         draw_text(g, "hiscore", 1, 7);
@@ -99,6 +100,7 @@ void hud_display(game *g)
     draw_text(g, my_itoa(g->score), 7, 1);
     draw_text(g, my_itoa(g->rings), 7, 5);
     clock_draw(g, g->frame / FPS);
+    draw_text(g, my_itoa(g->lives), 4.5f, W_H / 20 - 3.5f);
     if (g->score < g->hiscore)
         draw_text(g, my_itoa(g->hiscore), 9, 7);
     if (g->hiscore < g->score) {

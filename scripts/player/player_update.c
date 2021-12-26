@@ -89,6 +89,11 @@ void sound_update(player *p)
 
 void update_player(player *p, game *g)
 {
+    if (p->goal_reached == sfTrue) {
+        if (g->level != 3)
+            g->level++;
+        restart(g, p);
+    }
     if (p->map_pos.x == g->width - 1)
         p->goal_reached = sfTrue;
     if (g->paused == sfFalse) {
@@ -112,8 +117,13 @@ void update_player(player *p, game *g)
         if (p->is_dying == sfTrue) {
             p->speed_y += 0.25f;
             p->obj->pos.y += p->speed_y;
-            if (p->obj->pos.y > W_H)
-                restart(g, p);
+            if (p->obj->pos.y > W_H) {
+                g->lives--;
+                if (g->lives == 0)
+                    sfRenderWindow_close(g->window);
+                else
+                    restart(g, p);
+            }
         }
         invisible_walls(p, g);
         if (p->is_dying == sfFalse) {

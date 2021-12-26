@@ -103,6 +103,9 @@ typedef struct game {
     int score;
     int hiscore;
     int rings;
+    object *player_icon;
+    int lives;
+    int level;
 } game;
 
 typedef struct player {

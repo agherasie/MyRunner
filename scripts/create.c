@@ -62,6 +62,15 @@ sfText *style_text(sfText *text)
 
 void restart(game *g, player *p)
 {
+    for (int i = 0; i < 6; i++)
+        free(g->map[i]);
+    free(g->map);
+    if (g->level == 1)
+        g->map = create_map("data/map1.txt", g);
+    if (g->level == 2)
+        g->map = create_map("data/map2.txt", g);
+    if (g->level == 3)
+        g->map = create_map("data/map3.txt", g);
     sfMusic_play(g->bg_music);
     g->camera_pan_x = 0;
     destroy_entities(g);
@@ -80,6 +89,7 @@ void restart(game *g, player *p)
 game create_game()
 {
     game g;
+    g.level = 1;
     sfVideoMode mode = {W_W, W_H, 32};
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     g.clock = sfClock_create();
@@ -110,5 +120,15 @@ game create_game()
     g.score_text = style_text(g.score_text);
     g.score = 0;
     g.rings = 0;
+    g.lives = 3;
+    g.player_icon = create_object(48, 2, "art/sonic_sheet.png");
+    g.player_icon->pos.x = 10;
+    g.player_icon->pos.y = W_H - 100;
+    g.player_icon->rect.height = 48;
+    g.player_icon->rect.width = 48;
+    g.player_icon->rect.left = 48;
+    g.player_icon->rect.top = 0;
+    sfSprite_setPosition(g.player_icon->spr, g.player_icon->pos);
+    sfSprite_setTextureRect(g.player_icon->spr, g.player_icon->rect);
     return g;
 }
