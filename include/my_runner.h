@@ -34,6 +34,7 @@
     #define SPIN 4
     #define RING_LOSS 5
     #define RING_COLLECT 6
+    #define GOALSIGN 7
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -95,6 +96,8 @@ typedef struct game {
     animation ring_anim;
     int ring_frame;
     sfMusic *bg_music;
+    sfMusic *title_music;
+    sfMusic *finish_music;
     object *goalsign;
     animation goalanim;
     int goalframe;
@@ -106,6 +109,11 @@ typedef struct game {
     object *player_icon;
     int lives;
     int level;
+    object *title_sonic;
+    object *title_background;
+    sfBool is_main_menu;
+    int title_sonic_frame;
+
 } game;
 
 typedef struct player {
@@ -137,7 +145,7 @@ typedef struct player {
     animation anim[16];
     int running_anim;
     int anim_frame;
-    sfMusic *sound[7];
+    sfMusic *sound[8];
     int cooldown;
 } player;
 

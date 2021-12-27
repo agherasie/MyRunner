@@ -61,6 +61,7 @@ player create_sounds(player p)
     p.sound[4] = sfMusic_createFromFile("art/sound/spin.wav");
     p.sound[5] = sfMusic_createFromFile("art/sound/ring-loss.wav");
     p.sound[6] = sfMusic_createFromFile("art/sound/ring-collect.wav");
+    p.sound[7] = sfMusic_createFromFile("art/sound/sign-post.wav");
     return p;
 }
 

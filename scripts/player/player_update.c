@@ -85,6 +85,11 @@ void sound_update(player *p)
     if (p->is_hurt == sfFalse) {
         sfMusic_stop(p->sound[RING_LOSS]);
     }
+    if (p->goal_reached == sfTrue
+    && sfMusic_getStatus(p->sound[GOALSIGN]) != sfPlaying)
+        sfMusic_play(p->sound[GOALSIGN]);
+    if (p->goal_reached == sfFalse)
+        sfMusic_stop(p->sound[GOALSIGN]);
 }
 
 void update_player(player *p, game *g)

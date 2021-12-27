@@ -33,7 +33,9 @@ void destroy_all(game *g, player *p)
         free(g->map[i]);
     free(g->map);
     sfMusic_destroy(g->bg_music);
-    for (int i = 0; i < 7; i++)
+    sfMusic_destroy(g->title_music);
+    sfMusic_destroy(g->finish_music);
+    for (int i = 0; i < 8; i++)
         sfMusic_destroy(p->sound[i]);
     sfSprite_destroy(g->parallax0->spr);
     sfSprite_destroy(g->parallax1->spr);
@@ -44,7 +46,7 @@ void destroy_all(game *g, player *p)
 
 void pause_game(game *g)
 {
-    if (g->event.key.code == sfKeyP) {
+    if (g->event.key.code == sfKeyP && g->is_main_menu == sfFalse) {
         if (g->paused == sfTrue)
             g->paused = sfFalse;
         else
@@ -59,6 +61,8 @@ void keyboard_events(game *g, player *p)
             sfRenderWindow_close(g->window);
         if (g->event.type == sfEvtKeyPressed) {
             pause_game(g);
+            if (g->event.key.code == sfKeyEnter && g->is_main_menu == sfTrue)
+                g->is_main_menu = sfFalse;
         }
         player_keyboard_events(g, p);
     }
@@ -109,29 +113,65 @@ void hud_display(game *g)
     }
 }
 
+void update_title_screen(game *g)
+{
+    draw_text(g, "epitech 2021", W_W / 20 - 12, W_H / 20 - 3.5f);
+    if (sfMusic_getStatus(g->title_music) != sfPlaying)
+        sfMusic_play(g->title_music);
+    g->title_sonic_frame--;
+    sfRenderWindow_setPosition(g->window, (sfVector2i) {600, 175});
+    g->title_sonic->rect.height = 224;
+    g->title_sonic->rect.width = 320;
+    if (g->title_sonic_frame == 0) {
+        g->title_sonic->rect.left += 320;
+        g->title_sonic_frame = 10;
+    }
+    if (g->title_sonic->rect.left >= 320 * 3 && g->title_sonic->rect.top < 224 * 5) {
+        g->title_sonic->rect.left = 0;
+        g->title_sonic->rect.top += 224;
+    }
+    if (g->title_sonic->rect.left >= 320 * 3 && g->title_sonic->rect.top == 224 * 5) {
+        g->title_sonic->rect.left = 320;
+        g->title_sonic->rect.top = 224 * 5;
+    }
+    sfSprite_setTextureRect(g->title_sonic->spr, g->title_sonic->rect);
+    sfRenderWindow_drawSprite(g->window, g->title_sonic->spr, NULL);
+}
+
 void update(game *g, player *p)
 {
     while (sfRenderWindow_isOpen(g->window)) {
         g->time = sfClock_getElapsedTime(g->clock);
         if (g->time.microseconds > 1000) {
             sfClock_restart(g->clock);
-            if (p->goal_reached == sfFalse && g->paused == sfFalse)
-                g->camera_pan_x += g->camera_pan_speed;
             sfRenderWindow_display(g->window);
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g, p);
-            g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
-            g->goalsign->pos.y = 3 * 100;
-            if (p->goal_reached == sfTrue)
-                animate_object(g, g->goalsign, g->goalanim, &g->goalframe);
-            sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
-            sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
-            sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
-            update_rings(g, p);
-            update_enemies(g, p);
-            update_player(p, g);
-            hud_display(g);
+            g->frame++;
+            if (g->is_main_menu == sfFalse) {
+                if (sfMusic_getStatus(g->bg_music) != sfPlaying)
+                    sfMusic_play(g->bg_music);
+                sfMusic_stop(g->title_music);
+                if (p->goal_reached == sfFalse && g->paused == sfFalse)
+                    g->camera_pan_x += g->camera_pan_speed;
+                g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
+                g->goalsign->pos.y = 3 * 100;
+                if (p->goal_reached == sfTrue) {
+                    sfMusic_stop(g->bg_music);
+                    if (sfMusic_getStatus(g->finish_music) != sfPlaying)
+                        sfMusic_play(g->finish_music);
+                    animate_object(g, g->goalsign, g->goalanim, &g->goalframe);
+                }
+                sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
+                sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
+                sfRenderWindow_drawSprite(g->window, g->goalsign->spr, NULL);
+                update_rings(g, p);
+                update_enemies(g, p);
+                update_player(p, g);
+                hud_display(g);
+            } else
+                update_title_screen(g);
         }
     }
     destroy_all(g, p);

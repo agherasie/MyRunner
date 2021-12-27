@@ -100,12 +100,14 @@ game create_game()
     g.paused = sfFalse;
     g.camera_pan_x = 0;
     g.camera_pan_speed = 1;
-    g.parallax0 = create_background(2421, 600, "art/hills.png", 0);
-    g.parallax1 = create_background(2421, 600, "art/ocean.png", 355);
+    g.parallax0 = create_background(2320, 250, "art/hills.png", 0);
+    g.parallax1 = create_background(2317, 350, "art/ocean.png", 250);
     g.frame = 0;
     g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
+    g.title_music = sfMusic_createFromFile("art/sound/title-theme.wav");
+    g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
     sfMusic_setLoop(g.bg_music, sfTrue);
-    sfMusic_play(g.bg_music);
+    sfMusic_setLoop(g.title_music, sfTrue);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
     create_animation(&g.goalanim, 5, 10, sfFalse);
     g.goalframe = 0;
@@ -130,5 +132,12 @@ game create_game()
     g.player_icon->rect.top = 0;
     sfSprite_setPosition(g.player_icon->spr, g.player_icon->pos);
     sfSprite_setTextureRect(g.player_icon->spr, g.player_icon->rect);
+    g.is_main_menu = sfTrue;
+    g.title_sonic = create_background(254, 219, "art/title_logo.png", 0);
+    sfSprite_setScale(g.title_sonic->spr, (sfVector2f) {2, 2});
+    g.title_sonic->pos.x = W_W / 2 - 320;
+    g.title_sonic->pos.y = W_H / 2 - 224;
+    sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
+    g.title_sonic_frame = 10;
     return g;
 }

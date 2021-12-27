@@ -18,12 +18,11 @@ void scroll_parallax(game *g, player *p, object *parallax, int speed)
 
 void update_background(game *g, player *p)
 {
-    g->frame++;
     scroll_parallax(g, p, g->parallax0, 3);
     scroll_parallax(g, p, g->parallax1, 2);
     sfVector2i mappos = {0, 0};
     sfVector2f tilepos = {0, 0};
-    for (int i = 0; i < g->height; i++)
+    for (int i = 0; i < g->height && g->is_main_menu == sfFalse; i++)
         for (int j = 0; j < g->width; j++) {
             mappos.x = j;
             mappos.y = i;
