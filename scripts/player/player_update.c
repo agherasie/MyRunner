@@ -37,7 +37,7 @@ void invisible_walls(player *p, game *g)
     if (p->is_dying == sfFalse && g->is_runner == sfTrue)
         g->camera_pan_speed = 3;
     if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
-        g->camera_pan_speed = 5;
+        g->camera_pan_speed = TOPSPEED;
     if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
         g->camera_pan_speed = 10;
     if (p->obj->pos.y <= 0)
@@ -139,7 +139,7 @@ void update_player(player *p, game *g)
         sfMusic_play(p->sound[ONEUP]);
         g->lives++;
     }
-    if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0)
+    if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0 && p->speed_y == 0)
         do_death(p, g);
     if (p->goal_reached == sfTrue) {
         tally(p, g);
@@ -190,7 +190,7 @@ void update_player(player *p, game *g)
             gravity(p);
         }
         animate(p);
-        //print_status(p);
+        print_status(p);
         camera_adjustments(p, g, sfFalse);
         sound_update(p);
         if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)

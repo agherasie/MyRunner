@@ -38,6 +38,9 @@ void raycast(player *p, game *g)
             p->collision_y = (p->map_pos.y + i) * 100 + 4;
             break;
         }
+    if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0)
+        if ((int)(p->obj->pos.y) % 100 < 50)
+            p->speed_y = 1;
 }
 
 void wall_collision(player *p, game *g)
