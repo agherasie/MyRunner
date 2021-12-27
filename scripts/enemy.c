@@ -53,10 +53,11 @@ int find_free_spot(char **map, int map_pos_x)
 
 enemy *create_enemies(int enemy_count, char **map)
 {
+    enemy_count -= 2;
     enemy *e = malloc(sizeof(enemy) * (enemy_count + 1));
     e[enemy_count] = create_enemy(-1, 0, 0);
     for (int i = 0; i < enemy_count; i++) {
-        int random_value = range(i * 300 + 200, i * 300 + 200);
+        int random_value = range(i * 300 + 500, i * 300 + 500);
         int free_spot = 0;
         int map_pos_x = random_value / 100;
         if (random_value % 100 >= 50)

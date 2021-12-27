@@ -116,6 +116,7 @@ typedef struct game {
     object *title_background;
     sfBool is_main_menu;
     int title_sonic_frame;
+    sfBool is_runner;
 
 } game;
 
@@ -152,6 +153,7 @@ typedef struct player {
     int cooldown;
 } player;
 
+void do_death(player *p, game *g);
 game create_game();
 char **create_map(char *filepath, game *g);
 player create_player(game *g);

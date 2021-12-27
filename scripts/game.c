@@ -54,6 +54,14 @@ void pause_game(game *g)
     }
 }
 
+void toggle(sfBool *boolean)
+{
+    if (*boolean == sfTrue)
+        *boolean = sfFalse;
+    else
+        *boolean = sfTrue;
+}
+
 void keyboard_events(game *g, player *p)
 {
     while (sfRenderWindow_pollEvent(g->window, &g->event)) {
@@ -63,6 +71,8 @@ void keyboard_events(game *g, player *p)
             pause_game(g);
             if (g->event.key.code == sfKeyEnter && g->is_main_menu == sfTrue)
                 g->is_main_menu = sfFalse;
+            if (g->event.key.code == sfKeyR)
+                toggle(&g->is_runner);
         }
         player_keyboard_events(g, p);
     }
@@ -164,7 +174,6 @@ void update(game *g, player *p)
                 if (p->goal_reached == sfTrue) {
                     sfMusic_stop(g->bg_music);
                     if (sfMusic_getStatus(g->finish_music) != sfPlaying) {
-                        sfMusic_stop(g->finish_music);
                         sfMusic_play(g->finish_music);
                     }
                     animate_object(g, g->goalsign, g->goalanim, &g->goalframe);

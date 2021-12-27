@@ -142,5 +142,6 @@ game create_game()
     sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
     g.title_sonic_frame = 10;
     g.seconds = 0;
+    g.is_runner = sfFalse;
     return g;
 }

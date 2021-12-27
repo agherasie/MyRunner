@@ -28,9 +28,13 @@ void print_status(player *p)
 
 void invisible_walls(player *p, game *g)
 {
-    if (p->obj->pos.x <= g->camera_pan_x - 24)
+    if (p->obj->pos.x <= g->camera_pan_x - 24) {
         p->obj->pos.x = g->camera_pan_x - 24;
-    g->camera_pan_speed = 0;
+        if (g->is_runner == sfTrue)
+            do_death(p, g);
+    }
+    if (p->is_dying == sfFalse)
+        g->camera_pan_speed = 3;
     if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
         g->camera_pan_speed = 5;
     if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
@@ -129,6 +133,9 @@ void update_player(player *p, game *g)
                 g->level++;
             restart(g, p);
         }
+    } else if (g->paused == sfFalse && g->is_runner == sfTrue) {
+        p->speed_x = 5;
+        p->is_dashing = sfFalse;
     }
     if (p->map_pos.x == g->width - 1)
         p->goal_reached = sfTrue;
