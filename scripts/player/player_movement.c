@@ -9,21 +9,24 @@
 
 void acceleration(player *p)
 {
+    float prev_speed_x = p->speed_x;
     if (p->acceleration == sfTrue)
         p->speed_x += 0.15f;
-    if (p->speed_x >= TOPSPEED
-    && p->is_speeding == sfFalse && p->is_dashing == sfFalse)
-        p->speed_x = TOPSPEED;
+    if (p->speed_x >= TOPSPEED + 0.15f)
+        p->speed_x = prev_speed_x;
     if (p->speed_x > 0)
         p->meters_run += p->speed_x / 40;
 }
 
 void deceleration(player *p)
 {
+    float decel = 0.15f;
+    if (p->is_dashing == sfTrue)
+        decel = 0.05f;
     if (p->deceleration == sfTrue || p->is_dashing == sfTrue) {
         if (p->speed_x > 0)
-            p->speed_x -= 0.15f;
-        if (p->speed_x <= 0.15f) {
+            p->speed_x -= decel;
+        if (p->speed_x <= decel) {
             p->speed_x = 0;
             p->deceleration = sfFalse;
         }
@@ -49,7 +52,7 @@ void gravity(player *p)
     if (p->obj->pos.y == p->collision_y) {
         p->is_grounded = sfTrue;
         if (p->is_dropping == sfTrue) {
-            p->speed_x = 10;
+            p->speed_x = TOPSPEED;
             p->is_dashing = sfTrue;
             p->is_dropping = sfFalse;
             sfMusic_stop(p->sound[SPIN]);

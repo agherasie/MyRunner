@@ -15,14 +15,14 @@ player create_animations(player p)
     create_animation(&p.anim[IDLE], 1, 1, sfTrue);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
-    create_animation(&p.anim[JUMPING], 5, 10, sfTrue);
+    create_animation(&p.anim[JUMPING], 8, 3, sfTrue);
     create_animation(&p.anim[TURNING], 3, 10, sfTrue);
     create_animation(&p.anim[PUSHING], 4, 20, sfTrue);
     create_animation(&p.anim[FEDGING], 8, 5, sfTrue);
     create_animation(&p.anim[BEDGING], 8, 5, sfTrue);
     create_animation(&p.anim[LOOKING], 2, 10, sfFalse);
     create_animation(&p.anim[CROUCHING], 2, 10, sfFalse);
-    create_animation(&p.anim[THUMBSUP], 4, 10, sfFalse);
+    create_animation(&p.anim[THUMBSUP], 13, 8, sfFalse);
     create_animation(&p.anim[HURTING], 8, 7, sfFalse);
     create_animation(&p.anim[SPINNING], 6, 5, sfTrue);
     create_animation(&p.anim[DASHING], 8, 3, sfTrue);

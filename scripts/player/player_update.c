@@ -99,8 +99,8 @@ void sound_update(player *p)
 
 void tally(player *p, game *g)
 {
-    if (g->rings > 50)
-        g->tally_speed = 10;
+    if (g->rings > 50 && g->tally_speed == 5)
+        g->tally_speed = 2;
     if (p->cooldown < 0)
         p->cooldown = 10000;
     if (p->cooldown > 0 && p->cooldown <= 9700) {
