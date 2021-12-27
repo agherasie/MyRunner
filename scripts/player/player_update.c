@@ -97,6 +97,40 @@ void sound_update(player *p)
         sfMusic_stop(p->sound[GOALSIGN]);
 }
 
+void tally(player *p, game *g)
+{
+    if (g->rings > 50)
+        g->tally_speed = 10;
+    if (p->cooldown < 0)
+        p->cooldown = 10000;
+    if (p->cooldown > 0 && p->cooldown <= 9700) {
+        if (g->rings > 0 && p->cooldown % g->tally_speed == 0) {
+            if (p->cooldown % 15 == 0) {
+                sfMusic_stop(p->sound[TALLY]);
+                sfMusic_play(p->sound[TALLY]);
+            }
+            g->score += 100;
+            g->rings--;
+        }
+        if (g->seconds != 0) {
+            if (g->seconds < 60)
+                g->score += 1000;
+            else if (g->seconds < 120)
+                g->score += 500;
+            else if (g->seconds < 180)
+                g->score += 500;
+        }
+        g->seconds = 0;
+        if (g->rings == 0 && p->cooldown > 50)
+            p->cooldown = 50;
+    }
+    if (p->cooldown == 0) {
+        if (g->level != 3)
+            g->level++;
+        restart(g, p);
+    }
+}
+
 void update_player(player *p, game *g)
 {
     if (g->score % 100000 == 0 && g->score != 0) {
@@ -105,35 +139,10 @@ void update_player(player *p, game *g)
         sfMusic_play(p->sound[ONEUP]);
         g->lives++;
     }
+    if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0)
+        do_death(p, g);
     if (p->goal_reached == sfTrue) {
-        if (p->cooldown < 0)
-            p->cooldown = 10000;
-        if (p->cooldown > 0 && p->cooldown <= 9700) {
-            if (g->rings > 0 && p->cooldown % 5 == 0) {
-                if (p->cooldown % 30 == 0) {
-                    sfMusic_stop(p->sound[TALLY]);
-                    sfMusic_play(p->sound[TALLY]);
-                }
-                g->score += 100;
-                g->rings--;
-            }
-            if (g->seconds != 0) {
-                if (g->seconds < 60)
-                    g->score += 1000;
-                else if (g->seconds < 120)
-                    g->score += 500;
-                else if (g->seconds < 180)
-                    g->score += 500;
-            }
-            g->seconds = 0;
-            if (g->rings == 0 && p->cooldown > 50)
-                p->cooldown = 50;
-        }
-        if (p->cooldown == 0) {
-            if (g->level != 3)
-                g->level++;
-            restart(g, p);
-        }
+        tally(p, g);
     } else if (g->paused == sfFalse && g->is_runner == sfTrue) {
         p->speed_x = 5;
         p->is_dashing = sfFalse;

@@ -121,6 +121,7 @@ typedef struct game {
     sfBool is_runner;
     animation ocean_anim;
     int ocean_frame;
+    int tally_speed;
 
 } game;
 

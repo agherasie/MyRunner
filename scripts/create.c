@@ -88,6 +88,7 @@ void restart(game *g, player *p)
     *p = create_bools(*p);
     p->speed_y = 0;
     p->speed_x = 0;
+    g->tally_speed = 5;
 }
 
 game create_game()
@@ -119,6 +120,7 @@ game create_game()
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
     create_animation(&g.goalanim, 5, 5, sfFalse);
     g.goalframe = 0;
+    g.tally_speed = 5;
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);
     g.ring = create_object(50, 2, "art/misc.png");

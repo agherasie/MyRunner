@@ -69,8 +69,16 @@ void keyboard_events(game *g, player *p)
             sfRenderWindow_close(g->window);
         if (g->event.type == sfEvtKeyPressed) {
             pause_game(g);
-            if (g->event.key.code == sfKeyEnter && g->is_main_menu == sfTrue)
-                g->is_main_menu = sfFalse;
+            if (g->event.key.code == sfKeyEnter) {
+                if (g->is_main_menu == sfTrue)
+                    g->is_main_menu = sfFalse;
+                if (p->goal_reached == sfFalse)
+                    pause_game(g);
+                if (p->goal_reached == sfTrue) {
+                    g->tally_speed = 2;
+                    p->cooldown = 9700;
+                }
+            }
             if (g->event.key.code == sfKeyR)
                 toggle(&g->is_runner);
         }
