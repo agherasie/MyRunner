@@ -94,10 +94,41 @@ void sound_update(player *p)
 
 void update_player(player *p, game *g)
 {
+    if (g->score % 100000 == 0 && g->score != 0) {
+        g->score += g->lives * 100;
+        sfMusic_stop(p->sound[ONEUP]);
+        sfMusic_play(p->sound[ONEUP]);
+        g->lives++;
+    }
     if (p->goal_reached == sfTrue) {
-        if (g->level != 3)
-            g->level++;
-        restart(g, p);
+        if (p->cooldown < 0)
+            p->cooldown = 10000;
+        if (p->cooldown > 0 && p->cooldown <= 9700) {
+            if (g->rings > 0 && p->cooldown % 5 == 0) {
+                if (p->cooldown % 30 == 0) {
+                    sfMusic_stop(p->sound[TALLY]);
+                    sfMusic_play(p->sound[TALLY]);
+                }
+                g->score += 100;
+                g->rings--;
+            }
+            if (g->seconds != 0) {
+                if (g->seconds < 60)
+                    g->score += 1000;
+                else if (g->seconds < 120)
+                    g->score += 500;
+                else if (g->seconds < 180)
+                    g->score += 500;
+            }
+            g->seconds = 0;
+            if (g->rings == 0 && p->cooldown > 50)
+                p->cooldown = 50;
+        }
+        if (p->cooldown == 0) {
+            if (g->level != 3)
+                g->level++;
+            restart(g, p);
+        }
     }
     if (p->map_pos.x == g->width - 1)
         p->goal_reached = sfTrue;

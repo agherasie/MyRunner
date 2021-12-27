@@ -71,6 +71,7 @@ void restart(game *g, player *p)
         g->map = create_map("data/map2.txt", g);
     if (g->level == 3)
         g->map = create_map("data/map3.txt", g);
+    sfMusic_stop(g->finish_music);
     sfMusic_play(g->bg_music);
     g->camera_pan_x = 0;
     destroy_entities(g);
@@ -80,6 +81,7 @@ void restart(game *g, player *p)
     g->r = create_rings((g->width - 5) * 2, g->map);
     g->ring_frame = 0;
     g->rings = 0;
+    g->seconds = 0;
     p->obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
     *p = create_bools(*p);
     p->speed_y = 0;
@@ -139,5 +141,6 @@ game create_game()
     g.title_sonic->pos.y = W_H / 2 - 224;
     sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
     g.title_sonic_frame = 10;
+    g.seconds = 0;
     return g;
 }

@@ -35,7 +35,7 @@ void destroy_all(game *g, player *p)
     sfMusic_destroy(g->bg_music);
     sfMusic_destroy(g->title_music);
     sfMusic_destroy(g->finish_music);
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 10; i++)
         sfMusic_destroy(p->sound[i]);
     sfSprite_destroy(g->parallax0->spr);
     sfSprite_destroy(g->parallax1->spr);
@@ -75,38 +75,42 @@ void draw_text(game *g, char *str, float x, float y)
     sfRenderWindow_drawText(g->window, g->score_text, NULL);
 }
 
-void clock_draw(game *g, int time)
+void clock_draw(game *g, int time, int offset)
 {
-    draw_text(g, " :", 6, 3);
-    draw_text(g, my_itoa(time / 60), 6, 3);
+    draw_text(g, " :", 6 + offset, 3 + offset);
+    draw_text(g, my_itoa(time / 60), 6 + offset, 3 + offset);
     time %= 60;
     if (time < 10) {
-        draw_text(g, "0", 7.5f, 3);
-        draw_text(g, my_itoa(time), 8.5, 3);
+        draw_text(g, "0", 7.5f + offset, 3 + offset);
+        draw_text(g, my_itoa(time), 8.5 + offset, 3 + offset);
     } else
-        draw_text(g, my_itoa(time), 7.5f, 3);
+        draw_text(g, my_itoa(time), 7.5f + offset, 3 + offset);
 }
 
-void hud_display(game *g)
+void hud_display(game *g, sfBool center)
 {
+    int offset = 0;
+    if (center == sfTrue)
+        offset = 10;
     if (g->score < 0)
         g->score = 0;
     sfText_setFillColor(g->score_text, sfYellow);
+    sfSprite_setPosition(g->player_icon->spr, (sfVector2f) {offset * 20 + 10, offset * 20 + W_H - 100});
     sfRenderWindow_drawSprite(g->window, g->player_icon->spr, NULL);
-    draw_text(g, "score", 1, 1);
+    draw_text(g, "score", 1 + offset, 1 + offset);
     if (g->score < g->hiscore)
-        draw_text(g, "hiscore", 1, 7);
-    draw_text(g, "time", 1, 3);
+        draw_text(g, "hiscore", 1 + offset, 7 + offset);
+    draw_text(g, "time", 1 + offset, 3 + offset);
     if (g->frame % 30 >= 15 && g->rings == 0)
         sfText_setFillColor(g->score_text, sfRed);
-    draw_text(g, "rings", 1, 5);
+    draw_text(g, "rings", 1 + offset, 5 + offset);
     sfText_setFillColor(g->score_text, sfWhite);
-    draw_text(g, my_itoa(g->score), 7, 1);
-    draw_text(g, my_itoa(g->rings), 7, 5);
-    clock_draw(g, g->frame / FPS);
-    draw_text(g, my_itoa(g->lives), 4.5f, W_H / 20 - 3.5f);
+    draw_text(g, my_itoa(g->score), 7 + offset, 1 + offset);
+    draw_text(g, my_itoa(g->rings), 7 + offset, 5 + offset);
+    clock_draw(g, g->seconds / FPS, offset);
+    draw_text(g, my_itoa(g->lives), 4.5f + offset, W_H / 20 - 3.5f + offset);
     if (g->score < g->hiscore)
-        draw_text(g, my_itoa(g->hiscore), 9, 7);
+        draw_text(g, my_itoa(g->hiscore), 9 + offset, 7 + offset);
     if (g->hiscore < g->score) {
         g->hiscore = g->score;
         set_score(&g->hiscore);
@@ -159,8 +163,10 @@ void update(game *g, player *p)
                 g->goalsign->pos.y = 3 * 100;
                 if (p->goal_reached == sfTrue) {
                     sfMusic_stop(g->bg_music);
-                    if (sfMusic_getStatus(g->finish_music) != sfPlaying)
+                    if (sfMusic_getStatus(g->finish_music) != sfPlaying) {
+                        sfMusic_stop(g->finish_music);
                         sfMusic_play(g->finish_music);
+                    }
                     animate_object(g, g->goalsign, g->goalanim, &g->goalframe);
                 }
                 sfSprite_setPosition(g->goalsign->spr, g->goalsign->pos);
@@ -169,7 +175,9 @@ void update(game *g, player *p)
                 update_rings(g, p);
                 update_enemies(g, p);
                 update_player(p, g);
-                hud_display(g);
+                if (g->paused == sfFalse && p->goal_reached == sfFalse)
+                    g->seconds++;
+                hud_display(g, p->goal_reached);
             } else
                 update_title_screen(g);
         }

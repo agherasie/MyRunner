@@ -35,6 +35,8 @@
     #define RING_LOSS 5
     #define RING_COLLECT 6
     #define GOALSIGN 7
+    #define TALLY 8
+    #define ONEUP 9
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -80,6 +82,7 @@ typedef struct game {
     sfClock *clock;
     sfTime time;
     sfEvent event;
+    int seconds;
     char **map;
     object *tile;
     object *parallax0;
@@ -145,7 +148,7 @@ typedef struct player {
     animation anim[16];
     int running_anim;
     int anim_frame;
-    sfMusic *sound[8];
+    sfMusic *sound[10];
     int cooldown;
 } player;
 
