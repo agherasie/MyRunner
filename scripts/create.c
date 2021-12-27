@@ -82,6 +82,8 @@ void restart(game *g, player *p)
     g->ring_frame = 0;
     g->rings = 0;
     g->seconds = 0;
+    g->goalsign->rect.left = 0;
+    sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
     p->obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
     *p = create_bools(*p);
     p->speed_y = 0;
@@ -102,8 +104,12 @@ game create_game()
     g.paused = sfFalse;
     g.camera_pan_x = 0;
     g.camera_pan_speed = 1;
-    g.parallax0 = create_background(2320, 250, "art/hills.png", 0);
-    g.parallax1 = create_background(2317, 350, "art/ocean.png", 250);
+    g.parallax0 = create_background(1729, 64, "art/clouds.png", 0);
+    g.parallax1 = create_background(1729, 53, "art/hills.png", 64 * 2.5f);
+    g.parallax2 = create_background(1729, 40, "art/hills2.png", (64 + 53) * 2.5f);
+    g.parallax3 = create_background(1024, 107, "art/ocean.png", (64 + 53 + 40 - 3) * 2.5f);
+    create_animation(&g.ocean_anim, 4, 10, sfTrue);
+    g.ocean_frame = 0;
     g.frame = 0;
     g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
     g.title_music = sfMusic_createFromFile("art/sound/title-theme.wav");
@@ -111,7 +117,7 @@ game create_game()
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_setLoop(g.title_music, sfTrue);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
-    create_animation(&g.goalanim, 5, 10, sfFalse);
+    create_animation(&g.goalanim, 5, 5, sfFalse);
     g.goalframe = 0;
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);

@@ -87,6 +87,8 @@ typedef struct game {
     object *tile;
     object *parallax0;
     object *parallax1;
+    object *parallax2;
+    object *parallax3;
     sfBool paused;
     float camera_pan_x;
     float camera_pan_speed;
@@ -117,6 +119,8 @@ typedef struct game {
     sfBool is_main_menu;
     int title_sonic_frame;
     sfBool is_runner;
+    animation ocean_anim;
+    int ocean_frame;
 
 } game;
 
