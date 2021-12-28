@@ -7,12 +7,56 @@
 
 #include "my_runner.h"
 
+void enemy_death(enemy *e, player *p)
+{
+    e->is_dead = sfTrue;
+    e->frame = 0;
+    sfMusic_stop(p->sound[BADNIK_DEATH]);
+    sfMusic_play(p->sound[BADNIK_DEATH]);
+}
+
+void enemy_raycast(enemy *e, game *g, player *p)
+{
+    float speed = 2;
+    sfSprite_setScale(e->obj->spr, (sfVector2f) {2 * e->direction, 2});
+    if (e->obj->pos.x > p->obj->pos.x + 2)
+        e->direction = 1;
+    else if (e->obj->pos.x < p->obj->pos.x - 2)
+        e->direction = -1;
+    else
+        speed = 0;
+    float collision_y = 0;
+    int x = (int)((e->obj->pos.x + g->camera_pan_x) / 100);
+    int y = (int)((e->obj->pos.y) / 100);
+    if ((int)(e->obj->pos.x + g->camera_pan_x) % 100 >= 50)
+        x++;
+    if (y != 5 && is_solid(g->map[y + 1][x]) == 1)
+        e->obj->pos.y += 5;
+    for (int i = 0; g->map[y + i + 1] != NULL; i++)
+        if (is_solid(g->map[y + i + 1][x]) == 0) {
+            collision_y = (y + i) * 100;
+            break;
+        }
+    if (e->obj->pos.y >= collision_y)
+        e->obj->pos.y = collision_y;
+    if (is_solid(g->map[y][x]) == 0)
+        enemy_death(e, p);
+    if (e->enemytype == 1
+    && p->obj->pos.x > e->obj->pos.x - 200
+    && p->obj->pos.x < e->obj->pos.x + 250
+    && (y >= p->map_pos.y - 1) && (y <= p->map_pos.y + 1))
+         e->obj->pos.x -= speed * e->direction;
+}
+
 void update_enemies(game *g, player *p)
 {
     for (int i = 0; g->e[i].enemytype != -1; i++) {
         if (g->paused == sfFalse && p->goal_reached == sfFalse)
             g->e[i].obj->pos.x -= g->camera_pan_speed;
-        sfSprite_setPosition(g->e[i].obj->spr, g->e[i].obj->pos);
+        sfVector2f pos = {g->e[i].obj->pos.x + (g->e[i].direction == 1 ? 0 : 100), g->e[i].obj->pos.y};
+        sfSprite_setPosition(g->e[i].obj->spr, pos);
+        if (g->e[i].is_dead == sfFalse)
+            enemy_raycast(&g->e[i], g, p);
         if (g->e[i].is_dead == sfTrue) {
             g->e[i].obj->rect.top = 50;
             animate_object(g, g->e[i].obj, g->e[i].anim[1], &g->e[i].frame);
@@ -31,8 +75,10 @@ enemy create_enemy(int type, float spawn_pos, int free_spot)
         e.obj = create_object(50, 2, "art/crabmeat.png");
     if (type == 0)
         e.obj = create_object(50, 2, "art/crabmeat.png");
+    if (type == 1)
+        e.obj = create_object(50, 2, "art/motorbug.png");
     e.pos = spawn_pos;
-    e.obj->pos.y = free_spot * 100;
+    e.obj->pos.y = free_spot * 100 - 10;
     e.obj->pos.x = e.pos;
     e.enemytype = type;
     e.direction = -1;
@@ -63,7 +109,7 @@ enemy *create_enemies(int enemy_count, char **map)
         if (random_value % 100 >= 50)
             map_pos_x++;
         free_spot = find_free_spot(map, map_pos_x);
-        e[i] = create_enemy(0, random_value, free_spot);
+        e[i] = create_enemy(either_or(0, 1), random_value, free_spot);
         if (map[free_spot][map_pos_x] == 5 || map[5][map_pos_x] == 6) {
             e[i].is_dead = sfTrue;
             e[i].frame = e[i].anim->length;

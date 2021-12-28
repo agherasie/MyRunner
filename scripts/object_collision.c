@@ -54,10 +54,7 @@ void enemy_collision(player *p, enemy *e, game *g)
     else if (is_attacking(p) == 0) {
         if (p->anim_state == JUMPING)
             p->speed_y = -8;
-        e->is_dead = sfTrue;
-        e->frame = 0;
         g->score += 100;
-        sfMusic_stop(p->sound[BADNIK_DEATH]);
-        sfMusic_play(p->sound[BADNIK_DEATH]);
+        enemy_death(e, p);
     }
 }

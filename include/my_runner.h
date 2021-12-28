@@ -224,5 +224,6 @@ void draw_tile(game *g, sfSprite *spr, sfVector2f pos);
 void tile_interpretor(char **map, int y, int x);
 void do_damage(player *p, game *g);
 void player_hit(player *p, game *g);
+void enemy_death(enemy *e, player *p);
 
 #endif /* MY_RUNNER_H_ */
