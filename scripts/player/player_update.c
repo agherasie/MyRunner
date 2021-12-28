@@ -26,24 +26,6 @@ void print_status(player *p)
         printf("is_hurt\n");
 }
 
-void invisible_walls(player *p, game *g)
-{
-    if (p->obj->pos.x <= g->camera_pan_x - 24) {
-        p->obj->pos.x = g->camera_pan_x - 24;
-        if (g->is_runner == sfTrue)
-            do_death(p, g);
-    }
-    g->camera_pan_speed = 0;
-    if (p->is_dying == sfFalse && g->is_runner == sfTrue)
-        g->camera_pan_speed = 3;
-    if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
-        g->camera_pan_speed = TOPSPEED;
-    if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
-        g->camera_pan_speed = 10;
-    if (p->obj->pos.y <= 0)
-        p->obj->pos.y = 0;
-}
-
 void camera_adjustments(player *p, game *g, sfBool is_first)
 {
     if (is_first == sfTrue) {
@@ -83,14 +65,36 @@ void sound_update(player *p)
         sfMusic_play(p->sound[BRAKE]);
     else
         sfMusic_stop(p->sound[BRAKE]);
-    if (p->is_hurt == sfFalse) {
+    if (p->is_hurt == sfFalse)
         sfMusic_stop(p->sound[RING_LOSS]);
-    }
     if (p->goal_reached == sfTrue
     && sfMusic_getStatus(p->sound[GOALSIGN]) != sfPlaying)
         sfMusic_play(p->sound[GOALSIGN]);
     if (p->goal_reached == sfFalse)
         sfMusic_stop(p->sound[GOALSIGN]);
+}
+
+void counting(player *p, game *g)
+{
+    if (g->rings > 0 && p->cooldown % g->tally_speed == 0) {
+        if (p->cooldown % 15 == 0) {
+            sfMusic_stop(p->sound[TALLY]);
+            sfMusic_play(p->sound[TALLY]);
+        }
+        g->score += 100;
+        g->rings--;
+    }
+    if (g->seconds != 0) {
+        if (g->seconds < 60)
+            g->score += 1000;
+        else if (g->seconds < 120)
+            g->score += 500;
+        else if (g->seconds < 180)
+            g->score += 500;
+    }
+    g->seconds = 0;
+    if (g->rings == 0 && p->cooldown > 50)
+        p->cooldown = 50;
 }
 
 void tally(player *p, game *g)
@@ -99,27 +103,8 @@ void tally(player *p, game *g)
         g->tally_speed = 2;
     if (p->cooldown < 0)
         p->cooldown = 10000;
-    if (p->cooldown > 0 && p->cooldown <= 9700) {
-        if (g->rings > 0 && p->cooldown % g->tally_speed == 0) {
-            if (p->cooldown % 15 == 0) {
-                sfMusic_stop(p->sound[TALLY]);
-                sfMusic_play(p->sound[TALLY]);
-            }
-            g->score += 100;
-            g->rings--;
-        }
-        if (g->seconds != 0) {
-            if (g->seconds < 60)
-                g->score += 1000;
-            else if (g->seconds < 120)
-                g->score += 500;
-            else if (g->seconds < 180)
-                g->score += 500;
-        }
-        g->seconds = 0;
-        if (g->rings == 0 && p->cooldown > 50)
-            p->cooldown = 50;
-    }
+    if (p->cooldown > 0 && p->cooldown <= 9700)
+        counting(p, g);
     if (p->cooldown == 0) {
         if (g->level != 3)
             g->level++;
@@ -127,70 +112,109 @@ void tally(player *p, game *g)
     }
 }
 
+void dashing(player *p)
+{
+    if (p->speed_x > 0) {
+        p->is_spinning = sfFalse;
+        p->is_charging = sfFalse;
+    }
+    if (p->speed_x <= 8)
+        p->is_speeding = sfFalse;
+    if (p->is_dashing == sfTrue && p->speed_x == 0)
+        p->is_dashing = sfFalse;
+}
+
+void damage(player *p, game *g)
+{
+    int solid = is_solid(g->map[p->map_pos.y][p->map_pos.x + p->direction]);
+    if (p->is_hurt && solid == 1)
+        p->obj->pos.x -= p->cooldown / 10 * p->direction;
+    p->cooldown--;
+    if (p->speed_x >= 0 && p->is_hurt == sfTrue) {
+        p->speed_x = 0;
+        if (p->cooldown <= 0)
+            p->is_hurt = sfFalse;
+    }
+}
+
+void dying(player *p, game *g)
+{
+    p->speed_y += 0.25f;
+    p->obj->pos.y += p->speed_y;
+    if (p->obj->pos.y > W_H) {
+        g->lives--;
+        if (g->lives == 0)
+            sfRenderWindow_close(g->window);
+        else
+            restart(g, p);
+    }
+}
+
+void do_death(player *p, game *g)
+{
+    if (p->is_dying == sfFalse) {
+        g->camera_pan_speed = 0;
+        sfMusic_stop(g->bg_music);
+        sfMusic_stop(p->sound[DEATH]);
+        sfMusic_play(p->sound[DEATH]);
+        p->speed_y = -10;
+        p->is_dying = sfTrue;
+    }
+}
+
+void update_living(player *p, game *g)
+{
+    for (int i = 0; g->e[i].enemytype != -1; i++)
+        if (is_enemy_collision(p, &g->e[i], g) == 0)
+            enemy_collision(p, &g->e[i], g);
+    for (int i = 0; g->r[i].is_null != sfTrue; i++)
+        if (is_ring_collision(p, &g->r[i], g) == 0)
+            ring_collision(p, &g->r[i], g, i);
+    misc(p);
+    movement(p, g);
+    raycast(p, g);
+    gravity(p);
+}
+
+void update_lives(player *p, game *g)
+{
+    g->score += g->lives * 100;
+    sfMusic_stop(p->sound[ONEUP]);
+    sfMusic_play(p->sound[ONEUP]);
+    g->lives++;
+}
+
+void update_unpaused(player *p, game *g)
+{
+    camera_adjustments(p, g, sfTrue);
+    dashing(p);
+    damage(p, g);
+    invisible_walls(p, g);
+    animate(p);
+    //print_status(p);
+    if (p->is_dying == sfTrue)
+        dying(p, g);
+    else
+        update_living(p, g);
+    camera_adjustments(p, g, sfFalse);
+    sound_update(p);
+}
+
 void update_player(player *p, game *g)
 {
-    if (g->score % 100000 == 0 && g->score != 0) {
-        g->score += g->lives * 100;
-        sfMusic_stop(p->sound[ONEUP]);
-        sfMusic_play(p->sound[ONEUP]);
-        g->lives++;
-    }
+    if (g->score % 100000 == 0 && g->score != 0)
+        update_lives(p, g);
     if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0 && p->speed_y == 0)
         do_death(p, g);
+    if (p->map_pos.x == g->width - 1)
+        p->goal_reached = sfTrue;
     if (p->goal_reached == sfTrue) {
         tally(p, g);
     } else if (g->paused == sfFalse && g->is_runner == sfTrue) {
         p->speed_x = 5;
         p->is_dashing = sfFalse;
     }
-    if (p->map_pos.x == g->width - 1)
-        p->goal_reached = sfTrue;
-    if (g->paused == sfFalse) {
-        camera_adjustments(p, g, sfTrue);
-        if (p->speed_x > 0) {
-            p->is_spinning = sfFalse;
-            p->is_charging = sfFalse;
-        }
-        if (p->speed_x <= 8)
-            p->is_speeding = sfFalse;
-        if (p->is_dashing == sfTrue && p->speed_x == 0)
-            p->is_dashing = sfFalse;
-        if (p->is_hurt && is_solid(g->map[p->map_pos.y][p->map_pos.x + p->direction]) == 1)
-            p->obj->pos.x -= p->cooldown / 10 * p->direction;
-        p->cooldown--;
-        if (p->speed_x >= 0 && p->is_hurt == sfTrue) {
-            p->speed_x = 0;
-            if (p->cooldown <= 0)
-                p->is_hurt = sfFalse;
-        }
-        if (p->is_dying == sfTrue) {
-            p->speed_y += 0.25f;
-            p->obj->pos.y += p->speed_y;
-            if (p->obj->pos.y > W_H) {
-                g->lives--;
-                if (g->lives == 0)
-                    sfRenderWindow_close(g->window);
-                else
-                    restart(g, p);
-            }
-        }
-        invisible_walls(p, g);
-        if (p->is_dying == sfFalse) {
-            for (int i = 0; g->e[i].enemytype != -1; i++)
-                enemy_collision(p, &g->e[i], g);
-            for (int i = 0; g->r[i].is_null != sfTrue; i++)
-                ring_collision(p, &g->r[i], g, i);
-            misc(p);
-            movement(p, g);
-            raycast(p, g);
-            gravity(p);
-        }
-        animate(p);
-        //print_status(p);
-        camera_adjustments(p, g, sfFalse);
-        sound_update(p);
-        if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)
-            p->speed_x = 0;
-    }
+    if (g->paused == sfFalse)
+        update_unpaused(p, g);
     draw_player(p, g);
 }

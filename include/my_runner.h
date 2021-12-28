@@ -208,5 +208,10 @@ void draw_text(game *g, char *str, float x, float y);
 void d_txt_var(game *g, char *str, sfVector2i pos, int value);
 void draw_spr_at_pos(game *g, sfSprite *spr, float x, float y);
 void update_clock(game *g, player *p);
+void invisible_walls(player *p, game *g);
+void enemy_collision(player *p, enemy *e, game *g);
+void ring_collision(player *p, ring *r, game *g, int i);
+int is_ring_collision(player *p, ring *r, game *g);
+int is_enemy_collision(player *p, enemy *e, game *g);
 
 #endif /* MY_RUNNER_H_ */

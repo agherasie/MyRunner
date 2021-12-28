@@ -23,6 +23,7 @@ SRC	=	scripts/main.c \
 		scripts/hud.c \
 		scripts/text.c \
 		scripts/destroy.c \
+		scripts/object_collision.c \
 
 OBJ	=	$(SRC:.c=.o)
 
