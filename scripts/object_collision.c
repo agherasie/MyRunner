@@ -41,7 +41,8 @@ int is_enemy_collision(player *p, enemy *e, game *g)
 int is_attacking(player *p)
 {
     int st = p->anim_state;
-    if (st == JUMPING || st == DASHING || st == SPINNING)
+    if (st == JUMPING || st == DASHING || st == SPINNING
+    || (st == SPEEDING) && p->character == 'k')
         return 0;
     return 1;
 }

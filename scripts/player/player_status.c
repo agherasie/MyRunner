@@ -21,6 +21,11 @@ void dashing(player *p)
 
 void damage(player *p, game *g)
 {
+    if (p->is_hurt) {
+        p->is_dropping = sfFalse;
+        p->is_flying = sfFalse;
+        p->is_gliding = sfFalse;
+    }
     int solid = is_solid(g->map[p->map_pos.y][p->map_pos.x + p->direction]);
     if (p->is_hurt && solid == 1)
         p->obj->pos.x -= p->cooldown / 10 * p->direction;

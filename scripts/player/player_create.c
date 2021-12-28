@@ -12,6 +12,7 @@ player create_knux_animations(player p)
     p.anim_frame = 0;
     p.running_anim = 0;
     p.anim_state = IDLE;
+    p.character = 'k';
     create_animation(&p.anim[IDLE], 1, 1, sfFalse);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
@@ -36,6 +37,7 @@ player create_tails_animations(player p)
     p.anim_frame = 0;
     p.running_anim = 0;
     p.anim_state = IDLE;
+    p.character = 't';
     create_animation(&p.anim[IDLE], 4, 15, sfTrue);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 6, 5, sfTrue);
@@ -52,6 +54,7 @@ player create_tails_animations(player p)
     create_animation(&p.anim[DASHING], 3, 3, sfTrue);
     create_animation(&p.anim[SPEEDING], 2, 3, sfTrue);
     create_animation(&p.anim[DYING], 3, 10, sfFalse);
+    create_animation(&p.anim[TIRING], 2, 6, sfTrue);
     return p;
 }
 
@@ -60,6 +63,7 @@ player create_animations(player p)
     p.anim_frame = 0;
     p.running_anim = 0;
     p.anim_state = IDLE;
+    p.character = 's';
     create_animation(&p.anim[IDLE], 1, 1, sfTrue);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
@@ -97,6 +101,8 @@ player create_bools(player p)
     p.is_speeding = sfFalse;
     p.is_dropping = sfFalse;
     p.is_dying = sfFalse;
+    p.is_flying = sfFalse;
+    p.is_gliding = sfFalse;
     return p;
 }
 

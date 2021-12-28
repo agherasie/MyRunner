@@ -36,17 +36,35 @@ void directional_key(player *p, int direction, sfBool released, game *g)
     }
 }
 
+void do_special(player *p)
+{
+    if (p->character == 's')
+        p->is_dropping = sfTrue;
+    if (p->character == 't') {
+        if (p->is_flying == sfFalse)
+            p->cooldown = 150;
+        if (p->cooldown > 0)
+            p->speed_y = -2;
+        p->is_flying = sfTrue;
+    }
+    if (p->character == 'k'
+    && p->is_gliding == sfFalse && p->is_jumping == sfTrue)
+        p->is_gliding = sfTrue;
+}
+
 void do_jump(player *p)
 {
+    float jump_speed = 10;
+    if (p->character == 'k')
+        jump_speed = 8;
     if (p->is_grounded == sfTrue) {
         p->is_grounded = sfFalse;
         p->is_dashing = sfFalse;
         p->is_jumping = sfTrue;
-        p->speed_y = -10;
+        p->speed_y -= jump_speed;
         sfMusic_play(p->sound[JUMP]);
-    } else if (p->is_jumping == sfTrue) {
-        p->is_dropping = sfTrue;
-    }
+    } else if (p->is_jumping == sfTrue)
+        do_special(p);
 }
 
 void player_keyboard_events(game *g, player *p)
@@ -61,12 +79,16 @@ void player_keyboard_events(game *g, player *p)
             && p->anim_state != SPINNING && p->is_charging == sfFalse)
                 do_jump(p);
             else {
-                sfMusic_stop(p->sound[SPIN]);
-                sfMusic_play(p->sound[SPIN]);
-                if (p->anim_state == CROUCHING)
+                if (p->anim_state == CROUCHING) {
+                    sfMusic_stop(p->sound[SPIN]);
+                    sfMusic_play(p->sound[SPIN]);
                     p->is_spinning = sfTrue;
-                if (p->anim_state == LOOKING)
+                }
+                if (p->anim_state == LOOKING && p->character == 's') {
+                    sfMusic_stop(p->sound[SPIN]);
+                    sfMusic_play(p->sound[SPIN]);
                     p->is_charging = sfTrue;
+                }
                 p->is_crouching = sfFalse;
                 p->is_looking = sfFalse;
             }
@@ -87,7 +109,7 @@ void player_keyboard_events(game *g, player *p)
         if (g->event.key.code == sfKeyLeft && p->direction == -1)
             directional_key(p, -1, sfTrue, g);
         if (g->event.key.code == sfKeyUp)
-            if (p->is_charging) {
+            if (p->is_charging == sfTrue) {
                 p->speed_x = 10;
                 p->is_speeding = sfTrue;
             } else
@@ -98,5 +120,10 @@ void player_keyboard_events(game *g, player *p)
                 p->is_dashing = sfTrue;
             } else
                 p->is_crouching = sfFalse;
+        if (g->event.key.code == sfKeyS) {
+            if (p->is_gliding == sfTrue)
+                p->speed_x = 0;
+            p->is_gliding = sfFalse;
+        }
     }
 }

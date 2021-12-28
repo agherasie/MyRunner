@@ -9,10 +9,13 @@
 
 void acceleration(player *p)
 {
+    float topspeed = TOPSPEED;
+    if (p->character == 's')
+        topspeed = TOPSPEED + 0.75f;
     float prev_speed_x = p->speed_x;
     if (p->acceleration == sfTrue)
         p->speed_x += 0.15f;
-    if (p->speed_x >= TOPSPEED + 0.15f)
+    if (p->speed_x >= topspeed + 0.15f)
         p->speed_x = prev_speed_x;
     if (p->speed_x > 0)
         p->meters_run += p->speed_x / 40;
@@ -51,6 +54,10 @@ void gravity(player *p)
 {
     if (p->obj->pos.y == p->collision_y) {
         p->is_grounded = sfTrue;
+        if (p->is_gliding == sfTrue)
+            p->speed_x = 0;
+        p->is_flying = sfFalse;
+        p->is_gliding = sfFalse;
         if (p->is_dropping == sfTrue) {
             p->speed_x = TOPSPEED;
             p->is_dashing = sfTrue;
@@ -60,9 +67,14 @@ void gravity(player *p)
         }
     } else
         p->is_grounded = sfFalse;
-    if (p->is_grounded == sfFalse) {
-        p->speed_y += 0.4f;
-    }
+    if (p->is_grounded == sfFalse)
+        if (p->is_flying == sfTrue)
+            p->speed_y += 0.125f;
+        else if (p->is_gliding == sfTrue) {
+            p->speed_y = 1;
+            p->speed_x = 5.5f;
+        } else
+            p->speed_y += 0.4f;
     if (p->obj->pos.y > p->collision_y) {
         p->speed_y = 0;
         p->obj->pos.y = p->collision_y;

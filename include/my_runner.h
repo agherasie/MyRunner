@@ -27,6 +27,7 @@
     #define DASHING 13
     #define SPEEDING 14
     #define DYING 15
+    #define TIRING 16
     #define JUMP 0
     #define BADNIK_DEATH 1
     #define BRAKE 2
@@ -157,11 +158,14 @@ typedef struct player {
     sfBool is_dying;
     int is_edging;
     int anim_state;
-    animation anim[16];
+    animation anim[17];
     int running_anim;
     int anim_frame;
     sfMusic *sound[10];
     int cooldown;
+    char character;
+    sfBool is_flying;
+    sfBool is_gliding;
 } player;
 
 int launch_game();
