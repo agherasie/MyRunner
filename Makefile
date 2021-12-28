@@ -18,6 +18,7 @@ SRC	=	scripts/main.c \
 		scripts/map.c \
 		scripts/background.c \
 		scripts/ring.c \
+		scripts/update.c \
 
 OBJ	=	$(SRC:.c=.o)
 

@@ -196,5 +196,13 @@ void restart(game *g, player *p);
 void destroy_entities(game *g);
 void fade_transition(game *g);
 player create_tails_animations(player p);
+void pause_game(game *g, player *p);
+void toggle(sfBool *boolean);
+void hud_display(game *g, sfBool center);
+void update_title_screen(game *g);
+void keyboard_events(game *g, player *p);
+void pause_game(game *g, player *p);
+void destroy_all(game *g, player *p);
+void pause_menu(game *g);
 
 #endif /* MY_RUNNER_H_ */
