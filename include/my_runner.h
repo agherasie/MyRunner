@@ -205,5 +205,7 @@ void pause_game(game *g, player *p);
 void destroy_all(game *g, player *p);
 void pause_menu(game *g);
 void draw_text(game *g, char *str, float x, float y);
+void d_txt_var(game *g, char *str, sfVector2i pos, int value);
+void draw_spr_at_pos(game *g, sfSprite *spr, float x, float y);
 
 #endif /* MY_RUNNER_H_ */

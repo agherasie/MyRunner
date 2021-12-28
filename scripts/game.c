@@ -81,55 +81,6 @@ void keyboard_events(game *g, player *p)
     }
 }
 
-void draw_text(game *g, char *str, float x, float y)
-{
-    sfText_setPosition(g->score_text, (sfVector2f) {20 * x, 20 * y});
-    sfText_setString(g->score_text, str);
-    sfRenderWindow_drawText(g->window, g->score_text, NULL);
-}
-
-void clock_draw(game *g, int time, int offset)
-{
-    draw_text(g, " :", 6 + offset, 3 + offset);
-    draw_text(g, my_itoa(time / 60), 6 + offset, 3 + offset);
-    time %= 60;
-    if (time < 10) {
-        draw_text(g, "0", 7.5f + offset, 3 + offset);
-        draw_text(g, my_itoa(time), 8.5 + offset, 3 + offset);
-    } else
-        draw_text(g, my_itoa(time), 7.5f + offset, 3 + offset);
-}
-
-void hud_display(game *g, sfBool center)
-{
-    int offset = 0;
-    if (center == sfTrue)
-        offset = 10;
-    if (g->score < 0)
-        g->score = 0;
-    sfText_setFillColor(g->score_text, sfYellow);
-    sfSprite_setPosition(g->player_icon->spr, (sfVector2f) {offset * 20 + 10, offset * 20 + W_H - 100});
-    sfRenderWindow_drawSprite(g->window, g->player_icon->spr, NULL);
-    draw_text(g, "score", 1 + offset, 1 + offset);
-    if (g->score < g->hiscore)
-        draw_text(g, "hiscore", 1 + offset, 7 + offset);
-    draw_text(g, "time", 1 + offset, 3 + offset);
-    if (g->frame % 30 >= 15 && g->rings == 0)
-        sfText_setFillColor(g->score_text, sfRed);
-    draw_text(g, "rings", 1 + offset, 5 + offset);
-    sfText_setFillColor(g->score_text, sfWhite);
-    draw_text(g, my_itoa(g->score), 7 + offset, 1 + offset);
-    draw_text(g, my_itoa(g->rings), 7 + offset, 5 + offset);
-    clock_draw(g, g->seconds / FPS, offset);
-    draw_text(g, my_itoa(g->lives), 4.5f + offset, W_H / 20 - 3.5f + offset);
-    if (g->score < g->hiscore)
-        draw_text(g, my_itoa(g->hiscore), 9 + offset, 7 + offset);
-    if (g->hiscore < g->score) {
-        g->hiscore = g->score;
-        set_score(&g->hiscore);
-    }
-}
-
 void update_title_screen(game *g)
 {
     draw_text(g, "epitech 2021", W_W / 20 - 12, W_H / 20 - 3.5f);
