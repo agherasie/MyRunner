@@ -7,19 +7,6 @@
 
 #include "my_runner.h"
 
-void update_tile(game *g, player *p, sfVector2f *tilepos, sfVector2i mappos)
-{
-    if (g->map[mappos.y][mappos.x] >= 0 && g->map[mappos.y][mappos.x] <= 9) {
-        tilepos->x = mappos.x * 100 - g->camera_pan_x;
-        tilepos->y = mappos.y * 100;
-        g->tile->rect.top = 0;
-        g->tile->rect.left = 50 * g->map[mappos.y][mappos.x];
-        sfSprite_setPosition(g->tile->spr, *tilepos);
-        sfSprite_setTextureRect(g->tile->spr, g->tile->rect);
-        sfRenderWindow_drawSprite(g->window, g->tile->spr, NULL);
-    }
-}
-
 void skip_buffer(char **buffer)
 {
     while (**buffer < '0' || **buffer > '9')

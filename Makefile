@@ -27,6 +27,7 @@ SRC	=	scripts/main.c \
 		scripts/object_collision.c \
 		scripts/tally.c \
 		scripts/sound.c \
+		scripts/update_tiles.c \
 
 OBJ	=	$(SRC:.c=.o)
 
