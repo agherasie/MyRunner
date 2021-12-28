@@ -127,6 +127,7 @@ typedef struct game {
     int pause_frame;
     sfTexture *sonic_text;
     sfTexture *tails_text;
+    sfTexture *knux_text;
 } game;
 
 typedef struct player {
@@ -196,6 +197,7 @@ void restart(game *g, player *p);
 void destroy_entities(game *g);
 void fade_transition(game *g);
 player create_tails_animations(player p);
+player create_knux_animations(player p);
 void pause_game(game *g, player *p);
 void toggle(sfBool *boolean);
 void hud_display(game *g, sfBool center);

@@ -7,6 +7,30 @@
 
 #include "my_runner.h"
 
+player create_knux_animations(player p)
+{
+    p.anim_frame = 0;
+    p.running_anim = 0;
+    p.anim_state = IDLE;
+    create_animation(&p.anim[IDLE], 1, 1, sfFalse);
+    create_animation(&p.anim[WALKING], 8, 8, sfTrue);
+    create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
+    create_animation(&p.anim[JUMPING], 4, 3, sfTrue);
+    create_animation(&p.anim[TURNING], 2, 10, sfTrue);
+    create_animation(&p.anim[PUSHING], 4, 20, sfTrue);
+    create_animation(&p.anim[FEDGING], 2, 12, sfTrue);
+    create_animation(&p.anim[BEDGING], 3, 8, sfTrue);
+    create_animation(&p.anim[LOOKING], 2, 10, sfFalse);
+    create_animation(&p.anim[CROUCHING], 2, 10, sfFalse);
+    create_animation(&p.anim[THUMBSUP], 4, 12, sfTrue);
+    create_animation(&p.anim[HURTING], 6, 7, sfFalse);
+    create_animation(&p.anim[SPINNING], 6, 5, sfTrue);
+    create_animation(&p.anim[DASHING], 4, 3, sfTrue);
+    create_animation(&p.anim[SPEEDING], 1, 1, sfFalse);
+    create_animation(&p.anim[DYING], 2, 10, sfFalse);
+    return p;
+}
+
 player create_tails_animations(player p)
 {
     p.anim_frame = 0;

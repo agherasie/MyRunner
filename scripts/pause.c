@@ -30,8 +30,8 @@ void buttons(game *g, player *p)
     if (g->select == 3)
         sfRenderWindow_close(g->window);
     if (g->select == 4) {
-        sfSprite_setTexture(p->obj->spr, g->tails_text, sfFalse);
-        *p = create_tails_animations(*p);
+        sfSprite_setTexture(p->obj->spr, g->knux_text, sfFalse);
+        *p = create_knux_animations(*p);
     }
     g->paused = sfFalse;
     g->select = 0;
@@ -62,7 +62,8 @@ void pause_menu(game *g)
         button_draw(g, 1, "restart level");
         button_draw(g, 2, "return to title");
         button_draw(g, 3, "exit game");
-        button_draw(g, 4, "tails");
+        button_draw(g, 5, "tails");
+        button_draw(g, 4, "knuckles");
     }
     fade_transition(g);
 }

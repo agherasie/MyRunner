@@ -133,6 +133,7 @@ game create_art(game g)
     g.title_sonic = create_background(254, 219, "art/title_logo.png", 0);
     g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
     g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
+    g.knux_text = sfTexture_createFromFile("art/knuckles_sheet.png", NULL);
     g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
     g.title_music = sfMusic_createFromFile("art/sound/liveandlearn.wav");
     sfMusic_setLoop(g.bg_music, sfTrue);
