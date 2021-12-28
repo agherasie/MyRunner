@@ -204,5 +204,6 @@ void keyboard_events(game *g, player *p);
 void pause_game(game *g, player *p);
 void destroy_all(game *g, player *p);
 void pause_menu(game *g);
+void draw_text(game *g, char *str, float x, float y);
 
 #endif /* MY_RUNNER_H_ */

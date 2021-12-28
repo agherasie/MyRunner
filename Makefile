@@ -19,6 +19,7 @@ SRC	=	scripts/main.c \
 		scripts/background.c \
 		scripts/ring.c \
 		scripts/update.c \
+		scripts/pause.c \
 
 OBJ	=	$(SRC:.c=.o)
 
