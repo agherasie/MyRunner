@@ -117,6 +117,7 @@ game create_values(game g)
     g.paused = sfFalse;
     g.is_runner = sfFalse;
     g.is_main_menu = sfTrue;
+    g.character_menu = sfFalse;
     return g;
 }
 

@@ -37,6 +37,25 @@ void buttons(game *g, player *p)
     g->select = 0;
 }
 
+void character_buttons(game *g, player *p)
+{
+    if (g->select == 0) {
+        sfSprite_setTexture(p->obj->spr, g->sonic_text, sfFalse);
+        *p = create_animations(*p);
+    }
+    if (g->select == 1) {
+        sfSprite_setTexture(p->obj->spr, g->tails_text, sfFalse);
+        *p = create_tails_animations(*p);
+    }
+    if (g->select == 2) {
+        sfSprite_setTexture(p->obj->spr, g->knux_text, sfFalse);
+        *p = create_knux_animations(*p);
+    }
+    g->paused = sfFalse;
+    g->select = 0;
+    g->character_menu = sfFalse;
+}
+
 void select_button(game *g, player *p)
 {
     sfKeyCode key = g->event.key.code;
@@ -48,22 +67,33 @@ void select_button(game *g, player *p)
         g->select--;
     if (key == sfKeyDown)
         g->select++;
-    if (key == sfKeyEnter)
-        buttons(g, p);
+    if (key == sfKeyEnter) {
+        if (g->character_menu == sfTrue)
+            character_buttons(g, p);
+        else
+            buttons(g, p);
+    }
+    int button_number = 5;
+    if (g->character_menu == sfTrue)
+        button_number = 4;
     if (g->select < 0)
-        g->select = 4;
-    g->select %= 5;
+        g->select = button_number;
+    g->select %= button_number - 1;
 }
 
 void pause_menu(game *g)
 {
     if (g->pause_frame > 250) {
-        button_draw(g, 0, "continue playing");
-        button_draw(g, 1, "restart level");
-        button_draw(g, 2, "return to title");
-        button_draw(g, 3, "exit game");
-        button_draw(g, 5, "tails");
-        button_draw(g, 4, "knuckles");
+        if (g->character_menu == sfTrue) {
+            button_draw(g, 0, "sonic");
+            button_draw(g, 1, "tails");
+            button_draw(g, 2, "knuckles");
+        } else {
+            button_draw(g, 0, "continue playing");
+            button_draw(g, 1, "restart level");
+            button_draw(g, 2, "return to title");
+            button_draw(g, 3, "exit game");
+        }
     }
     fade_transition(g);
 }

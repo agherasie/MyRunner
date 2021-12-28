@@ -34,9 +34,12 @@ void animate_sonic_title(game *g)
 void update_title_screen(game *g)
 {
     draw_text(g, "epitech 2021", W_W / 20 - 12, W_H / 20 - 3.5f);
+    sfMusic_stop(g->bg_music);
     if (sfMusic_getStatus(g->title_music) != sfPlaying)
         sfMusic_play(g->title_music);
     animate_sonic_title(g);
+    if (g->pause_frame > 250)
+        g->is_main_menu = sfFalse;
 }
 
 void update_goalsign(game *g, player *p)

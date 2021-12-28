@@ -22,8 +22,10 @@ void keyboard_events(game *g, player *p)
     if (g->event.type == sfEvtKeyPressed) {
         pause_game(g, p);
         if (g->event.key.code == sfKeyEnter) {
-            if (g->is_main_menu == sfTrue)
-                g->is_main_menu = sfFalse;
+            if (g->is_main_menu == sfTrue) {
+                g->character_menu = sfTrue;
+                g->paused = sfTrue;
+            }
             if (p->goal_reached == sfTrue) {
                 g->tally_speed = 2;
                 p->cooldown = 9700;

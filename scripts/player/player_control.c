@@ -40,6 +40,7 @@ void do_jump(player *p)
 {
     if (p->is_grounded == sfTrue) {
         p->is_grounded = sfFalse;
+        p->is_dashing = sfFalse;
         p->is_jumping = sfTrue;
         p->speed_y = -10;
         sfMusic_play(p->sound[JUMP]);

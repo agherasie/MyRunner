@@ -128,6 +128,7 @@ typedef struct game {
     sfTexture *sonic_text;
     sfTexture *tails_text;
     sfTexture *knux_text;
+    sfBool character_menu;
 } game;
 
 typedef struct player {
@@ -196,6 +197,7 @@ player create_bools(player p);
 void restart(game *g, player *p);
 void destroy_entities(game *g);
 void fade_transition(game *g);
+player create_animations(player p);
 player create_tails_animations(player p);
 player create_knux_animations(player p);
 void pause_game(game *g, player *p);
