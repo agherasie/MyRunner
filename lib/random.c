@@ -12,7 +12,6 @@ int either_or(int either, int or)
 {
     int max = 1;
     int min = 0;
-    srand(time(NULL));
     int random = rand() % (max - min + 1) + max;
     if (random == 1)
         random = or;
