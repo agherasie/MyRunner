@@ -154,5 +154,7 @@ game create_game()
     g.seconds = 0;
     g.is_runner = sfFalse;
     g.select = 0;
+    g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
+    g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
     return g;
 }

@@ -125,6 +125,8 @@ typedef struct game {
     int select;
     sfMusic *select_sound;
     int pause_frame;
+    sfTexture *sonic_text;
+    sfTexture *tails_text;
 } game;
 
 typedef struct player {
@@ -193,5 +195,6 @@ player create_bools(player p);
 void restart(game *g, player *p);
 void destroy_entities(game *g);
 void fade_transition(game *g);
+player create_tails_animations(player p);
 
 #endif /* MY_RUNNER_H_ */
