@@ -116,6 +116,7 @@ game create_game()
     g.title_music = sfMusic_createFromFile("art/sound/liveandlearn.wav");
     g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
     g.select_sound = sfMusic_createFromFile("art/sound/select.wav");
+    g.pause_frame = 0;
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_setLoop(g.title_music, sfTrue);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");

@@ -124,6 +124,7 @@ typedef struct game {
     int tally_speed;
     int select;
     sfMusic *select_sound;
+    int pause_frame;
 } game;
 
 typedef struct player {
@@ -191,5 +192,6 @@ void ring_collision(player *p, ring *r, game *g, int i);
 player create_bools(player p);
 void restart(game *g, player *p);
 void destroy_entities(game *g);
+void fade_transition(game *g);
 
 #endif /* MY_RUNNER_H_ */

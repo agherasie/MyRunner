@@ -56,8 +56,10 @@ void pause_game(game *g, player *p)
     if (g->event.key.code == sfKeyP && g->is_main_menu == sfFalse) {
         if (g->paused == sfTrue)
             g->paused = sfFalse;
-        else
+        else {
             g->paused = sfTrue;
+            g->pause_frame = 0;
+        }
     }
     if (g->paused == sfTrue) {
         if (g->event.key.code == sfKeyUp || g->event.key.code == sfKeyDown
@@ -204,12 +206,32 @@ void button_draw(game *g, int number, char *str)
         draw_text(g, str, W_W / 2 / 20 - 9, 8 + 4 * number);
 }
 
+void fade_transition(game *g)
+{
+    int alpha = 0;
+    if (g->pause_frame < 255)
+        alpha = g->pause_frame;
+    if (g->pause_frame >= 255)
+        alpha = 255 - g->pause_frame % 255;
+    if (g->pause_frame >= 255*2)
+        alpha = 0;
+    g->pause_frame += 20;
+    sfRectangleShape *screen = sfRectangleShape_create();
+    sfRectangleShape_setFillColor(screen, (sfColor) {0, 0, 0, alpha});
+    sfRectangleShape_setSize(screen, (sfVector2f) {W_W, W_H});
+    sfRenderWindow_drawRectangleShape(g->window, screen, NULL);
+    sfRectangleShape_destroy(screen);
+}
+
 void pause_menu(game *g)
 {
-    button_draw(g, 0, "continue playing");
-    button_draw(g, 1, "restart level");
-    button_draw(g, 2, "return to title");
-    button_draw(g, 3, "exit game");
+    if (g->pause_frame > 250) {
+        button_draw(g, 0, "continue playing");
+        button_draw(g, 1, "restart level");
+        button_draw(g, 2, "return to title");
+        button_draw(g, 3, "exit game");
+    }
+    fade_transition(g);
 }
 
 void update(game *g, player *p)
@@ -222,7 +244,7 @@ void update(game *g, player *p)
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g, p);
-            if (g->is_main_menu == sfFalse && g->paused == sfFalse) {
+            if (g->is_main_menu == sfFalse && (g->paused == sfFalse || g->pause_frame < 250)) {
                 if (sfMusic_getStatus(g->bg_music) != sfPlaying)
                     sfMusic_play(g->bg_music);
                 sfMusic_stop(g->title_music);

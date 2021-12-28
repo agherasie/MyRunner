@@ -33,7 +33,7 @@ void update_background(game *g, player *p)
     scroll_parallax(g, p, g->parallax2, 0.3f * g->camera_pan_speed);
     sfVector2i mappos = {0, 0};
     sfVector2f tilepos = {0, 0};
-    for (int i = 0; i < g->height && g->is_main_menu == sfFalse && g->paused == sfFalse; i++)
+    for (int i = 0; i < g->height && g->is_main_menu == sfFalse && (g->paused == sfFalse || g->pause_frame < 250); i++)
         for (int j = 0; j < g->width; j++) {
             mappos.x = j;
             mappos.y = i;
