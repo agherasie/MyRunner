@@ -49,17 +49,9 @@ int is_attacking(player *p)
 void enemy_collision(player *p, enemy *e, game *g)
 {
     p->is_dropping = sfFalse;
-    if (is_attacking(p) == 1 && p->is_hurt == sfFalse) {
-        p->speed_x = 0;
-        if (g->rings > 0) {
-            p->is_hurt = sfTrue;
-            p->speed_y = -8;
-            p->cooldown = 7 * 8;
-            sfMusic_play(p->sound[RING_LOSS]);
-            g->rings = 0;
-        } else
-            do_death(p, g);
-    } else if (is_attacking(p) == 0) {
+    if (is_attacking(p) == 1 && p->is_hurt == sfFalse)
+        player_hit(p, g);
+    else if (is_attacking(p) == 0) {
         if (p->anim_state == JUMPING)
             p->speed_y = -8;
         e->is_dead = sfTrue;

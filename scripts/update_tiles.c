@@ -21,6 +21,8 @@ void tile_interpretor(char **map, int y, int x)
     if (x > 3 && y < 5 && map[y + 1][x] == 3 && map[y][x] == 0
     && map[y][x - 1] == 2 && map[y][x + 1] == 2)
         map[y][x] = 5;
+    if (map[y][x] == 0 && y == 5)
+        map[y][x] = 6;
 }
 
 void update_tile(game *g, player *p, sfVector2f *tilepos, sfVector2i mappos)

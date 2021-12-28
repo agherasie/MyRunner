@@ -64,7 +64,7 @@ enemy *create_enemies(int enemy_count, char **map)
             map_pos_x++;
         free_spot = find_free_spot(map, map_pos_x);
         e[i] = create_enemy(0, random_value, free_spot);
-        if (map[free_spot][map_pos_x] == 5) {
+        if (map[free_spot][map_pos_x] == 5 || map[5][map_pos_x] == 6) {
             e[i].is_dead = sfTrue;
             e[i].frame = e[i].anim->length;
         }

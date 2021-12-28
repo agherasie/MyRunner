@@ -35,6 +35,8 @@ ring *create_rings(int ring_count, char **map)
         r[i].pos = (sfVector2f) {random_value, free_spot * 100};
         r[i].is_collected = sfFalse;
         r[i].is_null = sfFalse;
+        if (map[free_spot][map_pos_x] == 5 || map[5][map_pos_x] == 6)
+            r[i].is_collected = sfTrue;
     }
     return r;
 }
