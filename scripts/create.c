@@ -91,6 +91,8 @@ void restart(game *g, player *p)
     p->map_pos.x = 0;
     p->map_pos.y = 0;
     g->tally_speed = 5;
+    g->score = 0;
+    g->rings = 0;
 }
 
 game create_values(game g)
