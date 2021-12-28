@@ -13,7 +13,7 @@ void scroll_parallax(game *g, player *p, object *parallax, float speed)
         parallax->pos.x += parallax->rect.width * 2.5f;
     parallax->scale.x = 2.5f;
     parallax->scale.y = 2.5f;
-    if (g->paused == sfFalse && p->goal_reached == sfFalse)
+    if (g->paused == sfFalse || p->goal_reached == sfFalse)
         parallax->pos.x -= speed;
     sfSprite_setScale(parallax->spr, parallax->scale);
     sfSprite_setPosition(parallax->spr, parallax->pos);
@@ -33,7 +33,7 @@ void update_background(game *g, player *p)
     scroll_parallax(g, p, g->parallax2, 0.3f * g->camera_pan_speed);
     sfVector2i mappos = {0, 0};
     sfVector2f tilepos = {0, 0};
-    for (int i = 0; i < g->height && g->is_main_menu == sfFalse; i++)
+    for (int i = 0; i < g->height && g->is_main_menu == sfFalse && g->paused == sfFalse; i++)
         for (int j = 0; j < g->width; j++) {
             mappos.x = j;
             mappos.y = i;

@@ -122,7 +122,8 @@ typedef struct game {
     animation ocean_anim;
     int ocean_frame;
     int tally_speed;
-
+    int select;
+    sfMusic *select_sound;
 } game;
 
 typedef struct player {
@@ -158,6 +159,7 @@ typedef struct player {
     int cooldown;
 } player;
 
+int launch_game();
 void do_death(player *p, game *g);
 game create_game();
 char **create_map(char *filepath, game *g);

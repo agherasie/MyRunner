@@ -79,10 +79,6 @@ void misc(player *p)
 
 void sound_update(player *p)
 {
-    if (p->speed_y >= 1 && p->speed_y <= 2) {
-        sfMusic_stop(p->sound[JUMP]);
-        sfMusic_stop(p->sound[BADNIK_DEATH]);
-    }
     if (p->is_turning == sfTrue)
         sfMusic_play(p->sound[BRAKE]);
     else
@@ -190,7 +186,7 @@ void update_player(player *p, game *g)
             gravity(p);
         }
         animate(p);
-        print_status(p);
+        //print_status(p);
         camera_adjustments(p, g, sfFalse);
         sound_update(p);
         if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)

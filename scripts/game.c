@@ -35,22 +35,56 @@ void destroy_all(game *g, player *p)
     sfMusic_destroy(g->bg_music);
     sfMusic_destroy(g->title_music);
     sfMusic_destroy(g->finish_music);
+    sfMusic_destroy(g->select_sound);
     for (int i = 0; i < 10; i++)
         sfMusic_destroy(p->sound[i]);
     sfSprite_destroy(g->parallax0->spr);
     sfSprite_destroy(g->parallax1->spr);
     sfTexture_destroy(g->parallax0->text);
     sfTexture_destroy(g->parallax1->text);
+    sfSprite_destroy(g->parallax2->spr);
+    sfSprite_destroy(g->parallax3->spr);
+    sfTexture_destroy(g->parallax2->text);
+    sfTexture_destroy(g->parallax3->text);
+    sfSprite_destroy(g->title_sonic->spr);
+    sfTexture_destroy(g->title_sonic->text);
     sfRenderWindow_destroy(g->window);
 }
 
-void pause_game(game *g)
+void pause_game(game *g, player *p)
 {
     if (g->event.key.code == sfKeyP && g->is_main_menu == sfFalse) {
         if (g->paused == sfTrue)
             g->paused = sfFalse;
         else
             g->paused = sfTrue;
+    }
+    if (g->paused == sfTrue) {
+        if (g->event.key.code == sfKeyUp || g->event.key.code == sfKeyDown
+        || g->event.key.code == sfKeyEnter) {
+            sfMusic_stop(g->select_sound);
+            sfMusic_play(g->select_sound);
+        }
+        if (g->event.key.code == sfKeyUp)
+            g->select--;
+        if (g->event.key.code == sfKeyDown)
+            g->select++;
+        if (g->event.key.code == sfKeyEnter) {
+            if (g->select == 1) {
+                restart(g, p);
+            }
+            if (g->select == 2) {
+                sfRenderWindow_close(g->window);
+                launch_game();
+            }
+            if (g->select == 3)
+                sfRenderWindow_close(g->window);
+            g->paused = sfFalse;
+            g->select = 0;
+        }
+        if (g->select < 0)
+            g->select = 3;
+        g->select %= 4;
     }
 }
 
@@ -68,12 +102,10 @@ void keyboard_events(game *g, player *p)
         if (g->event.type == sfEvtClosed)
             sfRenderWindow_close(g->window);
         if (g->event.type == sfEvtKeyPressed) {
-            pause_game(g);
+            pause_game(g, p);
             if (g->event.key.code == sfKeyEnter) {
                 if (g->is_main_menu == sfTrue)
                     g->is_main_menu = sfFalse;
-                if (p->goal_reached == sfFalse)
-                    pause_game(g);
                 if (p->goal_reached == sfTrue) {
                     g->tally_speed = 2;
                     p->cooldown = 9700;
@@ -160,6 +192,26 @@ void update_title_screen(game *g)
     sfRenderWindow_drawSprite(g->window, g->title_sonic->spr, NULL);
 }
 
+void button_draw(game *g, int number, char *str)
+{
+    if (g->select == number) {
+        sfText_setFillColor(g->score_text, sfYellow);
+        sfText_setCharacterSize(g->score_text, sfText_getCharacterSize(g->score_text) + 5);
+        draw_text(g, str, W_W / 2 / 20 - 9, 8 + 4 * number);
+        sfText_setFillColor(g->score_text, sfWhite);
+        sfText_setCharacterSize(g->score_text, sfText_getCharacterSize(g->score_text) - 5);
+    } else
+        draw_text(g, str, W_W / 2 / 20 - 9, 8 + 4 * number);
+}
+
+void pause_menu(game *g)
+{
+    button_draw(g, 0, "continue playing");
+    button_draw(g, 1, "restart level");
+    button_draw(g, 2, "return to title");
+    button_draw(g, 3, "exit game");
+}
+
 void update(game *g, player *p)
 {
     while (sfRenderWindow_isOpen(g->window)) {
@@ -170,8 +222,7 @@ void update(game *g, player *p)
             sfRenderWindow_clear(g->window, sfWhite);
             keyboard_events(g, p);
             update_background(g, p);
-            g->frame++;
-            if (g->is_main_menu == sfFalse) {
+            if (g->is_main_menu == sfFalse && g->paused == sfFalse) {
                 if (sfMusic_getStatus(g->bg_music) != sfPlaying)
                     sfMusic_play(g->bg_music);
                 sfMusic_stop(g->title_music);
@@ -194,9 +245,13 @@ void update(game *g, player *p)
                 update_player(p, g);
                 if (g->paused == sfFalse && p->goal_reached == sfFalse)
                     g->seconds++;
-                hud_display(g, p->goal_reached);
-            } else
+                if (g->paused == sfFalse)
+                    hud_display(g, p->goal_reached);
+            } else if (g->is_main_menu == sfTrue)
                 update_title_screen(g);
+            g->frame++;
+            if (g->paused == sfTrue)
+                pause_menu(g);
         }
     }
     destroy_all(g, p);

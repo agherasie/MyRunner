@@ -113,8 +113,9 @@ game create_game()
     g.ocean_frame = 0;
     g.frame = 0;
     g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
-    g.title_music = sfMusic_createFromFile("art/sound/title-theme.wav");
+    g.title_music = sfMusic_createFromFile("art/sound/liveandlearn.wav");
     g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
+    g.select_sound = sfMusic_createFromFile("art/sound/select.wav");
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_setLoop(g.title_music, sfTrue);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
@@ -151,5 +152,6 @@ game create_game()
     g.title_sonic_frame = 10;
     g.seconds = 0;
     g.is_runner = sfFalse;
+    g.select = 0;
     return g;
 }
