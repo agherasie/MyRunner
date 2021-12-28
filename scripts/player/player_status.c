@@ -34,6 +34,7 @@ void damage(player *p, game *g)
 
 void dying(player *p, game *g)
 {
+    sfMusic_stop(g->bg_music);
     p->speed_y += 0.25f;
     p->obj->pos.y += p->speed_y;
     if (p->obj->pos.y > W_H) {

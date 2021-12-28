@@ -9,7 +9,7 @@
 
 int is_solid(int square)
 {
-    if (square == 0 || square == 1 || square == 4)
+    if (square == 0 || square == 1 || square == 4 || square == 5)
         return 1;
     return 0;
 }

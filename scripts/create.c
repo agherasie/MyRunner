@@ -88,6 +88,8 @@ void restart(game *g, player *p)
     *p = create_bools(*p);
     p->speed_y = 0;
     p->speed_x = 0;
+    p->map_pos.x = 0;
+    p->map_pos.y = 0;
     g->tally_speed = 5;
 }
 

@@ -58,6 +58,8 @@ void update_player(player *p, game *g)
         update_lives(p, g);
     if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0 && p->speed_y == 0)
         do_death(p, g);
+    if (g->map[p->map_pos.y][p->map_pos.x] == 5)
+        do_death(p, g);
     if (p->map_pos.x == g->width - 1)
         p->goal_reached = sfTrue;
     if (p->goal_reached == sfTrue) {

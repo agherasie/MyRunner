@@ -221,5 +221,6 @@ void update_lives(player *p, game *g);
 void tally(player *p, game *g);
 void update_tile(game *g, player *p, sfVector2f *tilepos, sfVector2i mappos);
 void draw_tile(game *g, sfSprite *spr, sfVector2f pos);
+void tile_interpretor(char **map, int y, int x);
 
 #endif /* MY_RUNNER_H_ */

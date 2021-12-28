@@ -52,5 +52,11 @@ char **create_map(char *filepath, game *g)
         }
         map[i][g->width] = '\0';
     }
+    for (int i = 0; i < g->height; i++)
+        for (int j = 0; j < g->width; j++)
+            tile_interpretor(map, i, j);
+    for (int i = 0; i < g->height; i++)
+        for (int j = 0; j < g->width; j++)
+            tile_interpretor(map, i, j);
     return map;
 }
