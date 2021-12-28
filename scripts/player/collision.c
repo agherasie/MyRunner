@@ -18,6 +18,8 @@ void invisible_walls(player *p, game *g)
 {
     if (p->obj->pos.x <= g->camera_pan_x - 24) {
         p->obj->pos.x = g->camera_pan_x - 24;
+        if (p->direction == -1)
+            p->speed_x = 0;
         if (g->is_runner == sfTrue)
             do_death(p, g);
     }
@@ -26,8 +28,6 @@ void invisible_walls(player *p, game *g)
         g->camera_pan_speed = 3;
     if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
         g->camera_pan_speed = TOPSPEED;
-    if (p->obj->pos.x + g->camera_pan_x >= g->width * 100 - 70)
-        p->speed_x = 0;
     if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
         g->camera_pan_speed = 10;
     if (p->obj->pos.y <= 0)

@@ -213,5 +213,11 @@ void enemy_collision(player *p, enemy *e, game *g);
 void ring_collision(player *p, ring *r, game *g, int i);
 int is_ring_collision(player *p, ring *r, game *g);
 int is_enemy_collision(player *p, enemy *e, game *g);
+void sound_update(player *p);
+void camera_adjustments(player *p, game *g, sfBool is_first);
+void misc(player *p);
+void update_unpaused(player *p, game *g);
+void update_lives(player *p, game *g);
+void tally(player *p, game *g);
 
 #endif /* MY_RUNNER_H_ */

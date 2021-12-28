@@ -13,6 +13,7 @@ SRC	=	scripts/main.c \
 		scripts/player/player_movement.c \
 		scripts/player/player_create.c \
 		scripts/player/collision.c \
+		scripts/player/player_status.c \
 		scripts/animation.c \
 		scripts/enemy.c \
 		scripts/map.c \
@@ -24,6 +25,8 @@ SRC	=	scripts/main.c \
 		scripts/text.c \
 		scripts/destroy.c \
 		scripts/object_collision.c \
+		scripts/tally.c \
+		scripts/sound.c \
 
 OBJ	=	$(SRC:.c=.o)
 
