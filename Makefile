@@ -22,6 +22,7 @@ SRC	=	scripts/main.c \
 		scripts/pause.c \
 		scripts/hud.c \
 		scripts/text.c \
+		scripts/destroy.c \
 
 OBJ	=	$(SRC:.c=.o)
 

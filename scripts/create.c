@@ -91,70 +91,80 @@ void restart(game *g, player *p)
     g->tally_speed = 5;
 }
 
-game create_game()
+game create_values(game g)
 {
-    game g;
-    g.level = 1;
-    sfVideoMode mode = {W_W, W_H, 32};
-    g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
-    g.clock = sfClock_create();
-    g.map = create_map("data/map1.txt", &g);
     g.hiscore = 0;
     get_score(&g.hiscore);
-    g.tile = create_object(50, 2, "art/tileset.png");
-    g.paused = sfFalse;
+    g.level = 1;
     g.camera_pan_x = 0;
     g.camera_pan_speed = 1;
+    g.ocean_frame = 0;
+    g.pause_frame = 0;
+    g.frame = 0;
+    g.goalframe = 0;
+    g.tally_speed = 5;
+    g.score = 0;
+    g.rings = 0;
+    g.lives = 3;
+    g.ring_frame = 0;
+    g.select = 0;
+    g.title_sonic_frame = 10;
+    g.seconds = 0;
+    g.paused = sfFalse;
+    g.is_runner = sfFalse;
+    g.is_main_menu = sfTrue;
+    return g;
+}
+
+game create_art(game g)
+{
+    g.tile = create_object(50, 2, "art/tileset.png");
     g.parallax0 = create_background(1729, 64, "art/clouds.png", 0);
     g.parallax1 = create_background(1729, 53, "art/hills.png", 64 * 2.5f);
     g.parallax2 = create_background(1729, 40, "art/hills2.png", (64 + 53) * 2.5f);
     g.parallax3 = create_background(1024, 107, "art/ocean.png", (64 + 53 + 40 - 3) * 2.5f);
-    create_animation(&g.ocean_anim, 4, 10, sfTrue);
-    g.ocean_frame = 0;
-    g.frame = 0;
+    g.goalsign = create_object(50, 2, "art/goalsigns.png");
+    g.ring = create_object(50, 2, "art/misc.png");
+    g.player_icon = create_object(48, 2, "art/sonic_sheet.png");
+    g.title_sonic = create_background(254, 219, "art/title_logo.png", 0);
+    g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
+    g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
     g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
     g.title_music = sfMusic_createFromFile("art/sound/liveandlearn.wav");
-    g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
-    g.select_sound = sfMusic_createFromFile("art/sound/select.wav");
-    g.pause_frame = 0;
     sfMusic_setLoop(g.bg_music, sfTrue);
     sfMusic_setLoop(g.title_music, sfTrue);
-    g.goalsign = create_object(50, 2, "art/goalsigns.png");
+    g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
+    g.select_sound = sfMusic_createFromFile("art/sound/select.wav");
+    return g;
+}
+
+game create_animations_game(game g)
+{
+    create_animation(&g.ocean_anim, 4, 10, sfTrue);
     create_animation(&g.goalanim, 5, 5, sfFalse);
-    g.goalframe = 0;
-    g.tally_speed = 5;
+    create_animation(&g.ring_anim, 16, 5, sfTrue);
+    return g;
+}
+
+game create_game()
+{
+    game g;
+    sfVideoMode mode = {W_W, W_H, 32};
+    g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
+    g.clock = sfClock_create();
+    g = create_art(g);
+    g = create_values(g);
+    g = create_animations_game(g);
+    g.map = create_map("data/map1.txt", &g);
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);
-    g.ring = create_object(50, 2, "art/misc.png");
-    create_animation(&g.ring_anim, 16, 5, sfTrue);
-    g.ring_frame = 0;
     g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");
     g.score_text = sfText_create();
     sfText_setFont(g.score_text, g.hud_font);
     g.score_text = style_text(g.score_text);
-    g.score = 0;
-    g.rings = 0;
-    g.lives = 3;
-    g.player_icon = create_object(48, 2, "art/sonic_sheet.png");
-    g.player_icon->pos.x = 10;
-    g.player_icon->pos.y = W_H - 100;
-    g.player_icon->rect.height = 48;
-    g.player_icon->rect.width = 48;
-    g.player_icon->rect.left = 48;
-    g.player_icon->rect.top = 0;
+    g.player_icon->pos = (sfVector2f) {10, W_W - 100};
+    g.player_icon->rect = (sfIntRect) {48, 0, 48, 48};
     sfSprite_setPosition(g.player_icon->spr, g.player_icon->pos);
     sfSprite_setTextureRect(g.player_icon->spr, g.player_icon->rect);
-    g.is_main_menu = sfTrue;
-    g.title_sonic = create_background(254, 219, "art/title_logo.png", 0);
-    sfSprite_setScale(g.title_sonic->spr, (sfVector2f) {2, 2});
-    g.title_sonic->pos.x = W_W / 2 - 320;
-    g.title_sonic->pos.y = W_H / 2 - 224;
-    sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
-    g.title_sonic_frame = 10;
-    g.seconds = 0;
-    g.is_runner = sfFalse;
-    g.select = 0;
-    g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
-    g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
     return g;
 }
