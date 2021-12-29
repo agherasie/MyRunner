@@ -44,7 +44,7 @@ void update_title_screen(game *g)
 void update_goalsign(game *g, player *p)
 {
     g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
-    g->goalsign->pos.y = 3 * 100;
+    g->goalsign->pos.y = find_free_spot(g->map, (g->width - 2)) * 100;
     if (p->goal_reached == sfTrue) {
         sfMusic_stop(g->bg_music);
         if (sfMusic_getStatus(g->finish_music) != sfPlaying) {

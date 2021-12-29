@@ -91,7 +91,6 @@ void restart(game *g, player *p)
     p->map_pos.x = 0;
     p->map_pos.y = 0;
     g->tally_speed = 5;
-    g->score = 0;
     g->rings = 0;
 }
 
@@ -131,6 +130,19 @@ object *create_plx(object **plx)
     plx[2] = create_bg(1729, 40, "art/plx/p1-2.png", ypos * 2.5f);
     ypos += 40;
     plx[3] = create_bg(1024, 107, "art/plx/p1-3.png", (ypos - 3) * 2.5f);
+    ypos = 0;
+    plx[4] = create_bg(638, 223, "art/plx/p2-1.png", 0);
+    plx[5] = create_bg(638, 223, "art/plx/p2-2.png", 0);
+    ypos += 140;
+    plx[6] = create_bg(638, 100, "art/plx/p2-3.png", ypos * 2.5f);
+    ypos = 0;
+    plx[7] = create_bg(1000, 177, "art/plx/p3-0.png", 0);
+    ypos += 100;
+    plx[8] = create_bg(1000, 55, "art/plx/p3-1.png", ypos * 2.5f);
+    ypos += 55;
+    plx[9] = create_bg(1000, 96, "art/plx/p3-2.png", ypos * 2.5f);
+    ypos += 50;
+    plx[10] = create_bg(1000, 80, "art/plx/p3-3.png", (ypos) * 2.5f);
     return *plx;
 }
 
@@ -174,10 +186,12 @@ game create_game()
     game g;
     sfVideoMode mode = {W_W, W_H, 32};
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
+    sfRenderWindow_setPosition(g.window, (sfVector2i) {500, 200});
     g.clock = sfClock_create();
     g = create_art(g);
     g = create_values(g);
     g = create_animations_game(g);
+    g.relaunch = sfFalse;
     g.map = create_map("data/map1.txt", &g);
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);

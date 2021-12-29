@@ -44,10 +44,14 @@ void dying(player *p, game *g)
     p->obj->pos.y += p->speed_y;
     if (p->obj->pos.y > W_H) {
         g->lives--;
-        if (g->lives == 0)
+        if (g->lives == 0) {
+            g->relaunch = sfTrue;
             sfRenderWindow_close(g->window);
-        else
+        }
+        else {
+            g->score = 0;
             restart(g, p);
+        }
     }
 }
 

@@ -67,6 +67,31 @@ void do_jump(player *p)
         do_special(p);
 }
 
+void player_release_key(game *g, player *p)
+{
+    if (g->event.key.code == sfKeyRight && p->direction == 1)
+        directional_key(p, 1, sfTrue, g);
+    if (g->event.key.code == sfKeyLeft && p->direction == -1)
+        directional_key(p, -1, sfTrue, g);
+    if (g->event.key.code == sfKeyUp)
+        if (p->is_charging == sfTrue) {
+            p->speed_x = 10;
+            p->is_speeding = sfTrue;
+        } else
+            p->is_looking = sfFalse;
+    if (g->event.key.code == sfKeyDown)
+        if (p->is_spinning) {
+            p->speed_x = 8;
+            p->is_dashing = sfTrue;
+        } else
+            p->is_crouching = sfFalse;
+    if (g->event.key.code == sfKeyS) {
+        if (p->is_gliding == sfTrue)
+            p->speed_x = 0;
+        p->is_gliding = sfFalse;
+    }
+}
+
 void player_keyboard_events(game *g, player *p)
 {
     if (g->event.type == sfEvtKeyPressed && p->goal_reached == sfFalse) {
@@ -103,27 +128,6 @@ void player_keyboard_events(game *g, player *p)
                 p->is_dashing = sfTrue;
             }
     }
-    if (g->event.type == sfEvtKeyReleased) {
-        if (g->event.key.code == sfKeyRight && p->direction == 1)
-            directional_key(p, 1, sfTrue, g);
-        if (g->event.key.code == sfKeyLeft && p->direction == -1)
-            directional_key(p, -1, sfTrue, g);
-        if (g->event.key.code == sfKeyUp)
-            if (p->is_charging == sfTrue) {
-                p->speed_x = 10;
-                p->is_speeding = sfTrue;
-            } else
-                p->is_looking = sfFalse;
-        if (g->event.key.code == sfKeyDown)
-            if (p->is_spinning) {
-                p->speed_x = 8;
-                p->is_dashing = sfTrue;
-            } else
-                p->is_crouching = sfFalse;
-        if (g->event.key.code == sfKeyS) {
-            if (p->is_gliding == sfTrue)
-                p->speed_x = 0;
-            p->is_gliding = sfFalse;
-        }
-    }
+    if (g->event.type == sfEvtKeyReleased)
+        player_release_key(g, p);
 }

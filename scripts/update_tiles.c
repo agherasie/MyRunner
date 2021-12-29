@@ -30,7 +30,7 @@ void update_tile(game *g, player *p, sfVector2f *tilepos, sfVector2i mappos)
     if (g->map[mappos.y][mappos.x] >= 0 && g->map[mappos.y][mappos.x] <= 9) {
         tilepos->x = mappos.x * 100 - g->camera_pan_x;
         tilepos->y = mappos.y * 100;
-        g->tile->rect.top = 0;
+        g->tile->rect.top = 50 * (g->level - 1);
         g->tile->rect.left = 50 * g->map[mappos.y][mappos.x];
         draw_tile(g, g->tile->spr, *tilepos);
         if (g->map[mappos.y][mappos.x] == 3) {

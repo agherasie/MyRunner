@@ -26,7 +26,7 @@ void buttons(game *g, player *p)
         restart(g, p);
     if (g->select == 2) {
         sfRenderWindow_close(g->window);
-        launch_game();
+        g->relaunch = sfTrue;
     }
     if (g->select == 3)
         sfRenderWindow_close(g->window);

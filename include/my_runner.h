@@ -86,7 +86,7 @@ typedef struct game {
     int seconds;
     char **map;
     object *tile;
-    object *plx[4];
+    object *plx[11];
     sfBool paused;
     float camera_pan_x;
     float camera_pan_speed;
@@ -127,6 +127,7 @@ typedef struct game {
     sfTexture *tails_text;
     sfTexture *knux_text;
     sfBool character_menu;
+    sfBool relaunch;
 } game;
 
 typedef struct player {
@@ -231,5 +232,6 @@ void tile_interpretor(char **map, int y, int x);
 void do_damage(player *p, game *g);
 void player_hit(player *p, game *g);
 void enemy_death(enemy *e, player *p);
+void player_release_key(game *g, player *p);
 
 #endif /* MY_RUNNER_H_ */

@@ -15,6 +15,16 @@ void toggle(sfBool *boolean)
         *boolean = sfTrue;
 }
 
+void level_switch(game *g)
+{
+    if (g->event.key.code == sfKeyNum1)
+        g->level = 1;
+    if (g->event.key.code == sfKeyNum2)
+        g->level = 2;
+    if (g->event.key.code == sfKeyNum3)
+        g->level = 3;
+}
+
 void keyboard_events(game *g, player *p)
 {
     if (g->event.type == sfEvtClosed)
@@ -31,10 +41,16 @@ void keyboard_events(game *g, player *p)
                 p->cooldown = 9700;
             }
         }
+        level_switch(g);
         if (g->event.key.code == sfKeyR)
             toggle(&g->is_runner);
     }
-    player_keyboard_events(g, p);
+    if (!(p->anim_state == HURTING && p->is_grounded == sfFalse)
+    && g->paused == sfFalse)
+        player_keyboard_events(g, p);
+    else
+        player_release_key(g, p);
+
 }
 
 void fade_transition(game *g)
@@ -60,5 +76,7 @@ void update(game *g, player *p)
         if (sfClock_getElapsedTime(g->clock).microseconds > 1000)
             update_clock(g, p);
     destroy_all(g, p);
+    if (g->relaunch == sfTrue)
+        launch_game();
     return;
 }

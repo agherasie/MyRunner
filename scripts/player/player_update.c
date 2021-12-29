@@ -51,7 +51,7 @@ void update_player(player *p, game *g)
         do_death(p, g);
     if (g->map[m_p.y + 1][m_p.x] == 6 && p->is_grounded == sfTrue)
         player_hit(p, g);
-    if (m_p.x == g->width - 1)
+    if (m_p.x == g->width - 2)
         p->goal_reached = sfTrue;
     if (p->goal_reached == sfTrue) {
         tally(p, g);
