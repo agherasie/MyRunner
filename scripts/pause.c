@@ -56,6 +56,7 @@ void character_buttons(game *g, player *p)
     g->paused = sfFalse;
     g->select = 0;
     g->character_menu = sfFalse;
+    g->level = 1;
 }
 
 void select_button(game *g, player *p)

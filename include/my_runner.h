@@ -98,7 +98,7 @@ typedef struct game {
     object *ring;
     animation ring_anim;
     int ring_frame;
-    sfMusic *bg_music;
+    sfMusic *bgm[5];
     sfMusic *title_music;
     sfMusic *finish_music;
     object *goalsign;
@@ -233,5 +233,8 @@ void do_damage(player *p, game *g);
 void player_hit(player *p, game *g);
 void enemy_death(enemy *e, player *p);
 void player_release_key(game *g, player *p);
+void toggle_music(game *g);
+void stop_music(game *g);
+void switch_music(game *g, sfMusic *music);
 
 #endif /* MY_RUNNER_H_ */

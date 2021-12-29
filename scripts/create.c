@@ -71,8 +71,7 @@ void restart(game *g, player *p)
         g->map = create_map("data/map2.txt", g);
     if (g->level == 3)
         g->map = create_map("data/map3.txt", g);
-    sfMusic_stop(g->finish_music);
-    sfMusic_play(g->bg_music);
+    switch_music(g, g->bgm[g->level - 1]);
     g->camera_pan_x = 0;
     destroy_entities(g);
     g->e = create_enemies((int)(g->width / 3) - 3, g->map);
@@ -98,7 +97,7 @@ game create_values(game g)
 {
     g.hiscore = 0;
     get_score(&g.hiscore);
-    g.level = 1;
+    g.level = 0;
     g.camera_pan_x = 0;
     g.camera_pan_speed = 1;
     g.ocean_frame = 0;
@@ -157,11 +156,15 @@ game create_art(game g)
     g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
     g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
     g.knux_text = sfTexture_createFromFile("art/knuckles_sheet.png", NULL);
-    g.bg_music = sfMusic_createFromFile("art/sound/rooftoprun.wav");
+    g.bgm[0] = sfMusic_createFromFile("art/sound/rooftoprun.wav");
+    g.bgm[1] = sfMusic_createFromFile("art/sound/iceparadise.wav");
+    g.bgm[2] = sfMusic_createFromFile("art/sound/gangstasparadise.wav");
+    for (int i = 0; i < 3; i++)
+        sfMusic_setLoop(g.bgm[i], sfTrue);
     g.title_music = sfMusic_createFromFile("art/sound/liveandlearn.wav");
-    sfMusic_setLoop(g.bg_music, sfTrue);
-    sfMusic_setLoop(g.title_music, sfTrue);
     g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
+    sfMusic_setLoop(g.title_music, sfTrue);
+    sfMusic_setLoop(g.finish_music, sfFalse);
     g.select_sound = sfMusic_createFromFile("art/sound/select.wav");
     return g;
 }

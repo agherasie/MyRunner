@@ -39,7 +39,7 @@ void update_background(game *g, player *p)
         scroll_parallax(g, p, g->plx[5], 0.2f * g->camera_pan_speed + 0.05f);
         scroll_parallax(g, p, g->plx[6], 0.5f * g->camera_pan_speed + 0.75f);
     }
-    if (g->level == 3) {
+    if (g->level == 3 || g->level == 0) {
         scroll_parallax(g, p, g->plx[7], 0.1f * g->camera_pan_speed + 0.1f);
         scroll_parallax(g, p, g->plx[8], 0.2f * g->camera_pan_speed);
         scroll_parallax(g, p, g->plx[9], 0.3f * g->camera_pan_speed);

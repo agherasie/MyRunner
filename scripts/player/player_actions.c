@@ -20,7 +20,7 @@ void do_death(player *p, game *g)
 {
     if (p->is_dying == sfFalse) {
         g->camera_pan_speed = 0;
-        sfMusic_stop(g->bg_music);
+        stop_music(g);
         sfMusic_stop(p->sound[DEATH]);
         sfMusic_play(p->sound[DEATH]);
         p->speed_y = -10;

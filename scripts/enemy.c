@@ -80,6 +80,7 @@ enemy create_enemy(int type, float spawn_pos, int free_spot)
     e.obj->pos.x = e.pos;
     e.enemytype = type;
     e.direction = -1;
+    e.frame = 0;
     create_animation(&e.anim[0], 4, 30, sfTrue);
     create_animation(&e.anim[1], 5, 10, sfFalse);
     create_animation(&e.anim[2], 5, 10, sfFalse);
