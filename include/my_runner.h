@@ -88,8 +88,8 @@ typedef struct game {
     object *tile;
     object *plx[11];
     sfBool paused;
-    float camera_pan_x;
-    float camera_pan_speed;
+    sfVector2f camera_pan;
+    sfVector2f camera_speed;
     int height;
     int width;
     int frame;

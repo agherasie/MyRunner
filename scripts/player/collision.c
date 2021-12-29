@@ -16,20 +16,22 @@ int is_solid(int square)
 
 void invisible_walls(player *p, game *g)
 {
-    if (p->obj->pos.x <= g->camera_pan_x - 24) {
-        p->obj->pos.x = g->camera_pan_x - 24;
+    if (p->obj->pos.x <= g->camera_pan.x - 24) {
+        p->obj->pos.x = g->camera_pan.x - 24;
         if (p->direction == -1)
             p->speed_x = 0;
         if (g->is_runner == sfTrue)
             do_death(p, g);
     }
-    g->camera_pan_speed = 0;
+    g->camera_speed = (sfVector2f) {0, 0};
     if (p->is_dying == sfFalse && g->is_runner == sfTrue)
-        g->camera_pan_speed = 3;
-    if (p->obj->pos.x >= g->camera_pan_x + W_W / 2)
-        g->camera_pan_speed = TOPSPEED;
-    if (p->obj->pos.x >= g->camera_pan_x + W_W - 88)
-        g->camera_pan_speed = 10;
+        g->camera_speed.x = 3;
+    if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
+        g->camera_speed.x = TOPSPEED;
+    if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
+        g->camera_speed.y = 5;
+    if (p->obj->pos.x >= g->camera_pan.x + W_W - 88)
+        g->camera_speed.x = 10;
     if (p->obj->pos.y <= 0)
         p->obj->pos.y = 0;
 }

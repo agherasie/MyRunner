@@ -9,10 +9,10 @@
 
 int is_ring_collision(player *p, ring *r, game *g)
 {
-    if (p->obj->pos.x >= (r->pos.x - 50 + g->camera_pan_x)
-    && p->obj->pos.x <= (r->pos.x) + 50 + g->camera_pan_x
-    && p->obj->pos.y >= (r->pos.y) - 20
-    && p->obj->pos.y <= (r->pos.y) + 20
+    if (p->obj->pos.x >= (r->pos.x - 50 + g->camera_pan.x)
+    && p->obj->pos.x <= (r->pos.x) + 50 + g->camera_pan.x
+    && p->obj->pos.y >= (r->pos.y) - 20 + g->camera_pan.y
+    && p->obj->pos.y <= (r->pos.y) + 20 + g->camera_pan.y
     && r->is_collected == sfFalse)
         return 0;
     return 1;
@@ -28,10 +28,10 @@ void ring_collision(player *p, ring *r, game *g, int i)
 
 int is_enemy_collision(player *p, enemy *e, game *g)
 {
-    if ((p->obj->pos.x >= e->obj->pos.x - 55 + g->camera_pan_x
-    && p->obj->pos.x <= e->obj->pos.x + 55 + g->camera_pan_x)
-    && (p->obj->pos.y >= e->obj->pos.y - 48
-    && p->obj->pos.y <= e->obj->pos.y + 48)
+    if ((p->obj->pos.x >= e->obj->pos.x - 55 + g->camera_pan.x
+    && p->obj->pos.x <= e->obj->pos.x + 55 + g->camera_pan.x)
+    && (p->obj->pos.y >= e->obj->pos.y - 48 + g->camera_pan.y
+    && p->obj->pos.y <= e->obj->pos.y + 48 + g->camera_pan.y)
     && e->is_dead == sfFalse)
         return 0;
     return 1;

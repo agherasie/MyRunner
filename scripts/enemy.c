@@ -26,9 +26,9 @@ void enemy_raycast(enemy *e, game *g, player *p)
     else
         speed = 0;
     float collision_y = 0;
-    int x = (int)((e->obj->pos.x + g->camera_pan_x) / 100);
-    int y = (int)((e->obj->pos.y) / 100);
-    if ((int)(e->obj->pos.x + g->camera_pan_x) % 100 >= 50)
+    int x = (int)((e->obj->pos.x + g->camera_pan.x) / 100);
+    int y = (int)((e->obj->pos.y + g->camera_pan.y) / 100);
+    if ((int)(e->obj->pos.x + g->camera_pan.x) % 100 >= 50)
         x++;
     if (y != 5 && is_solid(g->map[y + 1][x]) == 1)
         e->obj->pos.y += 5;
@@ -50,8 +50,10 @@ void enemy_raycast(enemy *e, game *g, player *p)
 
 void update_enemies(game *g, player *p, enemy *e)
 {
-    if (g->paused == sfFalse && p->goal_reached == sfFalse)
-        e->obj->pos.x -= g->camera_pan_speed;
+    if (g->paused == sfFalse && p->goal_reached == sfFalse) {
+        e->obj->pos.x -= g->camera_speed.x;
+        e->obj->pos.y -= g->camera_speed.y;
+    }
     sfVector2f pos = e->obj->pos;
     pos.x += e->direction == 1 ? 0 : 100;
     sfSprite_setPosition(e->obj->spr, pos);

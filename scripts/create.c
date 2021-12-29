@@ -72,7 +72,7 @@ void restart(game *g, player *p)
     if (g->level == 3)
         g->map = create_map("data/map3.txt", g);
     switch_music(g, g->bgm[g->level - 1]);
-    g->camera_pan_x = 0;
+    g->camera_pan = (sfVector2f) {0, 0};
     destroy_entities(g);
     g->e = create_enemies((int)(g->width / 3) - 3, g->map);
     g->frame = 0;
@@ -98,8 +98,8 @@ game create_values(game g)
     g.hiscore = 0;
     get_score(&g.hiscore);
     g.level = 0;
-    g.camera_pan_x = 0;
-    g.camera_pan_speed = 1;
+    g.camera_pan = (sfVector2f) {0, 0};
+    g.camera_speed = (sfVector2f) {0, 0};
     g.ocean_frame = 0;
     g.pause_frame = 0;
     g.frame = 0;

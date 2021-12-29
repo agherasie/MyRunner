@@ -41,8 +41,9 @@ void update_title_screen(game *g)
 
 void update_goalsign(game *g, player *p)
 {
-    g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan_x;
+    g->goalsign->pos.x = (g->width - 2) * 100 - g->camera_pan.x;
     g->goalsign->pos.y = find_free_spot(g->map, (g->width - 2)) * 100;
+    g->goalsign->pos.y -= g->camera_pan.y;
     if (p->goal_reached == sfTrue) {
         switch_music(g, g->finish_music);
         animate_object(g, g->goalsign, g->goalanim, &g->goalframe);
@@ -65,7 +66,8 @@ void update_level(game *g, player *p)
     if (g->paused == sfFalse) {
         if (p->goal_reached == sfFalse) {
             g->seconds++;
-            g->camera_pan_x += g->camera_pan_speed;
+            g->camera_pan.x += g->camera_speed.x;
+            g->camera_pan.y += g->camera_speed.y;
         }
         hud_display(g, p->goal_reached);
     }

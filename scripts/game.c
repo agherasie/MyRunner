@@ -43,7 +43,7 @@ void toggle(sfBool *boolean)
         *boolean = sfTrue;
 }
 
-void level_switch(game *g)
+void level_init(game *g)
 {
     if (g->event.key.code == sfKeyNum1)
         g->level = 1;
@@ -53,23 +53,28 @@ void level_switch(game *g)
         g->level = 3;
 }
 
+void press_enter(game *g, player *p)
+{
+    if (g->event.key.code == sfKeyEnter) {
+        if (g->is_main_menu == sfTrue) {
+            g->character_menu = sfTrue;
+            g->paused = sfTrue;
+        }
+        if (p->goal_reached == sfTrue) {
+            g->tally_speed = 2;
+            p->cooldown = 9700;
+        }
+    }
+}
+
 void keyboard_events(game *g, player *p)
 {
     if (g->event.type == sfEvtClosed)
         sfRenderWindow_close(g->window);
     if (g->event.type == sfEvtKeyPressed) {
         pause_game(g, p);
-        if (g->event.key.code == sfKeyEnter) {
-            if (g->is_main_menu == sfTrue) {
-                g->character_menu = sfTrue;
-                g->paused = sfTrue;
-            }
-            if (p->goal_reached == sfTrue) {
-                g->tally_speed = 2;
-                p->cooldown = 9700;
-            }
-        }
-        level_switch(g);
+        press_enter(g, p);
+        level_init(g);
         if (g->event.key.code == sfKeyR)
             toggle(&g->is_runner);
     }

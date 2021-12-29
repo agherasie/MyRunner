@@ -33,7 +33,7 @@ int count_columns(char *buffer)
 char **map_fill(game *g, char *buffer)
 {
     char **map = malloc(sizeof(char *) * (g->height + 1));
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < g->height; i++)
         map[i] = malloc(sizeof(char) * (g->width + 1));
     map[g->height] = NULL;
     for (int i = 0; i < g->height; i++) {

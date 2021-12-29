@@ -12,13 +12,17 @@ void camera_adjustments(player *p, game *g, sfBool is_first)
     if (is_first == sfTrue) {
         if (p->obj->scale.x < 0)
             p->obj->pos.x -= 48 * 2;
-        p->obj->pos.x += g->camera_pan_x;
-        if (p->goal_reached == sfFalse)
-            p->obj->pos.x -= g->camera_pan_speed;
+        p->obj->pos.x += g->camera_pan.x;
+        p->obj->pos.y += g->camera_pan.y;
+        if (p->goal_reached == sfFalse) {
+            p->obj->pos.x -= g->camera_speed.x;
+            p->obj->pos.y -= g->camera_speed.y;
+        }
     } else {
         if (p->obj->scale.x < 0)
             p->obj->pos.x += 48 * 2;
-        p->obj->pos.x -= g->camera_pan_x;
+        p->obj->pos.x -= g->camera_pan.x;
+        p->obj->pos.y -= g->camera_pan.y;
     }
 }
 
