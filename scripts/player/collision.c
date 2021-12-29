@@ -68,18 +68,21 @@ void wall_collision(player *p, game *g)
     p->can_move = sfTrue;
     int rnd_pos = p->map_pos.x;
     if (is_solid(g->map[p->map_pos.y][rnd_pos + 1]) == 0
-    && (int)(p->obj->pos.x) % 100 >= 30 && p->direction == 1) {
-        p->speed_x = 0;
-        p->obj->pos.x = (rnd_pos * 100) + 30;
-        p->can_move = sfFalse;
+    && p->obj->pos.x >= rnd_pos * 100 + 30) {
+        p->obj->pos.x = rnd_pos * 100 + 30;
+        if (p->direction == 1) {
+            p->can_move = sfFalse;
+            p->speed_x = 0;
+        }
     }
     if (p->obj->pos.x >= rnd_pos + 50)
         rnd_pos++;
-    if (rnd_pos - 1 >= 0)
-        if (is_solid(g->map[p->map_pos.y][rnd_pos - 1]) == 0
-        && p->obj->pos.x <= rnd_pos * 100 - 26 && p->direction == -1) {
-            p->speed_x = 0;
-            p->obj->pos.x = rnd_pos * 100 - 26;
+    if (is_solid(g->map[p->map_pos.y][rnd_pos - 1]) == 0
+    && p->obj->pos.x <= rnd_pos * 100 - 30) {
+        p->obj->pos.x = rnd_pos * 100 - 30;
+        if (p->direction == -1) {
             p->can_move = sfFalse;
+            p->speed_x = 0;
         }
+    }
 }

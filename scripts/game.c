@@ -34,6 +34,7 @@ void keyboard_events(game *g, player *p)
         if (g->event.key.code == sfKeyR)
             toggle(&g->is_runner);
     }
+    player_keyboard_events(g, p);
 }
 
 void fade_transition(game *g)
