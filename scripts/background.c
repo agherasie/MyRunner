@@ -7,33 +7,37 @@
 
 #include "my_runner.h"
 
-void scroll_parallax(game *g, player *p, object *parallax, float speed)
+void scroll_parallax(game *g, player *p, object *plx, float speed)
 {
-    if (parallax->pos.x <= -parallax->rect.width * 2.5f)
-        parallax->pos.x += parallax->rect.width * 2.5f;
-    parallax->scale.x = 2.5f;
-    parallax->scale.y = 2.5f;
+    if (plx->pos.x <= -plx->rect.width * 2.5f)
+        plx->pos.x += plx->rect.width * 2.5f;
+    plx->scale.x = 2.5f;
+    plx->scale.y = 2.5f;
     if (g->paused == sfFalse || p->goal_reached == sfFalse)
-        parallax->pos.x -= speed;
-    sfSprite_setScale(parallax->spr, parallax->scale);
-    sfSprite_setPosition(parallax->spr, parallax->pos);
-    sfRenderWindow_drawSprite(g->window, parallax->spr, NULL);
-    sfSprite_setPosition(parallax->spr, (sfVector2f) {parallax->pos.x + parallax->rect.width * 2.5f, parallax->pos.y});
-    sfRenderWindow_drawSprite(g->window, parallax->spr, NULL);
+        plx->pos.x -= speed;
+    sfSprite_setScale(plx->spr, plx->scale);
+    sfSprite_setPosition(plx->spr, plx->pos);
+    sfRenderWindow_drawSprite(g->window, plx->spr, NULL);
+    sfVector2f pos = {plx->pos.x + plx->rect.width * 2.5f, plx->pos.y};
+    sfSprite_setPosition(plx->spr, pos);
+    sfRenderWindow_drawSprite(g->window, plx->spr, NULL);
 }
 
 void update_background(game *g, player *p)
 {
     if (g->frame % 10 == 0)
-        g->parallax3->rect.top += g->parallax3->rect.height;
-    sfSprite_setTextureRect(g->parallax3->spr, g->parallax3->rect);
-    scroll_parallax(g, p, g->parallax3, 0.4f * g->camera_pan_speed + 0.2f);
-    scroll_parallax(g, p, g->parallax0, 0.1f);
-    scroll_parallax(g, p, g->parallax1, 0.2f * g->camera_pan_speed);
-    scroll_parallax(g, p, g->parallax2, 0.3f * g->camera_pan_speed);
+        g->plx[3]->rect.top += g->plx[3]->rect.height;
+    sfSprite_setTextureRect(g->plx[3]->spr, g->plx[3]->rect);
+    scroll_parallax(g, p, g->plx[3], 0.4f * g->camera_pan_speed + 0.2f);
+    scroll_parallax(g, p, g->plx[0], 0.1f);
+    scroll_parallax(g, p, g->plx[1], 0.2f * g->camera_pan_speed);
+    scroll_parallax(g, p, g->plx[2], 0.3f * g->camera_pan_speed);
     sfVector2i mappos = {0, 0};
     sfVector2f tilepos = {0, 0};
-    for (int i = 0; i < g->height && g->is_main_menu == sfFalse && (g->paused == sfFalse || g->pause_frame < 250); i++)
+    if (g->is_main_menu == sfTrue
+    || (g->paused == sfTrue && g->pause_frame >= 250))
+        return;
+    for (int i = 0; i < g->height; i++)
         for (int j = 0; j < g->width; j++) {
             mappos.x = j;
             mappos.y = i;

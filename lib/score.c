@@ -27,7 +27,8 @@ void set_score(int *hiscore)
 {
     int fp = open("data/score.txt", O_WRONLY);
     if (fp != -1) {
-        char *output = malloc(sizeof(char) * (my_strlen(my_itoa(*hiscore) + 2)));
+        int len = my_strlen(my_itoa(*hiscore));
+        char *output = malloc(sizeof(char) * (len + 2));
         my_strcpy(output, my_itoa(*hiscore));
         output[my_strlen(output)] = 'x';
         output[my_strlen(output)] = '\0';

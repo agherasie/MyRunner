@@ -30,16 +30,8 @@ int count_columns(char *buffer)
     return count;
 }
 
-char **create_map(char *filepath, game *g)
+char **map_fill(game *g, char *buffer)
 {
-    int file = open(filepath, O_RDONLY);
-    if (file == - 1)
-        sfRenderWindow_close(g->window);
-    char *buffer = malloc(sizeof(char) * 1000);
-    read(file, buffer, 1000);
-    close(file);
-    g->height = count_lines(buffer);
-    g->width = count_columns(buffer);
     char **map = malloc(sizeof(char *) * (g->height + 1));
     for (int i = 0; i < 6; i++)
         map[i] = malloc(sizeof(char) * (g->width + 1));
@@ -52,6 +44,20 @@ char **create_map(char *filepath, game *g)
         }
         map[i][g->width] = '\0';
     }
+    return map;
+}
+
+char **create_map(char *filepath, game *g)
+{
+    int file = open(filepath, O_RDONLY);
+    if (file == - 1)
+        sfRenderWindow_close(g->window);
+    char *buffer = malloc(sizeof(char) * 1000);
+    read(file, buffer, 1000);
+    close(file);
+    g->height = count_lines(buffer);
+    g->width = count_columns(buffer);
+    char **map = map_fill(g, buffer);
     for (int i = 0; i < g->height; i++)
         for (int j = 0; j < g->width; j++)
             tile_interpretor(map, i, j);

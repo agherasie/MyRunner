@@ -45,27 +45,25 @@ void enemy_raycast(enemy *e, game *g, player *p)
     && p->obj->pos.x > e->obj->pos.x - 200
     && p->obj->pos.x < e->obj->pos.x + 250
     && (y >= p->map_pos.y - 1) && (y <= p->map_pos.y + 1))
-         e->obj->pos.x -= speed * e->direction;
+        e->obj->pos.x -= speed * e->direction;
 }
 
-void update_enemies(game *g, player *p)
+void update_enemies(game *g, player *p, enemy *e)
 {
-    for (int i = 0; g->e[i].enemytype != -1; i++) {
-        if (g->paused == sfFalse && p->goal_reached == sfFalse)
-            g->e[i].obj->pos.x -= g->camera_pan_speed;
-        sfVector2f pos = {g->e[i].obj->pos.x + (g->e[i].direction == 1 ? 0 : 100), g->e[i].obj->pos.y};
-        sfSprite_setPosition(g->e[i].obj->spr, pos);
-        if (g->e[i].is_dead == sfFalse)
-            enemy_raycast(&g->e[i], g, p);
-        if (g->e[i].is_dead == sfTrue) {
-            g->e[i].obj->rect.top = 50;
-            animate_object(g, g->e[i].obj, g->e[i].anim[1], &g->e[i].frame);
-        } else {
-            animate_object(g, g->e[i].obj, g->e[i].anim[0], &g->e[i].frame);
-        }
-        sfSprite_setTextureRect(g->e[i].obj->spr, g->e[i].obj->rect);
-        sfRenderWindow_drawSprite(g->window, g->e[i].obj->spr, NULL);
-    }
+    if (g->paused == sfFalse && p->goal_reached == sfFalse)
+        e->obj->pos.x -= g->camera_pan_speed;
+    sfVector2f pos = e->obj->pos;
+    pos.x += e->direction == 1 ? 0 : 100;
+    sfSprite_setPosition(e->obj->spr, pos);
+    if (e->is_dead == sfFalse)
+        enemy_raycast(e, g, p);
+    if (e->is_dead == sfTrue) {
+        e->obj->rect.top = 50;
+        animate_object(g, e->obj, e->anim[1], &e->frame);
+    } else
+        animate_object(g, e->obj, e->anim[0], &e->frame);
+    sfSprite_setTextureRect(e->obj->spr, e->obj->rect);
+    sfRenderWindow_drawSprite(g->window, e->obj->spr, NULL);
 }
 
 enemy create_enemy(int type, float spawn_pos, int free_spot)

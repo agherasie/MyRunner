@@ -7,7 +7,6 @@
 
 #include "my_runner.h"
 
-
 int is_ring_collision(player *p, ring *r, game *g)
 {
     if (p->obj->pos.x >= (r->pos.x - 50 + g->camera_pan_x)

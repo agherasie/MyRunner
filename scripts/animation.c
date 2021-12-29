@@ -7,7 +7,7 @@
 
 #include "my_runner.h"
 
-void choose_anim_state(player *p)
+void basic_anims(player *p)
 {
     if (p->speed_x == 0)
         p->anim_state = IDLE;
@@ -29,11 +29,16 @@ void choose_anim_state(player *p)
         p->anim_state = TURNING;
     if (p->is_jumping == sfTrue)
         p->anim_state = JUMPING;
+}
+
+void special_anims(player *p)
+{
     if (p->can_move == sfFalse && p->anim_state == WALKING)
         p->anim_state = PUSHING;
     if (p->is_spinning == sfTrue)
         p->anim_state = SPINNING;
-    if (p->is_charging == sfTrue || p->is_flying == sfTrue || p->is_gliding == sfTrue)
+    if (p->is_charging == sfTrue
+    || p->is_flying == sfTrue || p->is_gliding == sfTrue)
         p->anim_state = SPEEDING;
     if (p->is_flying == sfTrue && p->cooldown < 10)
         p->anim_state = TIRING;
@@ -45,6 +50,12 @@ void choose_anim_state(player *p)
         p->anim_state = THUMBSUP;
     if (p->is_dying == sfTrue)
         p->anim_state = DYING;
+}
+
+void choose_anim_state(player *p)
+{
+    basic_anims(p);
+    special_anims(p);
 }
 
 void animate(player *p)

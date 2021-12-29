@@ -33,7 +33,7 @@ void create_animation(animation *anim, int length, float speed, sfBool loop)
     anim->loop = loop;
 }
 
-object *create_background(int x, int y, char *filepath, int posy)
+object *create_bg(int x, int y, char *filepath, int posy)
 {
     object *obj = malloc(sizeof(object));
     obj->spr = sfSprite_create();
@@ -121,17 +121,27 @@ game create_values(game g)
     return g;
 }
 
+object *create_plx(object **plx)
+{
+    int ypos = 0;
+    plx[0] = create_bg(1729, 64, "art/plx/p1-0.png", 0);
+    ypos += 64;
+    plx[1] = create_bg(1729, 53, "art/plx/p1-1.png", ypos * 2.5f);
+    ypos += 53;
+    plx[2] = create_bg(1729, 40, "art/plx/p1-2.png", ypos * 2.5f);
+    ypos += 40;
+    plx[3] = create_bg(1024, 107, "art/plx/p1-3.png", (ypos - 3) * 2.5f);
+    return *plx;
+}
+
 game create_art(game g)
 {
     g.tile = create_object(50, 2, "art/tileset.png");
-    g.parallax0 = create_background(1729, 64, "art/clouds.png", 0);
-    g.parallax1 = create_background(1729, 53, "art/hills.png", 64 * 2.5f);
-    g.parallax2 = create_background(1729, 40, "art/hills2.png", (64 + 53) * 2.5f);
-    g.parallax3 = create_background(1024, 107, "art/ocean.png", (64 + 53 + 40 - 3) * 2.5f);
+    *g.plx = create_plx(g.plx);
     g.goalsign = create_object(50, 2, "art/goalsigns.png");
     g.ring = create_object(50, 2, "art/misc.png");
     g.player_icon = create_object(48, 2, "art/sonic_sheet.png");
-    g.title_sonic = create_background(254, 219, "art/title_logo.png", 0);
+    g.title_sonic = create_bg(254, 219, "art/title_logo.png", 0);
     g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
     g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
     g.knux_text = sfTexture_createFromFile("art/knuckles_sheet.png", NULL);
@@ -152,6 +162,13 @@ game create_animations_game(game g)
     return g;
 }
 
+void create_sonic_title(game g, int height, int width)
+{
+    sfSprite_setScale(g.title_sonic->spr, (sfVector2f) {2, 2});
+    g.title_sonic->pos = (sfVector2f) {W_W / 2 - width, W_H / 2 - height};
+    sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
+}
+
 game create_game()
 {
     game g;
@@ -165,6 +182,7 @@ game create_game()
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);
     g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");
+    create_sonic_title(g, 224, 320);
     g.score_text = sfText_create();
     sfText_setFont(g.score_text, g.hud_font);
     g.score_text = style_text(g.score_text);

@@ -22,15 +22,11 @@ void destroy_sprites(game *g, player *p)
     sfSprite_destroy(g->ring->spr);
     sfSprite_destroy(g->tile->spr);
     sfSprite_destroy(p->obj->spr);
-    sfSprite_destroy(g->parallax0->spr);
-    sfSprite_destroy(g->parallax1->spr);
-    sfSprite_destroy(g->parallax2->spr);
-    sfSprite_destroy(g->parallax3->spr);
+    for (int i = 0; i < 4; i++) {
+        sfSprite_destroy(g->plx[i]->spr);
+        sfTexture_destroy(g->plx[i]->text);
+    }
     sfSprite_destroy(g->title_sonic->spr);
-    sfTexture_destroy(g->parallax0->text);
-    sfTexture_destroy(g->parallax1->text);
-    sfTexture_destroy(g->parallax2->text);
-    sfTexture_destroy(g->parallax3->text);
     sfTexture_destroy(g->title_sonic->text);
     sfTexture_destroy(g->ring->text);
     sfTexture_destroy(g->tile->text);

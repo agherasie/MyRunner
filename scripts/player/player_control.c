@@ -17,7 +17,7 @@ void flip(player *p, int direction)
     }
 }
 
-void directional_key(player *p, int direction, sfBool released, game *g)
+void directional_key(player *p, int dir, sfBool released, game *g)
 {
     if (g->is_runner == sfFalse) {
         if (released == sfFalse) {
@@ -25,8 +25,8 @@ void directional_key(player *p, int direction, sfBool released, game *g)
                 p->is_turning = sfFalse;
                 p->deceleration = sfFalse;
                 p->acceleration = sfTrue;
-                flip(p, direction);
-            } else if (p->direction != direction && p->speed_x > TOPSPEED - 0.5f) {
+                flip(p, dir);
+            } else if (p->direction != dir && p->speed_x > TOPSPEED - 0.5f) {
                 p->is_turning = sfTrue;
             }
         } else {

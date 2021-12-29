@@ -42,15 +42,16 @@ void misc(player *p)
 
 void update_player(player *p, game *g)
 {
+    sfVector2i m_p = {p->map_pos.x, p->map_pos.y};
     if (g->score % 100000 == 0 && g->score != 0)
         update_lives(p, g);
-    if (is_solid(g->map[p->map_pos.y][p->map_pos.x]) == 0 && p->speed_y == 0)
+    if (is_solid(g->map[m_p.y][m_p.x]) == 0 && p->speed_y == 0)
         do_death(p, g);
-    if (g->map[p->map_pos.y][p->map_pos.x] >= 5)
+    if (g->map[m_p.y][m_p.x] >= 5)
         do_death(p, g);
-    if (g->map[p->map_pos.y + 1][p->map_pos.x] == 6 && p->is_grounded == sfTrue)
+    if (g->map[m_p.y + 1][m_p.x] == 6 && p->is_grounded == sfTrue)
         player_hit(p, g);
-    if (p->map_pos.x == g->width - 1)
+    if (m_p.x == g->width - 1)
         p->goal_reached = sfTrue;
     if (p->goal_reached == sfTrue) {
         tally(p, g);

@@ -50,31 +50,40 @@ void movement(player *p, game *g)
     deceleration(p);
 }
 
+void on_landing(player *p)
+{
+    p->is_grounded = sfTrue;
+    if (p->is_gliding == sfTrue)
+        p->speed_x = 0;
+    p->is_flying = sfFalse;
+    p->is_gliding = sfFalse;
+    if (p->is_dropping == sfTrue) {
+        p->speed_x = TOPSPEED;
+        p->is_dashing = sfTrue;
+        p->is_dropping = sfFalse;
+        sfMusic_stop(p->sound[SPIN]);
+        sfMusic_play(p->sound[SPIN]);
+    }
+}
+
+void aerial_movement(player *p)
+{
+    p->is_grounded = sfFalse;
+    if (p->is_flying == sfTrue)
+        p->speed_y += 0.125f;
+    else if (p->is_gliding == sfTrue) {
+        p->speed_y = 1;
+        p->speed_x = 5.5f;
+    } else
+        p->speed_y += 0.4f;
+}
+
 void gravity(player *p)
 {
-    if (p->obj->pos.y == p->collision_y) {
-        p->is_grounded = sfTrue;
-        if (p->is_gliding == sfTrue)
-            p->speed_x = 0;
-        p->is_flying = sfFalse;
-        p->is_gliding = sfFalse;
-        if (p->is_dropping == sfTrue) {
-            p->speed_x = TOPSPEED;
-            p->is_dashing = sfTrue;
-            p->is_dropping = sfFalse;
-            sfMusic_stop(p->sound[SPIN]);
-            sfMusic_play(p->sound[SPIN]);
-        }
-    } else
-        p->is_grounded = sfFalse;
-    if (p->is_grounded == sfFalse)
-        if (p->is_flying == sfTrue)
-            p->speed_y += 0.125f;
-        else if (p->is_gliding == sfTrue) {
-            p->speed_y = 1;
-            p->speed_x = 5.5f;
-        } else
-            p->speed_y += 0.4f;
+    if (p->obj->pos.y == p->collision_y)
+        on_landing(p);
+    else
+        aerial_movement(p);
     if (p->obj->pos.y > p->collision_y) {
         p->speed_y = 0;
         p->obj->pos.y = p->collision_y;

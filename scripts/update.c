@@ -9,24 +9,23 @@
 
 void animate_sonic_title(game *g)
 {
-    sfSprite_setScale(g->title_sonic->spr, (sfVector2f) {2, 2});
-    g->title_sonic->pos = (sfVector2f) {W_W / 2 - 320, W_H / 2 - 224};
-    sfSprite_setPosition(g->title_sonic->spr, g->title_sonic->pos);
     g->title_sonic_frame--;
-    g->title_sonic->rect.height = 224;
-    g->title_sonic->rect.width = 320;
+    sfIntRect tr = g->title_sonic->rect;
+    tr.height = 224;
+    tr.width = 320;
     if (g->title_sonic_frame == 0) {
-        g->title_sonic->rect.left += 320;
+        tr.left += 320;
         g->title_sonic_frame = 10;
     }
-    if (g->title_sonic->rect.left >= 320 * 3 && g->title_sonic->rect.top < 224 * 5) {
-        g->title_sonic->rect.left = 0;
-        g->title_sonic->rect.top += 224;
+    if (tr.left >= 320 * 3 && tr.top < 224 * 5) {
+        tr.left = 0;
+        tr.top += 224;
     }
-    if (g->title_sonic->rect.left >= 320 * 3 && g->title_sonic->rect.top == 224 * 5) {
-        g->title_sonic->rect.left = 320;
-        g->title_sonic->rect.top = 224 * 5;
+    if (tr.left >= 320 * 3 && tr.top == 224 * 5) {
+        tr.left = 320;
+        tr.top = 224 * 5;
     }
+    g->title_sonic->rect = tr;
     sfSprite_setTextureRect(g->title_sonic->spr, g->title_sonic->rect);
     sfRenderWindow_drawSprite(g->window, g->title_sonic->spr, NULL);
 }
@@ -65,7 +64,8 @@ void update_level(game *g, player *p)
         sfMusic_play(g->bg_music);
     update_goalsign(g, p);
     update_rings(g, p);
-    update_enemies(g, p);
+    for (int i = 0; g->e[i].enemytype != -1; i++)
+        update_enemies(g, p, &g->e[i]);
     update_player(p, g);
     if (g->paused == sfFalse) {
         if (p->goal_reached == sfFalse) {

@@ -9,10 +9,6 @@
 
 player create_knux_animations(player p)
 {
-    p.anim_frame = 0;
-    p.running_anim = 0;
-    p.anim_state = IDLE;
-    p.character = 'k';
     create_animation(&p.anim[IDLE], 1, 1, sfFalse);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
@@ -34,10 +30,6 @@ player create_knux_animations(player p)
 
 player create_tails_animations(player p)
 {
-    p.anim_frame = 0;
-    p.running_anim = 0;
-    p.anim_state = IDLE;
-    p.character = 't';
     create_animation(&p.anim[IDLE], 4, 15, sfTrue);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 6, 5, sfTrue);
@@ -58,12 +50,8 @@ player create_tails_animations(player p)
     return p;
 }
 
-player create_animations(player p)
+player create_sonic_animations(player p)
 {
-    p.anim_frame = 0;
-    p.running_anim = 0;
-    p.anim_state = IDLE;
-    p.character = 's';
     create_animation(&p.anim[IDLE], 1, 1, sfTrue);
     create_animation(&p.anim[WALKING], 8, 8, sfTrue);
     create_animation(&p.anim[RUNNING], 4, 5, sfTrue);
@@ -81,6 +69,25 @@ player create_animations(player p)
     create_animation(&p.anim[SPEEDING], 4, 3, sfTrue);
     create_animation(&p.anim[DYING], 4, 10, sfFalse);
     return p;
+}
+
+player create_animations(player p, char character)
+{
+    p.anim_frame = 0;
+    p.running_anim = 0;
+    p.anim_state = IDLE;
+    p.character = character;
+    switch (character) {
+        case 's':
+            return create_sonic_animations(p);
+            break;
+        case 't':
+            return create_tails_animations(p);
+            break;
+        case 'k':
+            return create_knux_animations(p);
+            break;
+    }
 }
 
 player create_bools(player p)
@@ -137,7 +144,7 @@ player create_player(game *g)
     p.is_edging = 0;
     p.cooldown = 0;
     p = create_bools(p);
-    p = create_animations(p);
+    p = create_animations(p, 's');
     p = create_sounds(p);
     for (int i = 0; i < 7; i++)
         sfMusic_setVolume(p.sound[i], 50);
