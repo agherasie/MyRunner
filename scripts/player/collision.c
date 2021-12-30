@@ -9,7 +9,7 @@
 
 int is_solid(int square)
 {
-    if (square == 2 || square == 3)
+    if (square == 2 || square == 3 || square == 6)
         return 0;
     return 1;
 }
@@ -33,7 +33,7 @@ void camera_movement(player *p, game *g)
             g->camera_speed.y = 10;
     if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
         if (p->is_gliding == sfFalse)
-            g->camera_speed.x = 10;
+            g->camera_speed.x = 8;
         else
             g->camera_speed.x = p->speed_x;
 }

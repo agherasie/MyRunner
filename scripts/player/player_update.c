@@ -62,7 +62,7 @@ void spring_collision(player *p, char *spring, game *g)
         case 104:
             p->speed_x = 0;
             directional_key(p, 1, sfFalse, g);
-            p->speed_x = 7;
+            p->speed_x = 10;
             directional_key(p, 1, sfTrue, g);
             break;
     }
