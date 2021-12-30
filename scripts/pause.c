@@ -36,13 +36,22 @@ void buttons(game *g, player *p)
 
 void switch_character(game *g, player *p, char character)
 {
-    if (character == 's')
-        sfSprite_setTexture(p->obj->spr, g->sonic_text, sfFalse);
-    if (character == 't')
-        sfSprite_setTexture(p->obj->spr, g->tails_text, sfFalse);
-    if (character == 'k')
-        sfSprite_setTexture(p->obj->spr, g->knux_text, sfFalse);
+    switch (character) {
+        case 's':
+            sfSprite_setTexture(p->obj->spr, g->sonic_text, sfFalse);
+            g->player_icon->rect.left = 50;
+            break;
+        case 't':
+            sfSprite_setTexture(p->obj->spr, g->tails_text, sfFalse);
+            g->player_icon->rect.left = 100;
+            break;
+        case 'k':
+            sfSprite_setTexture(p->obj->spr, g->knux_text, sfFalse);
+            g->player_icon->rect.left = 150;
+            break;
+    }
     *p = create_animations(*p, character);
+    sfSprite_setTextureRect(g->player_icon->spr, g->player_icon->rect);
 }
 
 void character_buttons(game *g, player *p)
