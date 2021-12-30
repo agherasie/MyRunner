@@ -35,6 +35,19 @@ void score_update(game *g, int o)
         d_txt_var(g, "hiscore", (sfVector2i) {1 + o, 7 + o}, g->hiscore);
 }
 
+void debug_diplay(game *g)
+{
+    int offset = 8;
+    if (g->debug == sfTrue) {
+        d_txt_var(g, "map width", (sfVector2i) {1, 2 + offset}, g->width);
+        d_txt_var(g, "map height", (sfVector2i) {1, 4 + offset}, g->height);
+        d_txt_var(g, "level", (sfVector2i) {1, 6 + offset}, g->level);
+        offset += 6;
+    }
+    if (g->is_runner == sfTrue)
+        draw_text(g, "runner mode", 1, offset + 2);
+}
+
 void hud_display(game *g, sfBool center)
 {
     int o = 0;
@@ -42,6 +55,7 @@ void hud_display(game *g, sfBool center)
         o = 10;
     sfText_setFillColor(g->score_text, sfYellow);
     score_update(g, o);
+    debug_diplay(g);
     if (g->frame % 30 >= 15 && g->rings == 0)
         sfText_setFillColor(g->score_text, sfRed);
     d_txt_var(g, "rings", (sfVector2i) {1 + o, 5 + o}, g->rings);

@@ -26,7 +26,7 @@ void directional_key(player *p, int dir, sfBool released, game *g)
                 p->deceleration = sfFalse;
                 p->acceleration = sfTrue;
                 flip(p, dir);
-            } else if (p->direction != dir && p->speed_x > TOPSPEED - 0.5f) {
+            } else if (p->direction != dir) {
                 p->is_turning = sfTrue;
             }
         } else {
@@ -81,7 +81,7 @@ void player_release_key(game *g, player *p)
             p->is_looking = sfFalse;
     if (g->event.key.code == sfKeyDown)
         if (p->is_spinning) {
-            p->speed_x = 8;
+            p->speed_x = 10;
             p->is_dashing = sfTrue;
         } else
             p->is_crouching = sfFalse;

@@ -7,25 +7,32 @@
 
 #include "my_runner.h"
 
-void acceleration(player *p)
+void acceleration(player *p, game *g)
 {
+    float accel = 0.15f;
+    if (g->level == 2)
+        accel *= 1.5f;
     float topspeed = TOPSPEED;
     if (p->character == 's')
         topspeed = TOPSPEED + 0.75f;
     float prev_speed_x = p->speed_x;
     if (p->acceleration == sfTrue)
-        p->speed_x += 0.15f;
-    if (p->speed_x >= topspeed + 0.15f)
+        p->speed_x += accel;
+    if (p->speed_x >= topspeed + accel)
         p->speed_x = prev_speed_x;
     if (p->speed_x > 0)
         p->meters_run += p->speed_x / 40;
 }
 
-void deceleration(player *p)
+void deceleration(player *p, game *g)
 {
     float decel = 0.15f;
+    if (g->level == 2)
+        decel /= 5;
     if (p->is_dashing == sfTrue)
-        decel = 0.05f;
+        decel /= 2;
+    if (p->is_turning == sfTrue)
+        decel *= 5;
     if (p->deceleration == sfTrue || p->is_dashing == sfTrue) {
         if (p->speed_x > 0)
             p->speed_x -= decel;
@@ -46,8 +53,8 @@ void movement(player *p, game *g)
         p->meters_run = 0;
     }
     wall_collision(p, g);
-    acceleration(p);
-    deceleration(p);
+    acceleration(p, g);
+    deceleration(p, g);
 }
 
 void on_landing(player *p)

@@ -25,7 +25,7 @@ void basic_anims(player *p)
         p->anim_state = RUNNING;
     if (p->speed_x >= 9)
         p->anim_state = SPEEDING;
-    if (p->is_turning == sfTrue)
+    if (p->is_turning == sfTrue && p->speed_x > 6)
         p->anim_state = TURNING;
     if (p->is_jumping == sfTrue)
         p->anim_state = JUMPING;

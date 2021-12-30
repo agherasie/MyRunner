@@ -74,6 +74,7 @@ void update_unpaused(player *p, game *g)
     if (p->obj->pos.x + g->camera_pan.x >= g->width * 100 - 70)
         p->speed_x = 0;
     camera_adjustments(p, g, sfTrue);
+    camera_movement(p, g);
     dashing(p);
     damage(p, g);
     invisible_walls(p, g);

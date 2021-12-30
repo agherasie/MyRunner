@@ -52,8 +52,8 @@ char **create_map(char *filepath, game *g)
     int file = open(filepath, O_RDONLY);
     if (file == - 1)
         sfRenderWindow_close(g->window);
-    char *buffer = malloc(sizeof(char) * 1000);
-    read(file, buffer, 1000);
+    char *buffer = malloc(sizeof(char) * 100000);
+    read(file, buffer, 100000);
     close(file);
     g->height = count_lines(buffer);
     g->width = count_columns(buffer);

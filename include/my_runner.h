@@ -128,6 +128,7 @@ typedef struct game {
     sfTexture *knux_text;
     sfBool character_menu;
     sfBool relaunch;
+    sfBool debug;
 } game;
 
 typedef struct player {
@@ -178,8 +179,8 @@ void update_player(player *p, game *g);
 void player_keyboard_events(game *g, player *p);
 void gravity(player *p);
 void movement(player *p, game *g);
-void deceleration(player *p);
-void acceleration(player *p);
+void deceleration(player *p, game *g);
+void acceleration(player *p, game *g);
 void animate(player *p);
 void wall_collision(player *p, game *g);
 void raycast(player *p, game *g);
@@ -236,5 +237,6 @@ void player_release_key(game *g, player *p);
 void toggle_music(game *g);
 void stop_music(game *g);
 void switch_music(game *g, sfMusic *music);
+void camera_movement(player *p, game *g);
 
 #endif /* MY_RUNNER_H_ */

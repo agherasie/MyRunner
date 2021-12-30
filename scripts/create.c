@@ -116,6 +116,7 @@ game create_values(game g)
     g.is_runner = sfFalse;
     g.is_main_menu = sfTrue;
     g.character_menu = sfFalse;
+    g.debug = sfFalse;
     return g;
 }
 

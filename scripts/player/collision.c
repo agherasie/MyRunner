@@ -14,6 +14,23 @@ int is_solid(int square)
     return 0;
 }
 
+void camera_movement(player *p, game *g)
+{
+    g->camera_speed = (sfVector2f) {0, 0};
+    if (p->is_dying == sfFalse && g->is_runner == sfTrue)
+        g->camera_speed.x = 3;
+    if (p->obj->pos.y <= g->camera_pan.y + W_H / 4)
+        g->camera_speed.y = -5;
+    if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
+        g->camera_speed.y = 5;
+    if (p->obj->pos.y >= g->camera_pan.y + W_H - 200)
+        g->camera_speed.y = 20;
+    if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
+        g->camera_speed.x = TOPSPEED;
+    if (p->obj->pos.x >= g->camera_pan.x + W_W - 88)
+        g->camera_speed.x = 10;
+}
+
 void invisible_walls(player *p, game *g)
 {
     if (p->obj->pos.x <= g->camera_pan.x - 24) {
@@ -23,15 +40,6 @@ void invisible_walls(player *p, game *g)
         if (g->is_runner == sfTrue)
             do_death(p, g);
     }
-    g->camera_speed = (sfVector2f) {0, 0};
-    if (p->is_dying == sfFalse && g->is_runner == sfTrue)
-        g->camera_speed.x = 3;
-    if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
-        g->camera_speed.x = TOPSPEED;
-    if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
-        g->camera_speed.y = 5;
-    if (p->obj->pos.x >= g->camera_pan.x + W_W - 88)
-        g->camera_speed.x = 10;
     if (p->obj->pos.y <= 0)
         p->obj->pos.y = 0;
 }

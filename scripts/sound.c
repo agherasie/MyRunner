@@ -9,7 +9,7 @@
 
 void sound_update(player *p)
 {
-    if (p->is_turning == sfTrue)
+    if (p->anim_state == TURNING)
         sfMusic_play(p->sound[BRAKE]);
     else
         sfMusic_stop(p->sound[BRAKE]);

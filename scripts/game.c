@@ -77,6 +77,11 @@ void keyboard_events(game *g, player *p)
         level_init(g);
         if (g->event.key.code == sfKeyR)
             toggle(&g->is_runner);
+        if (g->event.key.code == sfKeyD)
+            toggle(&g->debug);
+        if (g->event.key.code == sfKeyE)
+            for (int i = 0; g->e[i].enemytype != -1; i++)
+                g->e[i].is_dead = sfTrue;
     }
     if (!(p->anim_state == HURTING && p->is_grounded == sfFalse)
     && g->paused == sfFalse)

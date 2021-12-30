@@ -34,7 +34,7 @@ void enemy_raycast(enemy *e, game *g, player *p)
         e->obj->pos.y += 5;
     for (int i = 0; g->map[y + i + 1] != NULL; i++)
         if (is_solid(g->map[y + i + 1][x]) == 0) {
-            collision_y = (y + i) * 100;
+            collision_y = (y + i) * 100 - g->camera_pan.y;
             break;
         }
     if (e->obj->pos.y >= collision_y)
