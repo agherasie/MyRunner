@@ -27,7 +27,7 @@
     #define DASHING 13
     #define SPEEDING 14
     #define DYING 15
-    #define TIRING 16
+    #define SPECIAL 16
     #define JUMP 0
     #define BADNIK_DEATH 1
     #define BRAKE 2
@@ -156,9 +156,10 @@ typedef struct player {
     sfBool is_speeding;
     sfBool is_dropping;
     sfBool is_dying;
+    sfBool is_climbing;
     int is_edging;
     int anim_state;
-    animation anim[17];
+    animation anim[18];
     int running_anim;
     int anim_frame;
     sfMusic *sound[11];
@@ -240,5 +241,6 @@ void toggle_music(game *g);
 void stop_music(game *g);
 void switch_music(game *g, sfMusic *music);
 void camera_movement(player *p, game *g);
+void end_climbing(player *p, game *g, sfBool jump);
 
 #endif /* MY_RUNNER_H_ */

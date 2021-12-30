@@ -30,6 +30,7 @@ void do_death(player *p, game *g)
 
 void player_hit(player *p, game *g)
 {
+    p->is_climbing = sfFalse;
     p->speed_x = 0;
     if (g->rings > 0)
         do_damage(p, g);

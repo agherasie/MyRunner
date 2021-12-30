@@ -22,9 +22,12 @@ void camera_movement(player *p, game *g)
     if (p->is_dying == sfTrue)
         return;
     if (p->obj->pos.y <= g->camera_pan.y + W_H / 4)
-        g->camera_speed.y = -10;
+        if (p->is_climbing == sfTrue)
+            g->camera_speed.y = p->speed_y;
+        else
+            g->camera_speed.y = -10;
     if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
-        if (p->is_gliding == sfTrue)
+        if (p->is_gliding == sfTrue || p->is_climbing == sfTrue)
             g->camera_speed.y = p->speed_y;
         else
             g->camera_speed.y = 10;
@@ -81,22 +84,36 @@ void wall_collision(player *p, game *g)
 {
     p->can_move = sfTrue;
     int rnd_pos = p->map_pos.x;
-    if (is_solid(g->map[p->map_pos.y][rnd_pos + 1]) == 0
-    && p->obj->pos.x >= rnd_pos * 100 + 30) {
-        p->obj->pos.x = rnd_pos * 100 + 30;
-        if (p->direction == 1) {
-            p->can_move = sfFalse;
-            p->speed_x = 0;
+    if (is_solid(g->map[p->map_pos.y][rnd_pos + 1]) == 0) {
+        if (p->obj->pos.x >= rnd_pos * 100 + 30) {
+            p->obj->pos.x = rnd_pos * 100 + 30;
+            if (p->direction == 1) {
+                if (p->is_gliding == sfTrue) {
+                    if (p->is_climbing == sfFalse)
+                        p->speed_y = 0;
+                    p->is_climbing = sfTrue;
+                }
+                p->can_move = sfFalse;
+                p->speed_x = 0;
+            }
         }
-    }
+    } else if (p->direction == 1 && p->is_climbing == sfTrue)
+        end_climbing(p, g, sfFalse);
     if (p->obj->pos.x >= rnd_pos + 50)
         rnd_pos++;
-    if (is_solid(g->map[p->map_pos.y][rnd_pos - 1]) == 0
-    && p->obj->pos.x <= rnd_pos * 100 - 30) {
-        p->obj->pos.x = rnd_pos * 100 - 30;
-        if (p->direction == -1) {
-            p->can_move = sfFalse;
-            p->speed_x = 0;
+    if (is_solid(g->map[p->map_pos.y][rnd_pos - 1]) == 0) {
+        if (p->obj->pos.x <= rnd_pos * 100 - 30) {
+            p->obj->pos.x = rnd_pos * 100 - 30;
+            if (p->direction == -1) {
+                if (p->is_gliding == sfTrue) {
+                    if (p->is_climbing == sfFalse)
+                        p->speed_y = 0;
+                    p->is_climbing = sfTrue;
+                }
+                p->can_move = sfFalse;
+                p->speed_x = 0;
+            }
         }
-    }
+    } else if (p->direction == -1 && p->is_climbing == sfTrue)
+        end_climbing(p, g, sfFalse);
 }

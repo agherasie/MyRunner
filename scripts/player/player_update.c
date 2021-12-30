@@ -47,6 +47,7 @@ void misc(player *p)
 void spring_collision(player *p, char *spring, game *g)
 {
     sfVector2i m_p = {p->map_pos.x, p->map_pos.y};
+    p->is_climbing = sfFalse;
     sfMusic_stop(p->sound[SPRING]);
     sfMusic_play(p->sound[SPRING]);
     switch (*spring) {
@@ -72,6 +73,10 @@ void spring_collision(player *p, char *spring, game *g)
 void update_player(player *p, game *g)
 {
     sfVector2i m_p = {p->map_pos.x, p->map_pos.y};
+    if (p->is_climbing == sfTrue) {
+        p->speed_x = 0;
+        p->is_gliding = sfFalse;
+    }
     if (g->score % 100000 == 0 && g->score != 0)
         update_lives(p, g);
     if (g->map[m_p.y][m_p.x] >= 100 && g->map[m_p.y][m_p.x] % 2 == 0)

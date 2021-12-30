@@ -25,6 +25,7 @@ player create_knux_animations(player p)
     create_animation(&p.anim[DASHING], 4, 3, sfTrue);
     create_animation(&p.anim[SPEEDING], 1, 1, sfFalse);
     create_animation(&p.anim[DYING], 2, 10, sfFalse);
+    create_animation(&p.anim[SPECIAL], 7, 15, sfTrue);
     return p;
 }
 
@@ -46,7 +47,7 @@ player create_tails_animations(player p)
     create_animation(&p.anim[DASHING], 3, 3, sfTrue);
     create_animation(&p.anim[SPEEDING], 2, 3, sfTrue);
     create_animation(&p.anim[DYING], 3, 10, sfFalse);
-    create_animation(&p.anim[TIRING], 2, 6, sfTrue);
+    create_animation(&p.anim[SPECIAL], 2, 6, sfTrue);
     return p;
 }
 
@@ -110,6 +111,7 @@ player create_bools(player p)
     p.is_dying = sfFalse;
     p.is_flying = sfFalse;
     p.is_gliding = sfFalse;
+    p.is_climbing = sfFalse;
     return p;
 }
 

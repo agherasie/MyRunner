@@ -66,7 +66,8 @@ void update_living(player *p, game *g)
     misc(p);
     movement(p, g);
     raycast(p, g);
-    gravity(p, g);
+    if (p->is_climbing == sfFalse)
+        gravity(p, g);
 }
 
 void update_unpaused(player *p, game *g)
