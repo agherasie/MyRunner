@@ -9,9 +9,9 @@
 
 int is_solid(int square)
 {
-    if (square == 0 || square == 1 || square == 4 || square == 5)
-        return 1;
-    return 0;
+    if (square == 2 || square == 3)
+        return 0;
+    return 1;
 }
 
 void camera_movement(player *p, game *g)
@@ -19,16 +19,20 @@ void camera_movement(player *p, game *g)
     g->camera_speed = (sfVector2f) {0, 0};
     if (p->is_dying == sfFalse && g->is_runner == sfTrue)
         g->camera_speed.x = 3;
+    if (p->is_dying == sfTrue)
+        return;
     if (p->obj->pos.y <= g->camera_pan.y + W_H / 4)
-        g->camera_speed.y = -5;
+        g->camera_speed.y = -10;
     if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
-        g->camera_speed.y = 5;
-    if (p->obj->pos.y >= g->camera_pan.y + W_H - 200)
-        g->camera_speed.y = 20;
+        if (p->is_gliding == sfTrue)
+            g->camera_speed.y = p->speed_y;
+        else
+            g->camera_speed.y = 10;
     if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
-        g->camera_speed.x = TOPSPEED;
-    if (p->obj->pos.x >= g->camera_pan.x + W_W - 88)
-        g->camera_speed.x = 10;
+        if (p->is_gliding == sfFalse)
+            g->camera_speed.x = 10;
+        else
+            g->camera_speed.x = p->speed_x;
 }
 
 void invisible_walls(player *p, game *g)

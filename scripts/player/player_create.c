@@ -125,6 +125,7 @@ player create_sounds(player p)
     p.sound[7] = sfMusic_createFromFile("art/sound/sign-post.wav");
     p.sound[8] = sfMusic_createFromFile("art/sound/tally.wav");
     p.sound[9] = sfMusic_createFromFile("art/sound/1-up.wav");
+    p.sound[10] = sfMusic_createFromFile("art/sound/spring.wav");
     return p;
 }
 

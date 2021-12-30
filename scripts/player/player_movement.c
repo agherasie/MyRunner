@@ -32,7 +32,7 @@ void deceleration(player *p, game *g)
     if (p->is_dashing == sfTrue)
         decel /= 2;
     if (p->is_turning == sfTrue)
-        decel *= 5;
+        decel *= 2;
     if (p->deceleration == sfTrue || p->is_dashing == sfTrue) {
         if (p->speed_x > 0)
             p->speed_x -= decel;
@@ -57,7 +57,7 @@ void movement(player *p, game *g)
     deceleration(p, g);
 }
 
-void on_landing(player *p)
+void on_landing(player *p, game *g)
 {
     p->is_grounded = sfTrue;
     if (p->is_gliding == sfTrue)
@@ -80,15 +80,15 @@ void aerial_movement(player *p)
         p->speed_y += 0.125f;
     else if (p->is_gliding == sfTrue) {
         p->speed_y = 1;
-        p->speed_x = 5.5f;
+        p->speed_x = 5;
     } else
         p->speed_y += 0.4f;
 }
 
-void gravity(player *p)
+void gravity(player *p, game *g)
 {
     if (p->obj->pos.y == p->collision_y)
-        on_landing(p);
+        on_landing(p, g);
     else
         aerial_movement(p);
     if (p->obj->pos.y > p->collision_y) {

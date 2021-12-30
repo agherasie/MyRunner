@@ -103,7 +103,8 @@ void pause_menu(game *g)
 
 void pause_game(game *g, player *p)
 {
-    if (g->event.key.code == sfKeyP && g->is_main_menu == sfFalse) {
+    if ((g->event.key.code == sfKeyP || g->event.key.code == sfKeyEscape)
+    && g->is_main_menu == sfFalse) {
         if (g->paused == sfTrue)
             g->paused = sfFalse;
         else {

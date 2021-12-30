@@ -71,6 +71,9 @@ void keyboard_events(game *g, player *p)
 {
     if (g->event.type == sfEvtClosed)
         sfRenderWindow_close(g->window);
+    if (g->event.type == sfEvtLostFocus
+    && g->is_main_menu == sfFalse && p->goal_reached == sfFalse)
+        g->paused = sfTrue;
     if (g->event.type == sfEvtKeyPressed) {
         pause_game(g, p);
         press_enter(g, p);

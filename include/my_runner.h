@@ -38,6 +38,7 @@
     #define GOALSIGN 7
     #define TALLY 8
     #define ONEUP 9
+    #define SPRING 10
     #include <SFML/Graphics.h>
     #include <SFML/System.h>
     #include <SFML/Audio.h>
@@ -160,7 +161,7 @@ typedef struct player {
     animation anim[17];
     int running_anim;
     int anim_frame;
-    sfMusic *sound[10];
+    sfMusic *sound[11];
     int cooldown;
     char character;
     sfBool is_flying;
@@ -168,6 +169,7 @@ typedef struct player {
 } player;
 
 int launch_game();
+void directional_key(player *p, int dir, sfBool released, game *g);
 void do_death(player *p, game *g);
 game create_game();
 char **create_map(char *filepath, game *g);
@@ -177,7 +179,7 @@ void create_animation(animation *anim, int length, float speed, sfBool loop);
 void update(game *g, player *p);
 void update_player(player *p, game *g);
 void player_keyboard_events(game *g, player *p);
-void gravity(player *p);
+void gravity(player *p, game *g);
 void movement(player *p, game *g);
 void deceleration(player *p, game *g);
 void acceleration(player *p, game *g);

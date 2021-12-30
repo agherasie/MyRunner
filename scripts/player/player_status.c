@@ -42,7 +42,7 @@ void dying(player *p, game *g)
     sfMusic_stop(g->bgm[g->level - 1]);
     p->speed_y += 0.25f;
     p->obj->pos.y += p->speed_y;
-    if (p->obj->pos.y > W_H) {
+    if (p->obj->pos.y - g->camera_pan.y > W_H && p->speed_y > 0) {
         g->lives--;
         if (g->lives == 0) {
             g->relaunch = sfTrue;
@@ -66,7 +66,7 @@ void update_living(player *p, game *g)
     misc(p);
     movement(p, g);
     raycast(p, g);
-    gravity(p);
+    gravity(p, g);
 }
 
 void update_unpaused(player *p, game *g)

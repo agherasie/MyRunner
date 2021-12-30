@@ -48,7 +48,7 @@ void destroy_all(game *g, player *p)
     sfMusic_destroy(g->title_music);
     sfMusic_destroy(g->finish_music);
     sfMusic_destroy(g->select_sound);
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 11; i++)
         sfMusic_destroy(p->sound[i]);
     sfRenderWindow_destroy(g->window);
 }
