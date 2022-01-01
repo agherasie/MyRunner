@@ -53,13 +53,14 @@ game create_game(void)
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     sfRenderWindow_setPosition(g.window, (sfVector2i) {500, 200});
     g.clock = sfClock_create();
-    g = create_animations_game(create_values(create_art(g)));
+    g = create_values(g);
+    g = create_art(g);
+    g = create_animations_game(g);
     g.relaunch = sfFalse;
     g.map = create_map("data/map1.txt", &g);
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);
     g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");
-    create_sonic_title(g, 224, 320);
     g.score_text = sfText_create();
     sfText_setFont(g.score_text, g.hud_font);
     g.score_text = style_text(g.score_text);
@@ -67,5 +68,6 @@ game create_game(void)
     g.player_icon->rect = (sfIntRect) {48, 0, 48, 48};
     sfSprite_setPosition(g.player_icon->spr, g.player_icon->pos);
     sfSprite_setTextureRect(g.player_icon->spr, g.player_icon->rect);
+    create_sonic_title(g, 224, 320);
     return g;
 }

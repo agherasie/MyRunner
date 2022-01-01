@@ -37,7 +37,6 @@ int find_free_spot(char **map, int map_pos_x)
             return y - 1;
 }
 
-
 enemy *create_enemies(int enemy_count, char **map)
 {
     enemy_count -= 2;
@@ -60,6 +59,26 @@ enemy *create_enemies(int enemy_count, char **map)
     return e;
 }
 
+float ring_positioner(int *x_pos, int *map_pos_x, int *map_pos_y, char **map)
+{
+    float y_pos = 0;
+    if (*x_pos % 100 > 50)
+        *map_pos_x += 1;
+    *map_pos_y = find_free_spot(map, *map_pos_x);
+    if (map[*map_pos_y][*map_pos_x] == 100
+    || map[*map_pos_y][*map_pos_x] == 102)
+        if (*x_pos % 100 == 25) {
+            *map_pos_y -= 2;
+            *x_pos -= 25;
+            y_pos += 50;
+        } else {
+            *map_pos_y--;
+            *x_pos += 25;
+        }
+    y_pos += *map_pos_y * 100;
+    return y_pos;
+}
+
 ring *create_rings(int ring_count, char **map)
 {
     ring *r = malloc(sizeof(enemy) * (ring_count + 1));
@@ -69,20 +88,7 @@ ring *create_rings(int ring_count, char **map)
         float y_pos = 0;
         int free_spot = 0;
         int map_pos_x = random_value / 100;
-        if (random_value % 100 > 50)
-            map_pos_x++;
-        free_spot = find_free_spot(map, map_pos_x);
-        if (map[free_spot][map_pos_x] == 100
-        || map[free_spot][map_pos_x] == 102)
-            if (random_value % 100 == 25) {
-                free_spot -= 2;
-                random_value -= 25;
-                y_pos += 50;
-            } else {
-                free_spot--;
-                random_value += 25;
-            }
-        y_pos += free_spot * 100;
+        y_pos = ring_positioner(&random_value, &map_pos_x, &free_spot, map);
         r[i].pos = (sfVector2f) {random_value, y_pos};
         r[i].is_collected = sfFalse;
         r[i].is_null = sfFalse;

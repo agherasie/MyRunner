@@ -44,30 +44,16 @@ void misc(player *p)
     p->map_pos.y = (int)((p->obj->pos.y + 48) / 100);
 }
 
-void spring_collision(player *p, char *spring, game *g)
+void tile_collisions(player *p, game *g)
 {
     sfVector2i m_p = {p->map_pos.x, p->map_pos.y};
-    p->is_climbing = sfFalse;
-    sfMusic_stop(p->sound[SPRING]);
-    sfMusic_play(p->sound[SPRING]);
-    switch (*spring) {
-        case 100:
-            p->speed_y = -15;
-            p->is_jumping = sfTrue;
-            break;
-        case 102:
-            p->speed_y = -27;
-            p->is_jumping = sfTrue;
-            break;
-        case 104:
-            p->speed_x = 0;
-            directional_key(p, 1, sfFalse, g);
-            p->speed_x = 10;
-            directional_key(p, 1, sfTrue, g);
-            break;
-    }
-    *spring += 1;
-    p->cooldown = 10;
+    if (g->map[m_p.y][m_p.x] >= 100 && g->map[m_p.y][m_p.x] % 2 == 0)
+        spring_collision(p, &g->map[m_p.y][m_p.x], g);
+    if ((is_solid(g->map[m_p.y][m_p.x]) == 0 && p->speed_y == 0)
+    || (g->map[m_p.y][m_p.x] == 5 || g->map[m_p.y][m_p.x] == 6))
+        do_death(p, g);
+    if (g->map[m_p.y + 1][m_p.x] == 6 && p->is_grounded == sfTrue)
+        player_hit(p, g);
 }
 
 void update_player(player *p, game *g)
@@ -79,14 +65,7 @@ void update_player(player *p, game *g)
     }
     if (g->score % 100000 == 0 && g->score != 0)
         update_lives(p, g);
-    if (g->map[m_p.y][m_p.x] >= 100 && g->map[m_p.y][m_p.x] % 2 == 0)
-        spring_collision(p, &g->map[m_p.y][m_p.x], g);
-    if (is_solid(g->map[m_p.y][m_p.x]) == 0 && p->speed_y == 0)
-        do_death(p, g);
-    if (g->map[m_p.y][m_p.x] == 5 || g->map[m_p.y][m_p.x] == 6)
-        do_death(p, g);
-    if (g->map[m_p.y + 1][m_p.x] == 6 && p->is_grounded == sfTrue)
-        player_hit(p, g);
+    tile_collisions(p, g);
     if (m_p.x == g->width - 2)
         p->goal_reached = sfTrue;
     if (p->goal_reached == sfTrue) {

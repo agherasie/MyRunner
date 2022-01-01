@@ -23,6 +23,7 @@ game init_to_zero(game g)
     g.ring_frame = 0;
     g.select = 0;
     g.seconds = 0;
+    return g;
 }
 
 game create_values(game g)

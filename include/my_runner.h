@@ -173,6 +173,10 @@ int launch_game(void);
 void directional_key(player *p, int dir, sfBool released, game *g);
 void do_death(player *p, game *g);
 game create_game(void);
+void turning(player *p, int dir);
+void release_charge(game *g, player *p);
+void climbing_controls(game *g, player *p, sfBool release);
+void player_press_key(game *g, player *p);
 char **create_map(char *filepath, game *g);
 player create_player(game *g);
 object *create_object(int pixel_size, int scale, char *filepath);
@@ -251,5 +255,6 @@ void update_title_screen(game *g);
 void animate_sonic_title(game *g);
 void on_landing(player *p, game *g);
 void do_jump(player *p, game *g);
+void spring_collision(player *p, char *spring, game *g);
 
 #endif /* MY_RUNNER_H_ */

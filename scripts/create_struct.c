@@ -6,6 +6,7 @@
 */
 
 #include "my_runner.h"
+#include "create.h"
 
 object *create_object(int pixel_size, int scale, char *filepath)
 {

@@ -7,6 +7,21 @@
 
 #include "my_runner.h"
 
+void climbing_controls(game *g, player *p, sfBool release)
+{
+    if (release == sfFalse) {
+        if (g->event.key.code == sfKeyUp)
+            p->speed_y = -2;
+        if (g->event.key.code == sfKeyDown)
+            p->speed_y = 2;
+    } else {
+        if (g->event.key.code == sfKeyUp && p->speed_y < 0)
+            p->speed_y = 0;
+        if (g->event.key.code == sfKeyDown && p->speed_y > 0)
+            p->speed_y = 0;
+    }
+}
+
 void flip(player *p, int direction)
 {
     if (p->direction != direction) {
@@ -17,39 +32,19 @@ void flip(player *p, int direction)
     }
 }
 
-void directional_key(player *p, int dir, sfBool released, game *g)
+void turning(player *p, int dir)
 {
-    if (g->is_runner == sfFalse && p->is_climbing == sfFalse) {
-        if (released == sfFalse) {
-            if (p->speed_x == 0) {
-                p->is_turning = sfFalse;
-                p->deceleration = sfFalse;
-                p->acceleration = sfTrue;
-                flip(p, dir);
-            } else if (p->direction != dir) {
-                p->is_turning = sfTrue;
-            }
-        } else {
-            p->deceleration = sfTrue;
-            p->acceleration = sfFalse;
-        }
-    }
+    if (p->speed_x == 0) {
+        p->is_turning = sfFalse;
+        p->deceleration = sfFalse;
+        p->acceleration = sfTrue;
+        flip(p, dir);
+    } else if (p->direction != dir)
+        p->is_turning = sfTrue;
 }
 
-void player_release_key(game *g, player *p)
+void release_charge(game *g, player *p)
 {
-    if (g->event.key.code == sfKeyRight && p->direction == 1)
-        directional_key(p, 1, sfTrue, g);
-    if (g->event.key.code == sfKeyLeft && p->direction == -1)
-        directional_key(p, -1, sfTrue, g);
-    if (g->event.key.code == sfKeyUp && p->is_climbing == sfTrue) {
-        if (p->speed_y < 0)
-            p->speed_y = 0;
-    }
-    if (g->event.key.code == sfKeyDown && p->is_climbing == sfTrue) {
-        if (p->speed_y > 0)
-            p->speed_y = 0;
-    }
     if (g->event.key.code == sfKeyUp)
         if (p->is_charging == sfTrue) {
             p->speed_x = 10;
@@ -62,56 +57,12 @@ void player_release_key(game *g, player *p)
             p->is_dashing = sfTrue;
         } else
             p->is_crouching = sfFalse;
-    if (g->event.key.code == sfKeyS) {
-        if (p->is_gliding == sfTrue)
-            p->speed_x = 0;
-        p->is_gliding = sfFalse;
-    }
 }
 
 void player_keyboard_events(game *g, player *p)
 {
-    if (g->event.type == sfEvtKeyPressed && p->goal_reached == sfFalse) {
-        if (g->event.key.code == sfKeyRight)
-            directional_key(p, 1, sfFalse, g);
-        if (g->event.key.code == sfKeyLeft)
-            directional_key(p, -1, sfFalse, g);
-        if (p->is_climbing == sfTrue) {
-            if (g->event.key.code == sfKeyUp)
-                p->speed_y = -2;
-            if (g->event.key.code == sfKeyDown)
-                p->speed_y = 2;
-        }
-        if (g->event.key.code == sfKeyS) {
-            if (p->anim_state != CROUCHING && p->anim_state != LOOKING
-            && p->anim_state != SPINNING && p->is_charging == sfFalse)
-                do_jump(p, g);
-            else {
-                if (p->anim_state == CROUCHING) {
-                    sfMusic_stop(p->sound[SPIN]);
-                    sfMusic_play(p->sound[SPIN]);
-                    p->is_spinning = sfTrue;
-                }
-                if (p->anim_state == LOOKING && p->character == 's') {
-                    sfMusic_stop(p->sound[SPIN]);
-                    sfMusic_play(p->sound[SPIN]);
-                    p->is_charging = sfTrue;
-                }
-                p->is_crouching = sfFalse;
-                p->is_looking = sfFalse;
-            }
-        }
-        if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed_x == 0)
-            p->is_looking = sfTrue;
-        if (g->event.key.code == sfKeyDown && p->is_grounded)
-            if (p->speed_x == 0)
-                p->is_crouching = sfTrue;
-            else {
-                sfMusic_stop(p->sound[SPIN]);
-                sfMusic_play(p->sound[SPIN]);
-                p->is_dashing = sfTrue;
-            }
-    }
+    if (g->event.type == sfEvtKeyPressed && p->goal_reached == sfFalse)
+        player_press_key(g, p);
     if (g->event.type == sfEvtKeyReleased)
         player_release_key(g, p);
 }
