@@ -57,22 +57,6 @@ void movement(player *p, game *g)
     deceleration(p, g);
 }
 
-void on_landing(player *p, game *g)
-{
-    p->is_grounded = sfTrue;
-    if (p->is_gliding == sfTrue)
-        p->speed_x = 0;
-    p->is_flying = sfFalse;
-    p->is_gliding = sfFalse;
-    if (p->is_dropping == sfTrue) {
-        p->speed_x = TOPSPEED;
-        p->is_dashing = sfTrue;
-        p->is_dropping = sfFalse;
-        sfMusic_stop(p->sound[SPIN]);
-        sfMusic_play(p->sound[SPIN]);
-    }
-}
-
 void aerial_movement(player *p)
 {
     p->is_grounded = sfFalse;

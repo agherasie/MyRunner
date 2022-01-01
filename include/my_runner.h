@@ -249,5 +249,7 @@ void select_button(game *g, player *p);
 void character_buttons(game *g, player *p);
 void update_title_screen(game *g);
 void animate_sonic_title(game *g);
+void on_landing(player *p, game *g);
+void do_jump(player *p, game *g);
 
 #endif /* MY_RUNNER_H_ */

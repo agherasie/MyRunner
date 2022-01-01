@@ -15,6 +15,10 @@ SRC	=	scripts/main.c \
 		scripts/player/collision.c \
 		scripts/player/player_status.c \
 		scripts/player/player_actions.c \
+		scripts/player/player_animations_create.c \
+		scripts/player/player_damage.c \
+		scripts/player/vertical_collision.c \
+		scripts/player/horizontal_collision.c \
 		scripts/animation.c \
 		scripts/enemy.c \
 		scripts/map.c \

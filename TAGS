@@ -1,7 +1,0 @@
-
-scripts/init.c,290
-game create_values(game g)create_values10,99
-object *create_plx(object **plx)create_plx37,672
-game create_art(game g)create_art63,1595
-game create_animations_game(game g)create_animations_game87,2780
-void create_sonic_title(game g, int height, int width)create_sonic_title95,2988
