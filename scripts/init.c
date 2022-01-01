@@ -8,10 +8,10 @@
 #include "my_runner.h"
 #include "create.h"
 
-game create_values(game g)
+game init_to_zero(game g)
 {
-    g.hiscore = 0;
-    get_score(&g.hiscore);
+    g.score = 0;
+    g.rings = 0;
     g.level = 0;
     g.camera_pan = (sfVector2f) {0, 0};
     g.camera_speed = (sfVector2f) {0, 0};
@@ -19,14 +19,19 @@ game create_values(game g)
     g.pause_frame = 0;
     g.frame = 0;
     g.goalframe = 0;
-    g.tally_speed = 5;
-    g.score = 0;
-    g.rings = 0;
-    g.lives = 3;
+    g.hiscore = 0;
     g.ring_frame = 0;
     g.select = 0;
-    g.title_sonic_frame = 10;
     g.seconds = 0;
+}
+
+game create_values(game g)
+{
+    g = init_to_zero(g);
+    get_score(&g.hiscore);
+    g.tally_speed = 5;
+    g.lives = 3;
+    g.title_sonic_frame = 10;
     g.paused = sfFalse;
     g.is_runner = sfFalse;
     g.is_main_menu = sfTrue;

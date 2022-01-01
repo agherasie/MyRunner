@@ -8,8 +8,25 @@
 #include "my_runner.h"
 #include "create.h"
 
+void reset_values(game *g, player *p)
+{
+    g->ring_frame = 0;
+    g->rings = 0;
+    g->seconds = 0;
+    g->goalsign->rect.left = 0;
+    g->frame = 0;
+    g->goalframe = 0;
+    p->speed_y = 0;
+    p->speed_x = 0;
+    p->map_pos.x = 0;
+    p->map_pos.y = 0;
+    g->tally_speed = 5;
+    g->rings = 0;
+}
+
 void restart(game *g, player *p)
 {
+    reset_values(g, p);
     for (int i = 0; i < 6; i++)
         free(g->map[i]);
     free(g->map);
@@ -23,22 +40,10 @@ void restart(game *g, player *p)
     g->camera_pan = (sfVector2f) {0, 0};
     destroy_entities(g);
     g->e = create_enemies((int)(g->width / 3) - 3, g->map);
-    g->frame = 0;
-    g->goalframe = 0;
     g->r = create_rings((g->width - 5) * 2, g->map);
-    g->ring_frame = 0;
-    g->rings = 0;
-    g->seconds = 0;
-    g->goalsign->rect.left = 0;
     sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
     p->obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
     *p = create_bools(*p);
-    p->speed_y = 0;
-    p->speed_x = 0;
-    p->map_pos.x = 0;
-    p->map_pos.y = 0;
-    g->tally_speed = 5;
-    g->rings = 0;
 }
 
 game create_game(void)
@@ -48,9 +53,7 @@ game create_game(void)
     g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
     sfRenderWindow_setPosition(g.window, (sfVector2i) {500, 200});
     g.clock = sfClock_create();
-    g = create_art(g);
-    g = create_values(g);
-    g = create_animations_game(g);
+    g = create_animations_game(create_values(create_art(g)));
     g.relaunch = sfFalse;
     g.map = create_map("data/map1.txt", &g);
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);

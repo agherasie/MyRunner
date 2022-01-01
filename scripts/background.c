@@ -23,7 +23,7 @@ void scroll_parallax(game *g, player *p, object *plx, float speed)
     sfRenderWindow_drawSprite(g->window, plx->spr, NULL);
 }
 
-void update_background(game *g, player *p)
+void scroll_plx_levels(game *g, player *p)
 {
     if (g->level == 1) {
         if (g->frame % 10 == 0)
@@ -45,6 +45,11 @@ void update_background(game *g, player *p)
         scroll_parallax(g, p, g->plx[9], 0.3f * g->camera_speed.x);
         scroll_parallax(g, p, g->plx[10], 0.4f * g->camera_speed.x);
     }
+}
+
+void update_background(game *g, player *p)
+{
+    scroll_plx_levels(g, p);
     sfVector2i mappos = {0, 0};
     sfVector2f tilepos = {0, 0};
     if (g->is_main_menu == sfTrue
