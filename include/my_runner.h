@@ -212,9 +212,8 @@ void toggle(sfBool *boolean);
 void hud_display(game *g, sfBool center);
 void update_title_screen(game *g);
 void keyboard_events(game *g, player *p);
-void pause_game(game *g, player *p);
 void destroy_all(game *g, player *p);
-void pause_menu(game *g);
+void select_screen(game *g);
 void draw_text(game *g, char *str, float x, float y);
 void d_txt_var(game *g, char *str, sfVector2i pos, int value);
 void draw_spr_at_pos(game *g, sfSprite *spr, float x, float y);
@@ -242,5 +241,13 @@ void stop_music(game *g);
 void switch_music(game *g, sfMusic *music);
 void camera_movement(player *p, game *g);
 void end_climbing(player *p, game *g, sfBool jump);
+void camera_movement(player *p, game *g);
+void level_init(game *g);
+void button_draw(game *g, int number, char *str, float offset);
+void buttons(game *g, player *p);
+void select_button(game *g, player *p);
+void character_buttons(game *g, player *p);
+void update_title_screen(game *g);
+void animate_sonic_title(game *g);
 
 #endif /* MY_RUNNER_H_ */

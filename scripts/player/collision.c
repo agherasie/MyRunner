@@ -14,30 +14,6 @@ int is_solid(int square)
     return 1;
 }
 
-void camera_movement(player *p, game *g)
-{
-    g->camera_speed = (sfVector2f) {0, 0};
-    if (p->is_dying == sfFalse && g->is_runner == sfTrue)
-        g->camera_speed.x = 3;
-    if (p->is_dying == sfTrue)
-        return;
-    if (p->obj->pos.y <= g->camera_pan.y + W_H / 4)
-        if (p->is_climbing == sfTrue)
-            g->camera_speed.y = p->speed_y;
-        else
-            g->camera_speed.y = -10;
-    if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
-        if (p->is_gliding == sfTrue || p->is_climbing == sfTrue)
-            g->camera_speed.y = p->speed_y;
-        else
-            g->camera_speed.y = 10;
-    if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
-        if (p->is_gliding == sfFalse)
-            g->camera_speed.x = 8;
-        else
-            g->camera_speed.x = p->speed_x;
-}
-
 void invisible_walls(player *p, game *g)
 {
     if (p->obj->pos.x <= g->camera_pan.x - 24) {
@@ -80,40 +56,34 @@ void raycast(player *p, game *g)
             p->speed_y = 1;
 }
 
+void do_wall_collision(player *p, int dir, int rnd_pos)
+{
+    p->obj->pos.x = rnd_pos * 100 + 30 * dir;
+    if (p->direction == dir && p->is_gliding == sfTrue) {
+        if (p->is_climbing == sfFalse)
+            p->speed_y = 0;
+        p->is_climbing = sfTrue;
+    }
+    if (p->direction == dir) {
+        p->can_move = sfFalse;
+        p->speed_x = 0;
+    }
+}
+
 void wall_collision(player *p, game *g)
 {
     p->can_move = sfTrue;
     int rnd_pos = p->map_pos.x;
     if (is_solid(g->map[p->map_pos.y][rnd_pos + 1]) == 0) {
-        if (p->obj->pos.x >= rnd_pos * 100 + 30) {
-            p->obj->pos.x = rnd_pos * 100 + 30;
-            if (p->direction == 1) {
-                if (p->is_gliding == sfTrue) {
-                    if (p->is_climbing == sfFalse)
-                        p->speed_y = 0;
-                    p->is_climbing = sfTrue;
-                }
-                p->can_move = sfFalse;
-                p->speed_x = 0;
-            }
-        }
+        if (p->obj->pos.x >= rnd_pos * 100 + 30)
+            do_wall_collision(p, 1, rnd_pos);
     } else if (p->direction == 1 && p->is_climbing == sfTrue)
         end_climbing(p, g, sfFalse);
     if (p->obj->pos.x >= rnd_pos + 50)
         rnd_pos++;
     if (is_solid(g->map[p->map_pos.y][rnd_pos - 1]) == 0) {
-        if (p->obj->pos.x <= rnd_pos * 100 - 30) {
-            p->obj->pos.x = rnd_pos * 100 - 30;
-            if (p->direction == -1) {
-                if (p->is_gliding == sfTrue) {
-                    if (p->is_climbing == sfFalse)
-                        p->speed_y = 0;
-                    p->is_climbing = sfTrue;
-                }
-                p->can_move = sfFalse;
-                p->speed_x = 0;
-            }
-        }
+        if (p->obj->pos.x <= rnd_pos * 100 - 30)
+            do_wall_collision(p, -1, rnd_pos);
     } else if (p->direction == -1 && p->is_climbing == sfTrue)
         end_climbing(p, g, sfFalse);
 }

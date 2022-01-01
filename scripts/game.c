@@ -7,34 +7,6 @@
 
 #include "my_runner.h"
 
-void stop_music(game *g)
-{
-    sfMusic_stop(g->title_music);
-    sfMusic_stop(g->finish_music);
-    for (int i = 0; i < 3; i++)
-        sfMusic_stop(g->bgm[i]);
-}
-
-void toggle_music(game *g)
-{
-    int volume = sfMusic_getVolume(g->title_music) == 0 ? 100: 0;
-    sfMusic_setVolume(g->title_music, volume);
-    sfMusic_setVolume(g->finish_music, volume);
-    for (int i = 0; i < 3; i++)
-        sfMusic_setVolume(g->bgm[i], volume);
-}
-
-void switch_music(game *g, sfMusic *music)
-{
-    if (sfMusic_getStatus(music) == sfPlaying)
-        return;
-    sfMusic_stop(g->title_music);
-    sfMusic_stop(g->finish_music);
-    for (int i = 0; i < 3; i++)
-        sfMusic_stop(g->bgm[i]);
-    sfMusic_play(music);
-}
-
 void toggle(sfBool *boolean)
 {
     if (*boolean == sfTrue)
@@ -51,47 +23,6 @@ void level_init(game *g)
         g->level = 2;
     if (g->event.key.code == sfKeyNum3)
         g->level = 3;
-}
-
-void press_enter(game *g, player *p)
-{
-    if (g->event.key.code == sfKeyEnter) {
-        if (g->is_main_menu == sfTrue) {
-            g->character_menu = sfTrue;
-            g->paused = sfTrue;
-        }
-        if (p->goal_reached == sfTrue) {
-            g->tally_speed = 2;
-            p->cooldown = 9700;
-        }
-    }
-}
-
-void keyboard_events(game *g, player *p)
-{
-    if (g->event.type == sfEvtClosed)
-        sfRenderWindow_close(g->window);
-    if (g->event.type == sfEvtLostFocus
-    && g->is_main_menu == sfFalse && p->goal_reached == sfFalse)
-        g->paused = sfTrue;
-    if (g->event.type == sfEvtKeyPressed) {
-        pause_game(g, p);
-        press_enter(g, p);
-        level_init(g);
-        if (g->event.key.code == sfKeyR)
-            toggle(&g->is_runner);
-        if (g->event.key.code == sfKeyD)
-            toggle(&g->debug);
-        if (g->event.key.code == sfKeyE)
-            for (int i = 0; g->e[i].enemytype != -1; i++)
-                g->e[i].is_dead = sfTrue;
-    }
-    if (!(p->anim_state == HURTING && p->is_grounded == sfFalse)
-    && g->paused == sfFalse)
-        player_keyboard_events(g, p);
-    else
-        player_release_key(g, p);
-
 }
 
 void fade_transition(game *g)

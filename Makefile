@@ -29,6 +29,15 @@ SRC	=	scripts/main.c \
 		scripts/tally.c \
 		scripts/sound.c \
 		scripts/update_tiles.c \
+		scripts/camera.c \
+		scripts/init.c \
+		scripts/create_struct.c \
+		scripts/create_entities.c \
+		scripts/music.c \
+		scripts/input.c \
+		scripts/buttons.c \
+		scripts/character_select.c \
+		scripts/title.c \
 
 OBJ	=	$(SRC:.c=.o)
 
