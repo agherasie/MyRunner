@@ -41,7 +41,7 @@ void restart(game *g, player *p)
     g->rings = 0;
 }
 
-game create_game()
+game create_game(void)
 {
     game g;
     sfVideoMode mode = {W_W, W_H, 32};

@@ -7,7 +7,7 @@
 
 #include "my_runner.h"
 
-int launch_game()
+int launch_game(void)
 {
     game g = create_game();
     player p = create_player(&g);

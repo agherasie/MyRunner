@@ -169,10 +169,10 @@ typedef struct player {
     sfBool is_gliding;
 } player;
 
-int launch_game();
+int launch_game(void);
 void directional_key(player *p, int dir, sfBool released, game *g);
 void do_death(player *p, game *g);
-game create_game();
+game create_game(void);
 char **create_map(char *filepath, game *g);
 player create_player(game *g);
 object *create_object(int pixel_size, int scale, char *filepath);
