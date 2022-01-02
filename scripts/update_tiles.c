@@ -39,10 +39,7 @@ void tile_interpretor(char **map, int y, int x)
     if (x > 3 && y < maxy - 1 && map[y + 1][x] == 3 && map[y][x] == 0
     && map[y][x - 1] == 2 && map[y][x + 1] == 2)
         map[y][x] = either_or(100, 5);
-    if (map[y][x] == 5)
-        return;
-    if (map[0][x + 1] != '\0')
-        spring_placement(map, y, x, maxy);
+    spring_placement(map, y, x, maxy);
 }
 
 void draw_game_object(game *g, sfVector2i mappos, char object)
