@@ -31,23 +31,44 @@ void create_sonic_title(game g, int height, int width)
     sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
 }
 
+void choose_map(game *g, player *p)
+{
+    if (g->level == 1) {
+        if (g->act == 1)
+            g->map = create_map("data/map1-1.txt", g);
+        if (g->act == 2)
+            g->map = create_map("data/map1-2.txt", g);
+    }
+    if (g->level == 2) {
+        if (g->act == 1)
+            g->map = create_map("data/map2-1.txt", g);
+        if (g->act == 2)
+            g->map = create_map("data/map1-2.txt", g);
+    }
+    if (g->level == 3) {
+        if (g->act == 1)
+            g->map = create_map("data/map1-1.txt", g);
+        if (g->act == 2)
+            g->map = create_map("data/map1-2.txt", g);
+    }
+    if (g->act == 3)
+        g->map = create_map("data/boss.txt", g);
+}
+
 void restart(game *g, player *p)
 {
     reset_values(g, p);
     for (int i = 0; i < 6; i++)
         free(g->map[i]);
     free(g->map);
-    if (g->level == 1)
-        g->map = create_map("data/map1.txt", g);
-    if (g->level == 2)
-        g->map = create_map("data/map2.txt", g);
-    if (g->level == 3)
-        g->map = create_map("data/map3.txt", g);
+    choose_map(g, p);
     switch_music(g, g->bgm[g->level - 1]);
     g->camera_pan = (sfVector2f) {0, 0};
     destroy_entities(g);
     g->e = create_enemies((int)(g->width / 3) - 3, g->map);
     g->r = create_rings((g->width - 5) * 2, g->map);
+    if (g->act == 3)
+        g->e[0].enemytype = -1;
     sfSprite_setTextureRect(g->goalsign->spr, g->goalsign->rect);
     p->obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
     *p = create_bools(*p);
@@ -62,7 +83,7 @@ game create_game(void)
     g.clock = sfClock_create();
     g = create_animations_game(create_art(create_values(g)));
     g.relaunch = sfFalse;
-    g.map = create_map("data/map1.txt", &g);
+    g.map = create_map("data/map1-1.txt", &g);
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);
     g.r = create_rings((g.width - 5) * 2, g.map);
     g.hud_font = sfFont_createFromFile("art/sonic-hud-font.ttf");

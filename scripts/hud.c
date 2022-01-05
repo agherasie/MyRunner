@@ -42,7 +42,8 @@ void debug_diplay(game *g)
         d_txt_var(g, "map width", (sfVector2i) {1, 2 + offset}, g->width);
         d_txt_var(g, "map height", (sfVector2i) {1, 4 + offset}, g->height);
         d_txt_var(g, "level", (sfVector2i) {1, 6 + offset}, g->level);
-        offset += 6;
+        d_txt_var(g, "act", (sfVector2i) {1, 8 + offset}, g->act);
+        offset += 8;
     }
     if (g->is_runner == sfTrue)
         draw_text(g, "runner mode", 1, offset + 2);

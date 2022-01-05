@@ -13,6 +13,7 @@ game init_to_zero(game g)
     g.score = 0;
     g.rings = 0;
     g.level = 0;
+    g.act = 0;
     g.camera_pan = (sfVector2f) {0, 0};
     g.camera_speed = (sfVector2f) {0, 0};
     g.ocean_frame = 0;

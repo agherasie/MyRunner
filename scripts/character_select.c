@@ -39,4 +39,5 @@ void character_buttons(game *g, player *p)
     g->select = 0;
     g->character_menu = sfFalse;
     g->level = 1;
+    g->act = 1;
 }

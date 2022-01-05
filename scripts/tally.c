@@ -47,10 +47,15 @@ void tally(player *p, game *g)
     if (p->cooldown > 0 && p->cooldown <= 9700)
         counting(p, g);
     if (p->cooldown == 0) {
-        if (g->level != 3) {
+        if (g->act == 3) {
             g->level++;
+            g->act = 1;
             restart(g, p);
         } else {
+            g->act++;
+            restart(g, p);
+        }
+        if (g->level == 4) {
             g->relaunch = sfTrue;
             sfRenderWindow_close(g->window);
         }

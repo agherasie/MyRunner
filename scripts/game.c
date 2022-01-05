@@ -23,6 +23,8 @@ void level_init(game *g)
         g->level = 2;
     if (g->event.key.code == sfKeyNum3)
         g->level = 3;
+    if (g->event.key.code == sfKeyB)
+        g->act = 3;
 }
 
 void fade_transition(game *g)

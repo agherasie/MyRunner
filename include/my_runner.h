@@ -113,6 +113,7 @@ typedef struct game {
     object *player_icon;
     int lives;
     int level;
+    int act;
     object *title_sonic;
     object *title_background;
     sfBool is_main_menu;
