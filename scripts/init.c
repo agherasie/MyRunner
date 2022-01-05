@@ -77,16 +77,7 @@ game create_art(game g)
     g.sonic_text = sfTexture_createFromFile("art/sonic_sheet.png", NULL);
     g.tails_text = sfTexture_createFromFile("art/tails_sheet.png", NULL);
     g.knux_text = sfTexture_createFromFile("art/knuckles_sheet.png", NULL);
-    g.bgm[0] = sfMusic_createFromFile("art/sound/rooftoprun.wav");
-    g.bgm[1] = sfMusic_createFromFile("art/sound/iceparadise.wav");
-    g.bgm[2] = sfMusic_createFromFile("art/sound/gangstasparadise.wav");
-    for (int i = 0; i < 3; i++)
-        sfMusic_setLoop(g.bgm[i], sfTrue);
-    g.title_music = sfMusic_createFromFile("art/sound/liveandlearn.wav");
-    g.finish_music = sfMusic_createFromFile("art/sound/stage-clear.wav");
-    sfMusic_setLoop(g.title_music, sfTrue);
-    sfMusic_setLoop(g.finish_music, sfFalse);
-    g.select_sound = sfMusic_createFromFile("art/sound/select.wav");
+    g = create_music(g);
     return g;
 }
 

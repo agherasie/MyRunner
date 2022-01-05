@@ -24,8 +24,12 @@ void update_goalsign(game *g, player *p)
 void update_level(game *g, player *p)
 {
     sfMusic_stop(g->title_music);
-    if (g->level != 0 && p->goal_reached == sfFalse)
-        switch_music(g, g->bgm[g->level - 1]);
+    if (g->level != 0 && p->goal_reached == sfFalse) {
+        if (g->act == 3)
+            switch_music(g, g->boss_music);
+        else
+            switch_music(g, g->bgm[g->level - 1]);
+    }
     update_goalsign(g, p);
     update_rings(g, p);
     for (int i = 0; g->e[i].enemytype != -1; i++)

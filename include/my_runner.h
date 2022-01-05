@@ -102,6 +102,7 @@ typedef struct game {
     sfMusic *bgm[5];
     sfMusic *title_music;
     sfMusic *finish_music;
+    sfMusic *boss_music;
     object *goalsign;
     animation goalanim;
     int goalframe;
@@ -169,6 +170,7 @@ typedef struct player {
 } player;
 
 int launch_game(void);
+game create_music(game g);
 void window_events(game *g, player *p);
 void directional_key(player *p, int dir, sfBool released, game *g);
 void do_death(player *p, game *g);

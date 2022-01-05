@@ -44,6 +44,7 @@ SRC	=	scripts/main.c \
 		scripts/character_select.c \
 		scripts/title.c \
 		scripts/spring.c \
+		scripts/tile_interpretor.c\
 
 OBJ	=	$(SRC:.c=.o)
 

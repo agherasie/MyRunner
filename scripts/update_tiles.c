@@ -14,34 +14,6 @@ void draw_tile(game *g, sfSprite *spr, sfVector2f pos)
     sfRenderWindow_drawSprite(g->window, g->tile->spr, NULL);
 }
 
-void spring_placement(char **map, int y, int x, int maxy)
-{
-    if (y > 2 && y < maxy - 1 && map[y + 1][x] == 3
-    && is_solid(map[y + 1][x]) == 0
-    && is_solid(map[y][x + 1]) == 0 && is_solid(map[y - 1][x + 1]) == 0)
-        if (is_solid(map[y - 3][x + 1]) == 0)
-            map[y][x] = 102;
-        else
-            map[y][x] = 100;
-    if (y < maxy - 1 && map[y + 1][x] == 3 && map[y][x - 1] == 2
-    && is_solid(map[y][x + 1]) == 1 && is_solid(map[y][x + 2]) == 1)
-        map[y][x] = 104;
-    if (map[y][x] == 0 && y == maxy - 1)
-        map[y][x] = 6;
-}
-
-void tile_interpretor(char **map, int y, int x)
-{
-    int maxy = 0;
-    for (maxy; map[maxy] != NULL; maxy++);
-    if (map[y][x] == 2 && map[y - 1][x] == 0)
-        map[y][x] = 3;
-    if (x > 3 && y < maxy - 1 && map[y + 1][x] == 3 && map[y][x] == 0
-    && map[y][x - 1] == 2 && map[y][x + 1] == 2)
-        map[y][x] = either_or(100, 5);
-    spring_placement(map, y, x, maxy);
-}
-
 void draw_game_object(game *g, sfVector2i mappos, char object)
 {
     sfIntRect rect = (sfIntRect) {50 * (object % 100), 50 * 3, 50, 50};
@@ -55,7 +27,7 @@ void draw_game_object(game *g, sfVector2i mappos, char object)
 void update_tile(game *g, player *p, sfVector2f *tilepos, sfVector2i mappos)
 {
     char *id = &g->map[mappos.y][mappos.x];
-    if (*id >= 0 && *id <= 9) {
+    if (*id >= 0 && *id <= 99) {
         tilepos->x = mappos.x * 100 - g->camera_pan.x;
         tilepos->y = mappos.y * 100 - g->camera_pan.y;
         g->tile->rect.top = 50 * (g->level - 1);
