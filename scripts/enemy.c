@@ -15,16 +15,8 @@ void enemy_death(enemy *e, player *p)
     sfMusic_play(p->sound[BADNIK_DEATH]);
 }
 
-void enemy_raycast(enemy *e, game *g, player *p)
+void enemy_movement(enemy *e, game *g, player *p, float speed)
 {
-    float speed = 2;
-    sfSprite_setScale(e->obj->spr, (sfVector2f) {2 * e->direction, 2});
-    if (e->obj->pos.x > p->obj->pos.x + 2)
-        e->direction = 1;
-    else if (e->obj->pos.x < p->obj->pos.x - 2)
-        e->direction = -1;
-    else
-        speed = 0;
     float collision_y = 0;
     int x = (int)((e->obj->pos.x + g->camera_pan.x) / 100);
     int y = (int)((e->obj->pos.y + g->camera_pan.y) / 100);
@@ -46,6 +38,19 @@ void enemy_raycast(enemy *e, game *g, player *p)
     && p->obj->pos.x < e->obj->pos.x + 250
     && (y >= p->map_pos.y - 1) && (y <= p->map_pos.y + 1))
         e->obj->pos.x -= speed * e->direction;
+}
+
+void enemy_raycast(enemy *e, game *g, player *p)
+{
+    float speed = 2;
+    sfSprite_setScale(e->obj->spr, (sfVector2f) {2 * e->direction, 2});
+    if (e->obj->pos.x > p->obj->pos.x + 2 && e->is_dead == sfFalse)
+        e->direction = 1;
+    else if (e->obj->pos.x < p->obj->pos.x - 2 && e->is_dead == sfFalse)
+        e->direction = -1;
+    else
+        speed = 0;
+    enemy_movement(e, g, p, speed);
 }
 
 void update_enemies(game *g, player *p, enemy *e)
