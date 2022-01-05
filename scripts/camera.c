@@ -26,7 +26,9 @@ void camera_movement(player *p, game *g)
             g->camera_speed.y = 10;
     if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
         if (p->is_gliding == sfFalse)
-            g->camera_speed.x = 8;
+            g->camera_speed.x = TOPSPEED;
         else
             g->camera_speed.x = p->speed_x;
+    if (p->obj->pos.x >= g->camera_pan.x + W_W - 100)
+        g->camera_speed.x = TOPSPEED * 2;
 }

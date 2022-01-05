@@ -48,6 +48,7 @@ void update_clock(game *g, player *p)
     sfRenderWindow_clear(g->window, sfWhite);
     while (sfRenderWindow_pollEvent(g->window, &g->event))
         keyboard_events(g, p);
+    window_events(g, p);
     update_background(g, p);
     if (g->is_main_menu == sfFalse
     && (g->paused == sfFalse || g->pause_frame < 250))

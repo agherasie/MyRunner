@@ -16,6 +16,8 @@ void buttons(game *g, player *p)
         g->relaunch = sfTrue;
     }
     if (g->select == 3)
+        toggle_music(g);
+    if (g->select == 4)
         sfRenderWindow_close(g->window);
     g->paused = sfFalse;
     g->select = 0;

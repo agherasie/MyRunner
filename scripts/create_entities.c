@@ -43,7 +43,7 @@ enemy *create_enemies(int enemy_count, char **map)
     enemy *e = malloc(sizeof(enemy) * (enemy_count + 1));
     e[enemy_count] = create_enemy(-1, 0, 0);
     for (int i = 0; i < enemy_count; i++) {
-        int random_value = range(i * 300 + 500, i * 300 + 500);
+        int random_value = range(i * 300 + 450, i * 300 + 550);
         int free_spot = 0;
         int map_pos_x = random_value / 100;
         if (random_value % 100 >= 50)

@@ -21,6 +21,15 @@ void press_enter(game *g, player *p)
     }
 }
 
+void window_events(game *g, player *p)
+{
+    sfVector2u size = sfRenderWindow_getSize(g->window);
+    if (size.x <= W_W * 1.5f || size.y <= W_H * 1.5f)
+        sfRenderWindow_setSize(g->window, (sfVector2u) {W_W, W_H});
+    if (size.x > W_W * 1.5f || size.y > W_H * 1.5f)
+        sfRenderWindow_setSize(g->window, (sfVector2u) {2 * W_W, 2 * W_H});
+}
+
 void keyboard_events(game *g, player *p)
 {
     if (g->event.type == sfEvtClosed)

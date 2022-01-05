@@ -170,6 +170,7 @@ typedef struct player {
 } player;
 
 int launch_game(void);
+void window_events(game *g, player *p);
 void directional_key(player *p, int dir, sfBool released, game *g);
 void do_death(player *p, game *g);
 game create_game(void);

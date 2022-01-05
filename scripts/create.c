@@ -50,7 +50,7 @@ game create_game(void)
 {
     game g;
     sfVideoMode mode = {W_W, W_H, 32};
-    g.window = sfRenderWindow_create(mode, "my_runner", sfClose, NULL);
+    g.window = sfRenderWindow_create(mode, "my_runner", sfClose | sfResize, NULL);
     sfRenderWindow_setPosition(g.window, (sfVector2i) {500, 200});
     g.clock = sfClock_create();
     g = create_values(g);

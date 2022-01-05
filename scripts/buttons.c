@@ -18,7 +18,8 @@ void select_screen(game *g)
             button_draw(g, 0, "continue playing", 0);
             button_draw(g, 1, "restart level", 0);
             button_draw(g, 2, "return to title", 0);
-            button_draw(g, 3, "exit game", 2);
+            button_draw(g, 3, "toggle music", 0);
+            button_draw(g, 4, "exit game", 0);
         }
     }
     fade_transition(g);
@@ -54,7 +55,7 @@ void select_button(game *g, player *p)
         else
             buttons(g, p);
     }
-    int button_number = 5;
+    int button_number = 6;
     if (g->character_menu == sfTrue)
         button_number = 4;
     g->select %= button_number - 1;

@@ -47,13 +47,13 @@ void release_charge(game *g, player *p)
 {
     if (g->event.key.code == sfKeyUp)
         if (p->is_charging == sfTrue) {
-            p->speed_x = 10;
+            p->speed_x = 15;
             p->is_speeding = sfTrue;
         } else
             p->is_looking = sfFalse;
     if (g->event.key.code == sfKeyDown)
         if (p->is_spinning) {
-            p->speed_x = 10;
+            p->speed_x = 12;
             p->is_dashing = sfTrue;
         } else
             p->is_crouching = sfFalse;
