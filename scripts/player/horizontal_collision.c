@@ -12,12 +12,12 @@ void do_wall_collision(player *p, int dir, int rnd_pos)
     p->obj->pos.x = rnd_pos * 100 + 30 * dir;
     if (p->direction == dir && p->is_gliding == sfTrue) {
         if (p->is_climbing == sfFalse)
-            p->speed_y = 0;
+            p->speed.y = 0;
         p->is_climbing = sfTrue;
     }
     if (p->direction == dir) {
         p->can_move = sfFalse;
-        p->speed_x = 0;
+        p->speed.x = 0;
     }
 }
 

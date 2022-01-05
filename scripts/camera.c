@@ -16,19 +16,19 @@ void camera_movement(player *p, game *g)
         return;
     if (p->obj->pos.y <= g->camera_pan.y + W_H / 4)
         if (p->is_climbing == sfTrue)
-            g->camera_speed.y = p->speed_y;
+            g->camera_speed.y = p->speed.y;
         else
             g->camera_speed.y = -10;
     if (p->obj->pos.y >= g->camera_pan.y + W_H / 2)
         if (p->is_gliding == sfTrue || p->is_climbing == sfTrue)
-            g->camera_speed.y = p->speed_y;
+            g->camera_speed.y = p->speed.y;
         else
             g->camera_speed.y = 10;
     if (p->obj->pos.x >= g->camera_pan.x + W_W / 2)
         if (p->is_gliding == sfFalse)
             g->camera_speed.x = TOPSPEED;
         else
-            g->camera_speed.x = p->speed_x;
+            g->camera_speed.x = p->speed.x;
     if (p->obj->pos.x >= g->camera_pan.x + W_W - 100)
         g->camera_speed.x = TOPSPEED * 2;
 }

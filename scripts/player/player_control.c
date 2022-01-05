@@ -11,21 +11,21 @@ void climbing_controls(game *g, player *p, sfBool release)
 {
     if (release == sfFalse) {
         if (g->event.key.code == sfKeyUp)
-            p->speed_y = -2;
+            p->speed.y = -2;
         if (g->event.key.code == sfKeyDown)
-            p->speed_y = 2;
+            p->speed.y = 2;
     } else {
-        if (g->event.key.code == sfKeyUp && p->speed_y < 0)
-            p->speed_y = 0;
-        if (g->event.key.code == sfKeyDown && p->speed_y > 0)
-            p->speed_y = 0;
+        if (g->event.key.code == sfKeyUp && p->speed.y < 0)
+            p->speed.y = 0;
+        if (g->event.key.code == sfKeyDown && p->speed.y > 0)
+            p->speed.y = 0;
     }
 }
 
 void flip(player *p, int direction)
 {
     if (p->direction != direction) {
-        p->speed_x = 0;
+        p->speed.x = 0;
         p->direction = direction;
         p->obj->scale.x *= -1;
         p->obj->pos.x += p->obj->rect.width * 2 * (-direction);
@@ -34,7 +34,7 @@ void flip(player *p, int direction)
 
 void turning(player *p, int dir)
 {
-    if (p->speed_x == 0) {
+    if (p->speed.x == 0) {
         p->is_turning = sfFalse;
         p->deceleration = sfFalse;
         p->acceleration = sfTrue;
@@ -47,13 +47,13 @@ void release_charge(game *g, player *p)
 {
     if (g->event.key.code == sfKeyUp)
         if (p->is_charging == sfTrue) {
-            p->speed_x = 15;
+            p->speed.x = 15;
             p->is_speeding = sfTrue;
         } else
             p->is_looking = sfFalse;
     if (g->event.key.code == sfKeyDown)
         if (p->is_spinning) {
-            p->speed_x = 12;
+            p->speed.x = 12;
             p->is_dashing = sfTrue;
         } else
             p->is_crouching = sfFalse;

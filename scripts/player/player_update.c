@@ -36,7 +36,7 @@ void draw_player(player *p, game *g)
 
 void misc(player *p)
 {
-    if (p->is_grounded == sfFalse || p->speed_x > 0) {
+    if (p->is_grounded == sfFalse || p->speed.x > 0) {
         p->is_crouching = sfFalse;
         p->is_looking = sfFalse;
     }
@@ -49,7 +49,7 @@ void tile_collisions(player *p, game *g)
     sfVector2i m_p = {p->map_pos.x, p->map_pos.y};
     if (g->map[m_p.y][m_p.x] >= 100 && g->map[m_p.y][m_p.x] % 2 == 0)
         spring_collision(p, &g->map[m_p.y][m_p.x], g);
-    if ((is_solid(g->map[m_p.y][m_p.x]) == 0 && p->speed_y == 0)
+    if ((is_solid(g->map[m_p.y][m_p.x]) == 0 && p->speed.y == 0)
     || (g->map[m_p.y][m_p.x] == 5 || g->map[m_p.y][m_p.x] == 6))
         do_death(p, g);
     if (g->map[m_p.y + 1][m_p.x] == 6 && p->is_grounded == sfTrue)
@@ -60,7 +60,7 @@ void update_player(player *p, game *g)
 {
     sfVector2i m_p = {p->map_pos.x, p->map_pos.y};
     if (p->is_climbing == sfTrue) {
-        p->speed_x = 0;
+        p->speed.x = 0;
         p->is_gliding = sfFalse;
     }
     if (g->score % 100000 == 0 && g->score != 0)
@@ -71,7 +71,7 @@ void update_player(player *p, game *g)
     if (p->goal_reached == sfTrue) {
         tally(p, g);
     } else if (g->paused == sfFalse && g->is_runner == sfTrue) {
-        p->speed_x = 5;
+        p->speed.x = 5;
         p->is_dashing = sfFalse;
     }
     if (g->paused == sfFalse)

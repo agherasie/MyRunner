@@ -11,11 +11,11 @@ void on_landing(player *p, game *g)
 {
     p->is_grounded = sfTrue;
     if (p->is_gliding == sfTrue)
-        p->speed_x = 0;
+        p->speed.x = 0;
     p->is_flying = sfFalse;
     p->is_gliding = sfFalse;
     if (p->is_dropping == sfTrue) {
-        p->speed_x = TOPSPEED;
+        p->speed.x = TOPSPEED;
         p->is_dashing = sfTrue;
         p->is_dropping = sfFalse;
         sfMusic_stop(p->sound[SPIN]);
@@ -31,7 +31,7 @@ void do_special(player *p)
         if (p->is_flying == sfFalse)
             p->cooldown = 150;
         if (p->cooldown > 0)
-            p->speed_y = -5;
+            p->speed.y = -5;
         p->is_flying = sfTrue;
     }
     if (p->character == 'k'
@@ -44,7 +44,7 @@ void end_climbing(player *p, game *g, sfBool jump)
     if (jump == sfFalse) {
         p->obj->pos.x += 40 * p->direction;
         p->obj->pos.y += 40 * p->direction;
-        p->speed_x = 0;
+        p->speed.x = 0;
     }
     p->is_climbing = sfFalse;
     directional_key(p, p->direction, sfTrue, g);
@@ -61,7 +61,7 @@ void do_jump(player *p, game *g)
         p->is_grounded = sfFalse;
         p->is_dashing = sfFalse;
         p->is_jumping = sfTrue;
-        p->speed_y -= jump_speed;
+        p->speed.y -= jump_speed;
         sfMusic_stop(p->sound[JUMP]);
         sfMusic_play(p->sound[JUMP]);
     } else if (p->is_jumping == sfTrue)

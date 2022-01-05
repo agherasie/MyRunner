@@ -48,13 +48,14 @@ SRC	=	scripts/main.c \
 OBJ	=	$(SRC:.c=.o)
 
 NAME =	my_runner
+CSFML = -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
 CFLAGS += -Wextra -Iinclude
 
 all: $(NAME)
 
 $(NAME):	$(OBJ)
 	make -C lib/
-	gcc -o $(NAME) $(SRC) -Llib -lmy -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -Iinclude/
+	gcc -o $(NAME) $(SRC) -Llib -lmy $(CSFML) -Iinclude/
 
 clean:
 	rm -f $(OBJ)

@@ -9,13 +9,13 @@
 
 void dashing(player *p)
 {
-    if (p->speed_x > 0) {
+    if (p->speed.x > 0) {
         p->is_spinning = sfFalse;
         p->is_charging = sfFalse;
     }
-    if (p->speed_x <= 8)
+    if (p->speed.x <= 8)
         p->is_speeding = sfFalse;
-    if (p->is_dashing == sfTrue && p->speed_x == 0)
+    if (p->is_dashing == sfTrue && p->speed.x == 0)
         p->is_dashing = sfFalse;
 }
 
@@ -30,8 +30,8 @@ void damage(player *p, game *g)
     if (p->is_hurt && solid == 1)
         p->obj->pos.x -= p->cooldown / 10 * p->direction;
     p->cooldown--;
-    if (p->speed_x >= 0 && p->is_hurt == sfTrue) {
-        p->speed_x = 0;
+    if (p->speed.x >= 0 && p->is_hurt == sfTrue) {
+        p->speed.x = 0;
         if (p->cooldown <= 0)
             p->is_hurt = sfFalse;
     }
@@ -40,9 +40,9 @@ void damage(player *p, game *g)
 void dying(player *p, game *g)
 {
     sfMusic_stop(g->bgm[g->level - 1]);
-    p->speed_y += 0.25f;
-    p->obj->pos.y += p->speed_y;
-    if (p->obj->pos.y - g->camera_pan.y > W_H && p->speed_y > 0) {
+    p->speed.y += 0.25f;
+    p->obj->pos.y += p->speed.y;
+    if (p->obj->pos.y - g->camera_pan.y > W_H && p->speed.y > 0) {
         g->lives--;
         if (g->lives == 0) {
             g->relaunch = sfTrue;
@@ -73,7 +73,7 @@ void update_living(player *p, game *g)
 void update_unpaused(player *p, game *g)
 {
     if (p->obj->pos.x + g->camera_pan.x >= g->width * 100 - 70)
-        p->speed_x = 0;
+        p->speed.x = 0;
     camera_adjustments(p, g, sfTrue);
     camera_movement(p, g);
     dashing(p);

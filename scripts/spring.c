@@ -11,17 +11,17 @@ void which_spring(player *p, char *spring, game *g)
 {
     switch (*spring) {
         case 100:
-            p->speed_y = -15;
+            p->speed.y = -15;
             p->is_jumping = sfTrue;
             break;
         case 102:
-            p->speed_y = -27;
+            p->speed.y = -27;
             p->is_jumping = sfTrue;
             break;
         case 104:
-            p->speed_x = 0;
+            p->speed.x = 0;
             directional_key(p, 1, sfFalse, g);
-            p->speed_x = 10;
+            p->speed.x = 10;
             directional_key(p, 1, sfTrue, g);
             break;
     }

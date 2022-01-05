@@ -16,12 +16,19 @@ void reset_values(game *g, player *p)
     g->goalsign->rect.left = 0;
     g->frame = 0;
     g->goalframe = 0;
-    p->speed_y = 0;
-    p->speed_x = 0;
+    p->speed.x = 0;
+    p->speed.y = 0;
     p->map_pos.x = 0;
     p->map_pos.y = 0;
     g->tally_speed = 5;
     g->rings = 0;
+}
+
+void create_sonic_title(game g, int height, int width)
+{
+    sfSprite_setScale(g.title_sonic->spr, (sfVector2f) {2, 2});
+    g.title_sonic->pos = (sfVector2f) {W_W / 2 - width, W_H / 2 - height};
+    sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
 }
 
 void restart(game *g, player *p)
@@ -50,12 +57,10 @@ game create_game(void)
 {
     game g;
     sfVideoMode mode = {W_W, W_H, 32};
-    g.window = sfRenderWindow_create(mode, "my_runner", sfClose | sfResize, NULL);
+    g.window = sfRenderWindow_create(mode, "runner", sfClose | sfResize, NULL);
     sfRenderWindow_setPosition(g.window, (sfVector2i) {500, 200});
     g.clock = sfClock_create();
-    g = create_values(g);
-    g = create_art(g);
-    g = create_animations_game(g);
+    g = create_animations_game(create_art(create_values(g)));
     g.relaunch = sfFalse;
     g.map = create_map("data/map1.txt", &g);
     g.e = create_enemies((int)(g.width / 3) - 3, g.map);

@@ -18,7 +18,7 @@ void player_release_key(game *g, player *p)
     release_charge(g, p);
     if (g->event.key.code == sfKeyS) {
         if (p->is_gliding == sfTrue)
-            p->speed_x = 0;
+            p->speed.x = 0;
         p->is_gliding = sfFalse;
     }
 }
@@ -66,10 +66,10 @@ void player_press_key(game *g, player *p)
         climbing_controls(g, p, sfFalse);
     if (g->event.key.code == sfKeyS)
         s_key(g, p);
-    if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed_x == 0)
+    if (g->event.key.code == sfKeyUp && p->is_grounded && p->speed.x == 0)
         p->is_looking = sfTrue;
     if (g->event.key.code == sfKeyDown && p->is_grounded)
-        if (p->speed_x == 0)
+        if (p->speed.x == 0)
             p->is_crouching = sfTrue;
         else {
             sfMusic_stop(p->sound[SPIN]);

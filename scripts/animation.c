@@ -9,7 +9,7 @@
 
 void basic_anims(player *p)
 {
-    if (p->speed_x == 0)
+    if (p->speed.x == 0)
         p->anim_state = IDLE;
     if (p->direction * p->is_edging == 1)
         p->anim_state = FEDGING;
@@ -19,13 +19,13 @@ void basic_anims(player *p)
         p->anim_state = LOOKING;
     if (p->is_crouching == sfTrue)
         p->anim_state = CROUCHING;
-    if (p->speed_x > 0 && p->speed_x < 8)
+    if (p->speed.x > 0 && p->speed.x < 8)
         p->anim_state = WALKING;
-    if (p->speed_x >= 8)
+    if (p->speed.x >= 8)
         p->anim_state = RUNNING;
-    if (p->speed_x >= 9)
+    if (p->speed.x >= 9)
         p->anim_state = SPEEDING;
-    if (p->is_turning == sfTrue && p->speed_x > 6)
+    if (p->is_turning == sfTrue && p->speed.x > 6)
         p->anim_state = TURNING;
     if (p->is_jumping == sfTrue)
         p->anim_state = JUMPING;

@@ -71,14 +71,10 @@ player create_player(game *g)
     player p;
     p.obj = create_object(48, 2, "art/sonic_sheet.png");
     p.obj->pos = (sfVector2f) {100, find_free_spot(g->map, 0) * 100 + 48};
-    p.speed_x = 0;
-    p.speed_y = 0;
     p.direction = 1;
-    p.meters_run = 0;
-    p.collision_y = 0;
-    p.collision_x = 0;
-    p.map_pos.x = 0;
-    p.map_pos.y = 0;
+    p.speed = (sfVector2f) {0, 0};
+    p.collision = (sfVector2f) {0, 0};
+    p.map_pos = (sfVector2i) {0, 0};
     p.is_edging = 0;
     p.cooldown = 0;
     p = create_bools(p);

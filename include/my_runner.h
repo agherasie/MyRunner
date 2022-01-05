@@ -134,12 +134,10 @@ typedef struct game {
 
 typedef struct player {
     object *obj;
-    sfVector2i map_pos;
-    float speed_x, speed_y;
     int direction;
-    float meters_run;
-    float collision_y;
-    float collision_x;
+    sfVector2i map_pos;
+    sfVector2f speed;
+    sfVector2f collision;
     sfBool deceleration;
     sfBool acceleration;
     sfBool is_turning;

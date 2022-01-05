@@ -51,14 +51,12 @@ object *create_plx(object **plx)
     plx[2] = create_bg(1729, 40, "art/plx/p1-2.png", ypos * 2.5f);
     ypos += 40;
     plx[3] = create_bg(1024, 107, "art/plx/p1-3.png", (ypos - 3) * 2.5f);
-    ypos = 0;
     plx[4] = create_bg(638, 223, "art/plx/p2-1.png", 0);
     plx[5] = create_bg(638, 223, "art/plx/p2-2.png", 0);
-    ypos += 140;
+    ypos = 140;
     plx[6] = create_bg(638, 100, "art/plx/p2-3.png", ypos * 2.5f);
-    ypos = 0;
     plx[7] = create_bg(1000, 177, "art/plx/p3-0.png", 0);
-    ypos += 100;
+    ypos = 100;
     plx[8] = create_bg(1000, 55, "art/plx/p3-1.png", ypos * 2.5f);
     ypos += 55;
     plx[9] = create_bg(1000, 96, "art/plx/p3-2.png", ypos * 2.5f);
@@ -97,11 +95,4 @@ game create_animations_game(game g)
     create_animation(&g.goalanim, 5, 5, sfFalse);
     create_animation(&g.ring_anim, 16, 5, sfTrue);
     return g;
-}
-
-void create_sonic_title(game g, int height, int width)
-{
-    sfSprite_setScale(g.title_sonic->spr, (sfVector2f) {2, 2});
-    g.title_sonic->pos = (sfVector2f) {W_W / 2 - width, W_H / 2 - height};
-    sfSprite_setPosition(g.title_sonic->spr, g.title_sonic->pos);
 }

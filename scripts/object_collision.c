@@ -53,7 +53,7 @@ void enemy_collision(player *p, enemy *e, game *g)
         player_hit(p, g);
     else if (is_attacking(p) == 0) {
         if (p->anim_state == JUMPING)
-            p->speed_y = -8;
+            p->speed.y = -8;
         g->score += 100;
         enemy_death(e, p);
     }
