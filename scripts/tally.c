@@ -28,9 +28,9 @@ void counting(player *p, game *g)
     if (g->seconds != 0) {
         if (g->seconds < 60)
             g->score += 1000;
-        else if (g->seconds < 120)
+        if (g->seconds < 120)
             g->score += 500;
-        else if (g->seconds < 180)
+        if (g->seconds < 180)
             g->score += 500;
     }
     g->seconds = 0;

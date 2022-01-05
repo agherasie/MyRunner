@@ -8,13 +8,13 @@
 #include <time.h>
 #include <stdlib.h>
 
-int either_or(int either, int or)
+int either_or(int either, int orthis)
 {
     int max = 1;
     int min = 0;
     int random = rand() % (max - min + 1) + max;
     if (random == 1)
-        random = or;
+        random = orthis;
     else
         random = either;
     return random;

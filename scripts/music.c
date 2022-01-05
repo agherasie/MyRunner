@@ -17,7 +17,7 @@ void stop_music(game *g)
 
 void toggle_music(game *g)
 {
-    int volume = sfMusic_getVolume(g->title_music) == 0 ? 100: 0;
+    int volume = sfMusic_getVolume(g->title_music) == 0? 100: 0;
     sfMusic_setVolume(g->title_music, volume);
     sfMusic_setVolume(g->finish_music, volume);
     for (int i = 0; i < 3; i++)

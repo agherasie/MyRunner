@@ -47,8 +47,7 @@ void dying(player *p, game *g)
         if (g->lives == 0) {
             g->relaunch = sfTrue;
             sfRenderWindow_close(g->window);
-        }
-        else {
+        } else {
             g->score = 0;
             restart(g, p);
         }

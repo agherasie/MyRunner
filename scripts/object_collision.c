@@ -51,7 +51,7 @@ void enemy_collision(player *p, enemy *e, game *g)
     p->is_dropping = sfFalse;
     if (is_attacking(p) == 1 && p->is_hurt == sfFalse)
         player_hit(p, g);
-    else if (is_attacking(p) == 0) {
+    if (is_attacking(p) == 0) {
         if (p->anim_state == JUMPING)
             p->speed.y = -8;
         g->score += 100;

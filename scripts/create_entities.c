@@ -82,7 +82,9 @@ float ring_positioner(int *x_pos, int *map_pos_x, int *map_pos_y, char **map)
 ring *create_rings(int ring_count, char **map)
 {
     ring *r = malloc(sizeof(enemy) * (ring_count + 1));
-    r[ring_count] = (ring) {(sfVector2f) {-100, 0}, sfFalse, sfTrue};
+    r[ring_count].pos = (sfVector2f) {-100, 0};
+    r[ring_count].is_collected = sfFalse;
+    r[ring_count].is_null = sfTrue;
     for (int i = 0; i < ring_count; i++) {
         int random_value = i * 50 + 225;
         float y_pos = 0;

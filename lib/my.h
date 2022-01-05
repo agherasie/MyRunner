@@ -29,7 +29,7 @@ int number_of_digits(long number);
 int power_of_ten(int count);
 int is_num(char c);
 char *base_conversion(long nb, int base, char ten);
-int either_or(int either, int or);
+int either_or(int either, int orthis);
 int range(int min, int max);
 char *my_itoa(long nb);
 void get_score(int *hiscore);

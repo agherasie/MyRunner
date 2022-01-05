@@ -32,7 +32,7 @@ void fade_transition(game *g)
         alpha = g->pause_frame;
     if (g->pause_frame >= 255)
         alpha = 255 - g->pause_frame % 255;
-    if (g->pause_frame >= 255*2)
+    if (g->pause_frame >= 255 * 2)
         alpha = 0;
     g->pause_frame += 20;
     sfRectangleShape *screen = sfRectangleShape_create();
