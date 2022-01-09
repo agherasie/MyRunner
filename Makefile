@@ -5,46 +5,46 @@
 ## Makefile
 ##
 
-SRC	=	scripts/main.c \
-		scripts/game.c \
-		scripts/create.c \
-		scripts/player/player_control.c \
-		scripts/player/player_update.c \
-		scripts/player/player_movement.c \
-		scripts/player/player_create.c \
-		scripts/player/collision.c \
-		scripts/player/player_status.c \
-		scripts/player/player_actions.c \
-		scripts/player/player_animations_create.c \
-		scripts/player/player_damage.c \
-		scripts/player/vertical_collision.c \
-		scripts/player/horizontal_collision.c \
-		scripts/player/player_input.c \
-		scripts/animation.c \
-		scripts/enemy.c \
-		scripts/map.c \
-		scripts/background.c \
-		scripts/ring.c \
-		scripts/update.c \
-		scripts/pause.c \
-		scripts/hud.c \
-		scripts/text.c \
-		scripts/destroy.c \
-		scripts/object_collision.c \
-		scripts/tally.c \
-		scripts/sound.c \
-		scripts/update_tiles.c \
-		scripts/camera.c \
-		scripts/init.c \
-		scripts/create_struct.c \
-		scripts/create_entities.c \
-		scripts/music.c \
-		scripts/input.c \
-		scripts/buttons.c \
-		scripts/character_select.c \
-		scripts/title.c \
-		scripts/spring.c \
-		scripts/tile_interpretor.c\
+SRC	=	src/main.c \
+		src/game.c \
+		src/create.c \
+		src/player/player_control.c \
+		src/player/player_update.c \
+		src/player/player_movement.c \
+		src/player/player_create.c \
+		src/player/collision.c \
+		src/player/player_status.c \
+		src/player/player_actions.c \
+		src/player/player_animations_create.c \
+		src/player/player_damage.c \
+		src/player/vertical_collision.c \
+		src/player/horizontal_collision.c \
+		src/player/player_input.c \
+		src/animation.c \
+		src/enemy.c \
+		src/map.c \
+		src/background.c \
+		src/ring.c \
+		src/update.c \
+		src/pause.c \
+		src/hud.c \
+		src/text.c \
+		src/destroy.c \
+		src/object_collision.c \
+		src/tally.c \
+		src/sound.c \
+		src/update_tiles.c \
+		src/camera.c \
+		src/init.c \
+		src/create_struct.c \
+		src/create_entities.c \
+		src/music.c \
+		src/input.c \
+		src/buttons.c \
+		src/character_select.c \
+		src/title.c \
+		src/spring.c \
+		src/tile_interpretor.c\
 
 OBJ	=	$(SRC:.c=.o)
 
